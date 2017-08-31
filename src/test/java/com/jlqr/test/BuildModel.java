@@ -39,7 +39,15 @@ public class BuildModel {
 		// 设置是否生成链式 setter 方法
 		generator.setGenerateChainSetter(false);
 		// 添加不需要生成的表名
-		generator.addExcludedTable("adv");
+		generator.addExcludedTable(
+			"act_evt_log",
+			"act_ge_bytearray", "act_ge_property",
+			"act_hi_actinst", "act_hi_attachment", "act_hi_comment", "act_hi_detail", "act_hi_identitylink", "act_hi_procinst", "act_hi_taskinst", "act_hi_varinst",
+			"act_id_group", "act_id_info", "act_id_membership", "act_id_user",
+			"act_procdef_info",
+			"act_re_deployment", "act_re_model", "act_re_procdef",
+			"act_ru_event_subscr", "act_ru_execution", "act_ru_identitylink", "act_ru_job", "act_ru_task", "act_ru_variable"
+		);
 		// 设置是否在 Model 中生成 dao 对象
 		generator.setGenerateDaoInModel(true);
 		// 设置是否生成链式 setter 方法
@@ -47,7 +55,7 @@ public class BuildModel {
 		// 设置是否生成字典文件
 		generator.setGenerateDataDictionary(false);
 		// 设置需要被移除的表名前缀用于生成modelName。例如表名 "osc_user"，移除前缀 "osc_"后生成的model名为 "User"而非 OscUser
-		generator.setRemovedTableNamePrefixes("t_");
+//		generator.setRemovedTableNamePrefixes("t_");
 		// 生成
 		generator.generate();
 	}

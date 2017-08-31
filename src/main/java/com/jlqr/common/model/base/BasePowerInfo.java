@@ -81,4 +81,13 @@ public abstract class BasePowerInfo<M extends BasePowerInfo<M>> extends Model<M>
 		return getStr("power_ico");
 	}
 
+	public M setPowerSort(java.lang.Integer powerSort) {
+		set("power_sort", powerSort);
+		return (M)this;
+	}
+
+	public java.lang.Integer getPowerSort() {
+		return getInt("power_sort");
+	}
+
 }

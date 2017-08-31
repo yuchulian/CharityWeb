@@ -5,7 +5,7 @@ import java.util.Date;
 
 import org.junit.Test;
 
-public class TestMethod {
+public class MethodTest {
 
 	@Test
 	public void testSimpleDateFormat() {

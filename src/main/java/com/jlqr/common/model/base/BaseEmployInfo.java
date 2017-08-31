@@ -63,13 +63,13 @@ public abstract class BaseEmployInfo<M extends BaseEmployInfo<M>> extends Model<
 		return getStr("employ_qq");
 	}
 
-	public M setEmployBirthday(java.lang.Long employBirthday) {
+	public M setEmployBirthday(java.lang.String employBirthday) {
 		set("employ_birthday", employBirthday);
 		return (M)this;
 	}
 
-	public java.lang.Long getEmployBirthday() {
-		return getLong("employ_birthday");
+	public java.lang.String getEmployBirthday() {
+		return getStr("employ_birthday");
 	}
 
 	public M setEmployMarrage(java.lang.Integer employMarrage) {
@@ -216,22 +216,22 @@ public abstract class BaseEmployInfo<M extends BaseEmployInfo<M>> extends Model<
 		return getStr("employ_dossier_place");
 	}
 
-	public M setEmployJobTime(java.lang.Long employJobTime) {
+	public M setEmployJobTime(java.util.Date employJobTime) {
 		set("employ_job_time", employJobTime);
 		return (M)this;
 	}
 
-	public java.lang.Long getEmployJobTime() {
-		return getLong("employ_job_time");
+	public java.util.Date getEmployJobTime() {
+		return get("employ_job_time");
 	}
 
-	public M setEmployJoinTime(java.lang.Long employJoinTime) {
+	public M setEmployJoinTime(java.util.Date employJoinTime) {
 		set("employ_join_time", employJoinTime);
 		return (M)this;
 	}
 
-	public java.lang.Long getEmployJoinTime() {
-		return getLong("employ_join_time");
+	public java.util.Date getEmployJoinTime() {
+		return get("employ_join_time");
 	}
 
 	public M setEmployImg(java.lang.String employImg) {

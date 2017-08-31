@@ -72,13 +72,13 @@ public abstract class BaseLoginInfo<M extends BaseLoginInfo<M>> extends Model<M>
 		return getInt("role_id");
 	}
 
-	public M setCreateTime(java.lang.Long createTime) {
+	public M setCreateTime(java.util.Date createTime) {
 		set("create_time", createTime);
 		return (M)this;
 	}
 
-	public java.lang.Long getCreateTime() {
-		return getLong("create_time");
+	public java.util.Date getCreateTime() {
+		return get("create_time");
 	}
 
 }

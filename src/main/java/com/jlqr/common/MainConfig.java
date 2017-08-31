@@ -14,6 +14,8 @@ import com.jfinal.plugin.druid.DruidPlugin;
 import com.jfinal.template.Engine;
 import com.jlqr.common.model._MappingKit;
 import com.jlqr.controller.data.BlogController;
+import com.jlqr.controller.data.PowerInfoData;
+import com.jlqr.controller.page.PowerInfoPage;
 import com.jlqr.index.IndexController;
 
 /**
@@ -59,6 +61,8 @@ public class MainConfig extends JFinalConfig {
 		me.setBaseViewPath("/WEB-INF");
 		me.add("/", IndexController.class, "/page/index");	// 第三个参数为该Controller的视图存放路径
 		me.add("/blog", BlogController.class, "/page/blog");			// 第三个参数省略时默认与第一个参数值相同，在此即为 "/blog"
+		me.add("/powerInfoPage", PowerInfoPage.class, "/page/powerInfo");
+		me.add("/powerInfoData", PowerInfoData.class, "/page/powerInfo");
 	}
 	
 	public void configEngine(Engine me) {
