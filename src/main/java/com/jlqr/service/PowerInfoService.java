@@ -21,62 +21,51 @@ public class PowerInfoService extends ServiceUtil {
 	public List<PowerInfo> findPowerInfoListByPId(Integer power_pid) throws Exception {
 		return PowerInfo.dao.find("select * from power_info where power_pid = "+power_pid);
 	}
-	public void powerInfoSave(PowerInfo PowerInfo) throws Exception {
-		if(null != PowerInfo) {
-			PowerInfo PowerInfoParent = this.findPowerInfoById(PowerInfo.getInt("power_pid"));//PowerInfo.dao.findById(PowerInfo.getInt("power_pid"));
-			if(null == PowerInfo.getInt("id")) {
-				PowerInfo PowerInfoMax = PowerInfo.dao.findFirst("select max(id) as id from power_info");
+	public void powerInfoSave(PowerInfo powerInfo) throws Exception {
+		if(null != powerInfo) {
+			PowerInfo powerInfoParent = this.findPowerInfoById(powerInfo.getPowerPid());
+			powerInfo.setPowerName(powerInfo.getPowerName().replaceAll("\\,", ""));
+			if(null == powerInfo.getId()) {
+				PowerInfo powerInfoMax = powerInfo.dao.findFirst("select max(id) as id from power_info");
 				
 				//自增长id
-				PowerInfo.set("id", getMaxColumn(PowerInfo.getClass(), "id")+1);
+				powerInfo.setId(getMaxColumn(PowerInfo.class, "id")+1);
 				
 				//组装path和pathname
-				PowerInfo.set("power_name", PowerInfo.getStr("power_name").replaceAll("\\,", ""));
-				if(null != PowerInfoParent) {
-					PowerInfo.set("power_id_path", PowerInfoParent.getStr("power_id_path")+PowerInfo.getInt("id")+",");
-					PowerInfo.set("power_name_path", PowerInfoParent.getStr("power_name_path")+PowerInfo.getStr("power_name")+",");
+				if(null != powerInfoParent) {
+					powerInfo.setPowerIdPath(powerInfoParent.getPowerIdPath()+powerInfo.getId()+",");
+					powerInfo.setPowerNamePath(powerInfoParent.getPowerNamePath()+powerInfo.getPowerName()+",");
 				} else {
-					PowerInfo.set("power_id_path", ","+PowerInfo.getInt("id")+",");
-					PowerInfo.set("power_name_path", ","+PowerInfo.getStr("power_name")+",");
+					powerInfo.setPowerIdPath(","+powerInfo.getId()+",");
+					powerInfo.setPowerNamePath(","+powerInfo.getPowerName()+",");
 				}
 				
-				PowerInfo.save();
+				powerInfo.save();
 			} else {
 				//组装path和pathname
-				PowerInfo.set("power_name", PowerInfo.getStr("power_name").replaceAll("\\,", ""));
-				if(null != PowerInfoParent) {
-					PowerInfo.set("power_name_path", PowerInfoParent.getStr("power_name_path")+PowerInfo.getStr("power_name")+",");
+				if(null != powerInfoParent) {
+					powerInfo.setPowerNamePath(powerInfoParent.getPowerNamePath()+powerInfo.getPowerName()+",");
 				} else {
-					PowerInfo.set("power_name_path", ","+PowerInfo.getStr("power_name")+",");
+					powerInfo.setPowerNamePath(","+powerInfo.getPowerName()+",");
 				}
 				
 				//修改该pathname的子类
-				PowerInfo powerInfoOld = this.findPowerInfoById(PowerInfo.getInt("id"));
-				List<PowerInfo> powerInfoList = PowerInfo.dao.find("select * from power_info where power_id_path like '"+powerInfoOld.getStr("power_id_path")+"%' and power_id_path <> '"+powerInfoOld.getStr("power_id_path")+"'");
-				for (PowerInfo powerInfo : powerInfoList) {
-					powerInfo.set("power_name_path", powerInfo.getStr("power_name_path").replace(powerInfoOld.getStr("power_name_path"), PowerInfo.getStr("power_name_path")));
-					powerInfo.update();
+				PowerInfo powerInfoOld = this.findPowerInfoById(powerInfo.getId());
+				List<PowerInfo> powerInfoList = powerInfo.dao.find("select * from power_info where power_id_path like '"+powerInfoOld.getPowerIdPath()+"%' and power_id_path <> '"+powerInfoOld.getPowerIdPath()+"'");
+				for (PowerInfo _powerInfo : powerInfoList) {
+					_powerInfo.setPowerNamePath(_powerInfo.getPowerNamePath().replace(powerInfoOld.getPowerNamePath(), powerInfo.getPowerNamePath()));
+					_powerInfo.update();
 				}
 				
-				PowerInfo.update();
+				powerInfo.update();
 			}
 		}
 	}
 	public void deletePowerInfoById(Integer powerInfoId) throws Exception {
 		PowerInfo powerInfo = this.findPowerInfoById(powerInfoId);
 		if(null != powerInfo) {
-			Db.update("delete from power_info where power_id_path like '"+powerInfo.getStr("power_id_path")+"%'");
+			Db.update("delete from power_info where power_id_path like '"+powerInfo.getPowerIdPath()+"%'");
 		}
-		/*if(null != powerInfo) {
-			List<PowerInfo> powerInfoList = PowerInfo.dao.find("select * from power_info where power_id_path like '"+powerInfo.getStr("power_id_path")+"%'");
-			if(powerInfoList.size() > 0) {
-				Integer[] deletePowerInfoIds = new Integer[powerInfoList.size()];
-				for (int i=0; i<powerInfoList.size(); i++) {
-					deletePowerInfoIds[i] = powerInfoList.get(i).getInt("id");
-				}
-				Db.update("delete from power_info where id in("+StringUtils.join(deletePowerInfoIds, ",")+")");
-			}
-		}*/
 	}
 	
 

@@ -2,8 +2,6 @@ package com.jlqr.service;
 
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
-
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
@@ -20,47 +18,39 @@ public class DictionaryService extends ServiceUtil {
 	public Dictionary findDictionaryById(Integer id) throws Exception {
 		return Dictionary.dao.findById(id);
 	}
-	public List<Dictionary> findDictionaryListByPId(Integer pid) throws Exception {
-		return Dictionary.dao.find("select * from dictionary where pid = "+pid);
+	public List<Dictionary> findDictionaryListByPId(Integer dictionary_pid) throws Exception {
+		return Dictionary.dao.find("select * from dictionary where dictionary_pid = "+dictionary_pid);
 	}
 	public void dictionarySave(Dictionary dictionary) throws Exception {
 		if(null != dictionary) {
-			Dictionary DictionaryParent = this.findDictionaryById(dictionary.getInt("pid"));//Dictionary.dao.findById(dictionary.getInt("pid"));
-			if(null == dictionary.getInt("id")) {
-				Dictionary DictionaryMax = Dictionary.dao.findFirst("select max(id) as id from dictionary");
-				
-				//自增长id
-				if(null != DictionaryMax && null != DictionaryMax.getInt("id")) {
-					dictionary.set("id", DictionaryMax.getInt("id")+1);
-				} else {
-					dictionary.set("id", 1);
-				}
+			Dictionary dictionaryParent = this.findDictionaryById(dictionary.getDictionaryPid());
+			dictionary.setDictionaryName(dictionary.getDictionaryName().replaceAll("\\,", ""));
+			if(null == dictionary.getId()) {
+				dictionary.setId(getMaxColumn(Dictionary.class, "id") + 1);
 				
 				//组装path和pathname
-				dictionary.set("name", dictionary.getStr("name").replaceAll("\\#", ""));
-				if(null != DictionaryParent) {
-					dictionary.set("path", DictionaryParent.getStr("path")+dictionary.getInt("id")+"#");
-					dictionary.set("pathname", DictionaryParent.getStr("pathname")+dictionary.getStr("name")+"#");
+				if(null != dictionaryParent) {
+					dictionary.setDictionaryIdPath(dictionaryParent.getDictionaryIdPath()+dictionary.getId()+",");
+					dictionary.setDictionaryNamePath(dictionaryParent.getDictionaryNamePath()+dictionary.getDictionaryName()+",");
 				} else {
-					dictionary.set("path", "#"+dictionary.getInt("id")+"#");
-					dictionary.set("pathname", "#"+dictionary.getStr("name")+"#");
+					dictionary.setDictionaryIdPath(","+dictionary.getId()+",");
+					dictionary.setDictionaryNamePath(","+dictionary.getDictionaryName()+",");
 				}
 				
 				dictionary.save();
 			} else {
 				//组装path和pathname
-				dictionary.set("name", dictionary.getStr("name").replaceAll("\\#", ""));
-				if(null != DictionaryParent) {
-					dictionary.set("pathname", DictionaryParent.getStr("pathname")+dictionary.getStr("name")+"#");
+				if(null != dictionaryParent) {
+					dictionary.setDictionaryNamePath(dictionaryParent.getDictionaryNamePath()+dictionary.getDictionaryName()+",");
 				} else {
-					dictionary.set("pathname", "#"+dictionary.getStr("name")+"#");
+					dictionary.setDictionaryNamePath(","+dictionary.getDictionaryName()+",");
 				}
 				
 				//修改该pathname的子类
-				Dictionary dictionaryOld = this.findDictionaryById(dictionary.getInt("id"));//Dictionary.dao.findById(dictionary.getInt("id"));
-				List<Dictionary> dictionaryList = Dictionary.dao.find("select * from dictionary where path like '"+dictionaryOld.getStr("path")+"%' and path <> '"+dictionaryOld.getStr("path")+"'");
+				Dictionary dictionaryOld = this.findDictionaryById(dictionary.getId());
+				List<Dictionary> dictionaryList = Dictionary.dao.find("select * from dictionary where dictionary_id_path like '"+dictionaryOld.getDictionaryIdPath()+"%' and dictionary_id_path <> '"+dictionaryOld.getDictionaryIdPath()+"'");
 				for (Dictionary _dictionary : dictionaryList) {
-					_dictionary.set("pathname", _dictionary.getStr("pathname").replace(dictionaryOld.getStr("pathname"), _dictionary.getStr("pathname")));
+					_dictionary.setDictionaryNamePath(_dictionary.getDictionaryNamePath().replace(dictionaryOld.getDictionaryNamePath(), dictionary.getDictionaryNamePath()));
 					_dictionary.update();
 				}
 				
@@ -70,18 +60,7 @@ public class DictionaryService extends ServiceUtil {
 	}
 	public void deleteDictionaryById(Integer dictionaryId) throws Exception {
 		Dictionary dictionary = this.findDictionaryById(dictionaryId);
-		if(null != dictionary) {
-			List<Dictionary> dictionaryList = Dictionary.dao.find("select * from dictionary where path like '"+dictionary.getStr("path")+"%'");
-			if(dictionaryList.size() > 0) {
-				Integer[] deleteDictionaryIds = new Integer[dictionaryList.size()];
-				for (int i=0; i<dictionaryList.size(); i++) {
-					deleteDictionaryIds[i] = dictionaryList.get(i).getInt("id");
-				}
-				Db.update("delete from dictionary where id in("+StringUtils.join(deleteDictionaryIds, ",")+")");
-			}
-		}
+		Db.update("delete from dictionary where dictionary_id_path like '"+dictionary.getDictionaryIdPath()+"%'");
 	}
-	
-
 	
 }
