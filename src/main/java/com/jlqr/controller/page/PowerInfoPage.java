@@ -2,11 +2,11 @@ package com.jlqr.controller.page;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.jfinal.core.Controller;
+import com.jlqr.common.ControllerUtil;
 import com.jlqr.common.model.PowerInfo;
 import com.jlqr.service.PowerInfoService;
 
-public class PowerInfoPage extends Controller {
+public class PowerInfoPage extends ControllerUtil {
 	
 	private PowerInfoService powerInfoService = new PowerInfoService();
 	

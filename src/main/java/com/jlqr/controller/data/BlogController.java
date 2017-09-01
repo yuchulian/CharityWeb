@@ -1,9 +1,8 @@
 package com.jlqr.controller.data;
 
 import com.jfinal.aop.Before;
-import com.jfinal.core.Controller;
+import com.jlqr.common.ControllerUtil;
 import com.jlqr.common.model.Blog;
-import com.jlqr.interceptor.BlogInterceptor;
 import com.jlqr.service.BlogService;
 import com.jlqr.validator.BlogValidator;
 
@@ -14,8 +13,7 @@ import com.jlqr.validator.BlogValidator;
  * BlogController
  * 所有 sql 与业务逻辑写在 Model 或 Service 中，不要写在 Controller 中，养成好习惯，有利于大型项目的开发与维护
  */
-@Before(BlogInterceptor.class)
-public class BlogController extends Controller {
+public class BlogController extends ControllerUtil {
 	
 	static BlogService service = new BlogService();
 	

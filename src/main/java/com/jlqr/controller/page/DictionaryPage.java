@@ -2,13 +2,10 @@ package com.jlqr.controller.page;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.jfinal.aop.Clear;
-import com.jfinal.core.Controller;
-import com.jfinal.plugin.ehcache.CacheInterceptor;
+import com.jlqr.common.ControllerUtil;
 import com.jlqr.common.model.Dictionary;
 import com.jlqr.service.DictionaryService;
-@Clear(CacheInterceptor.class)
-public class DictionaryPage extends Controller{
+public class DictionaryPage extends ControllerUtil{
 
 	private DictionaryService dictionaryService = new DictionaryService();
 	

@@ -2,14 +2,11 @@ package com.jlqr.controller.data;
 
 import java.util.HashMap;
 
-import com.jfinal.aop.Before;
-import com.jfinal.core.Controller;
+import com.jlqr.common.ControllerUtil;
 import com.jlqr.common.model.PowerInfo;
-import com.jlqr.interceptor.BlogInterceptor;
 import com.jlqr.service.PowerInfoService;
 
-@Before(BlogInterceptor.class)
-public class PowerInfoData extends Controller {
+public class PowerInfoData extends ControllerUtil {
 	
 	private PowerInfoService powerInfoService = new PowerInfoService();
 	

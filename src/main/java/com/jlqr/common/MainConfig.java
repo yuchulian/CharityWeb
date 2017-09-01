@@ -15,8 +15,10 @@ import com.jfinal.template.Engine;
 import com.jlqr.common.model._MappingKit;
 import com.jlqr.controller.data.BlogController;
 import com.jlqr.controller.data.DictionaryData;
+import com.jlqr.controller.data.EmployInfoData;
 import com.jlqr.controller.data.PowerInfoData;
 import com.jlqr.controller.page.DictionaryPage;
+import com.jlqr.controller.page.EmployInfoPage;
 import com.jlqr.controller.page.PowerInfoPage;
 import com.jlqr.index.IndexController;
 
@@ -67,6 +69,8 @@ public class MainConfig extends JFinalConfig {
 		me.add("/powerInfoData", PowerInfoData.class, "/page/powerInfo");
 		me.add("/dictionaryPage", DictionaryPage.class, "/page/dictionary");
 		me.add("/dictionaryData", DictionaryData.class, "/page/dictionary");
+		me.add("/employInfoPage", EmployInfoPage.class, "/page/employInfo");
+		me.add("/employInfoData", EmployInfoData.class, "/page/employInfo");
 	}
 	
 	public void configEngine(Engine me) {
@@ -82,11 +86,12 @@ public class MainConfig extends JFinalConfig {
 		DruidPlugin druidPlugin = new DruidPlugin(PropKit.get("jdbcUrl"), PropKit.get("user"), PropKit.get("password").trim());
 		me.add(druidPlugin);
 		
-		
 		// 配置ActiveRecord插件
 		ActiveRecordPlugin arp = new ActiveRecordPlugin(druidPlugin);
+		
 		// 显示sql记录
 		arp.setShowSql(PropKit.getBoolean("devMode", false));
+		
 		// 所有映射在 MappingKit 中自动化搞定
 		_MappingKit.mapping(arp);
 		me.add(arp);

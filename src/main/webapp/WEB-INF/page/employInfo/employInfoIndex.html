@@ -1,0 +1,115 @@
+#@layout()
+#define main()
+
+<div class="row">
+	<div class="col-md-12">
+		<div class="panel panel-visible">
+		
+			<div class="panel-heading">
+				<ol class="breadcrumb" id="employInfo_menu"> </ol>
+			</div>
+			<div class="panel-body pn">
+				<div id="datatable2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+					<div class="dt-panelmenu clearfix">
+						<input type="hidden" id="powerPidSearch" value="0"/>
+						<button type="button" class="btn btn-primary btn-gradient dark" id="employInfoAdd">员工添加</button>
+					</div>
+					<table class="table table-striped table-hover dataTable no-footer" id="employInfoTable">
+						<thead>
+							<tr>
+								<th>&nbsp;</th>
+								<th class="sorting_asc">员工名称</th>
+								<th class="sorting_disabled">员工图标</th>
+								<th class="sorting">员工路径</th>
+								<th class="sorting">员工状态</th>
+								<th class="sorting_disabled">操作</th>
+							</tr>
+						</thead>
+						<tbody> </tbody>
+					</table>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	util.initPage("/employInfoData/employInfoPaginate", {
+		sort : {
+			"id" : "asc"
+		},
+		search : {
+			column : {
+// 				"power_pid" : [ "=", "#powerPidSearch", "0" ]
+			}
+		},
+		modal : {
+			"employInfoUpdate" : {
+				bind : {
+					"#employInfoAdd" : {
+						title : "员工添加"
+					}
+				},
+				pageUrl : "/employInfoPage/employInfoEdit",
+				title : "员工修改",
+				button : {
+					"submit" : {
+						name : "确定",
+						className : "btn-primary",
+						click : function(dataMap) {
+							if ($('#employInfoForm').validationEngine('validate')) {
+								var employInfo = util.getModal(dataMap);
+								util.call("/employInfoData/employInfoSave", employInfo, function(returnMsg) {
+									util.refreshPage(dataMap);
+									util.closeModal(dataMap);
+									util.alert(returnMsg["content"]);
+								});
+							}
+						}
+					}
+				}
+			},
+			"employInfoDelete" : {
+				button : {
+					"submit" : {
+						name : "确定",
+						className : "btn-primary",
+						click : function(dataMap) {
+							util.call("/employInfoData/employInfoDelete", { "id" : dataMap["id"] + "" }, function(returnMsg) {
+								util.refreshPage(dataMap);
+								util.closeModal(dataMap);
+								util.alert(returnMsg["content"]);
+							});
+						}
+					}
+				}
+			}
+		}
+	},
+	function(data) {
+		var tableHTML = [],
+			obj = {},
+			employInfoList = data.list["employInfoList"],
+			search = data["search"],
+			employInfoUpdate = data["employInfoUpdate"],
+			employInfoDelete = data["employInfoDelete"];
+
+		for (var i = 0; i < employInfoList.length; i++) {
+			obj = employInfoList[i];
+			tableHTML.push('<tr>');
+			tableHTML.push('	<td>', (i + 1), '</td>');
+			tableHTML.push('	<td><a href="javascript:void(0);" onclick="$(\'#powerPidSearch\').val(', obj.id, ');util.execute(\'', search, '\');">', obj.power_name, '</a></td>');
+			tableHTML.push('	<td><span class="', obj.power_ico, '"></span></td>');
+			tableHTML.push('	<td>', obj.power_url, '</td>');
+			tableHTML.push('	<td>', obj.power_state ? "显示" : "隐藏", '</td>');
+			tableHTML.push('	<td>');
+			tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',employInfoUpdate,'\', {id : ',obj.id,', title: \'员工修改\'});">修改</a>');
+			tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',employInfoDelete,'\', {id : ',obj.id,', pageHtml: \'确定要删除【',obj.power_name,'】吗？\'});">删除</a>');
+			tableHTML.push('	</td>');
+			tableHTML.push('</tr>');
+		}
+		$("#employInfoTable tbody").html(tableHTML.join(""));
+	});
+</script>
+#end

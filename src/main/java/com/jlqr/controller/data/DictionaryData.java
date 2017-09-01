@@ -2,13 +2,10 @@ package com.jlqr.controller.data;
 
 import java.util.HashMap;
 
-import com.jfinal.aop.Clear;
-import com.jfinal.core.Controller;
-import com.jfinal.plugin.ehcache.CacheInterceptor;
+import com.jlqr.common.ControllerUtil;
 import com.jlqr.common.model.Dictionary;
 import com.jlqr.service.DictionaryService;
-@Clear(CacheInterceptor.class)
-public class DictionaryData extends Controller{
+public class DictionaryData extends ControllerUtil{
 
 	private DictionaryService dictionaryService = new DictionaryService();
 	
