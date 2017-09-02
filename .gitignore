@@ -1,3 +1,4 @@
 /target/*
 /OA.log*
 /.settings/*
+/target/
