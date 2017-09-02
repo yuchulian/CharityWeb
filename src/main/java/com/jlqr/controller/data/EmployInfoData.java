@@ -12,6 +12,7 @@ public class EmployInfoData extends ControllerUtil {
 	
 	public void employInfoPaginate() {
 		try {
+			System.out.println(employInfoService.employInfoPaginate(this));
 			renderJson(employInfoService.employInfoPaginate(this));
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -54,6 +55,7 @@ public class EmployInfoData extends ControllerUtil {
 	public void employInfoDelete() {
 		HashMap returnMsg = new HashMap();
 		try {
+			System.out.println("输出:"+getParaToInt("id"));
 			employInfoService.deleteEmployInfoById(getParaToInt("id"));
 			returnMsg.put("content", "删除成功");
 		} catch (Exception e) {

@@ -18,10 +18,9 @@
 						<thead>
 							<tr>
 								<th>&nbsp;</th>
-								<th class="sorting_asc">员工名称</th>
-								<th class="sorting_disabled">员工图标</th>
-								<th class="sorting">员工路径</th>
-								<th class="sorting">员工状态</th>
+								<th class="sorting_asc">员工姓名</th>
+								<th class="sorting_disabled">员工性别</th>
+								<th class="sorting">员工联系方式</th>
 								<th class="sorting_disabled">操作</th>
 							</tr>
 						</thead>
@@ -88,9 +87,10 @@
 		}
 	},
 	function(data) {
+		console.log(data.list.list);
 		var tableHTML = [],
 			obj = {},
-			employInfoList = data.list["employInfoList"],
+			employInfoList = data.list.list,
 			search = data["search"],
 			employInfoUpdate = data["employInfoUpdate"],
 			employInfoDelete = data["employInfoDelete"];
@@ -99,13 +99,12 @@
 			obj = employInfoList[i];
 			tableHTML.push('<tr>');
 			tableHTML.push('	<td>', (i + 1), '</td>');
-			tableHTML.push('	<td><a href="javascript:void(0);" onclick="$(\'#powerPidSearch\').val(', obj.id, ');util.execute(\'', search, '\');">', obj.power_name, '</a></td>');
-			tableHTML.push('	<td><span class="', obj.power_ico, '"></span></td>');
-			tableHTML.push('	<td>', obj.power_url, '</td>');
-			tableHTML.push('	<td>', obj.power_state ? "显示" : "隐藏", '</td>');
+			tableHTML.push('	<td><a href="javascript:void(0);" onclick="$(\'#powerPidSearch\').val(', obj.id, ');util.execute(\'', search, '\');">', obj.employ_name, '</a></td>');
+			tableHTML.push('	<td>', obj.employ_sex?"男" : "女", '</td>');
+			tableHTML.push('	<td>', obj.employ_phone , '</td>');
 			tableHTML.push('	<td>');
 			tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',employInfoUpdate,'\', {id : ',obj.id,', title: \'员工修改\'});">修改</a>');
-			tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',employInfoDelete,'\', {id : ',obj.id,', pageHtml: \'确定要删除【',obj.power_name,'】吗？\'});">删除</a>');
+			tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',employInfoDelete,'\', {id : ',obj.id,', pageHtml: \'确定要删除【',obj.employ_name,'】吗？\'});">删除</a>');
 			tableHTML.push('	</td>');
 			tableHTML.push('</tr>');
 		}

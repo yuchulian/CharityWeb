@@ -67,6 +67,7 @@ public class EmployInfoService extends ServiceUtil {
 		}*/
 	}
 	public void deleteEmployInfoById(Integer employInfoId) throws Exception {
+		EmployInfo.dao.deleteById(employInfoId);
 		/*EmployInfo employInfo = this.findEmployInfoById(employInfoId);
 		if(null != employInfo) {
 			Db.update("delete from power_info where power_id_path like '"+employInfo.getPowerIdPath()+"%'");
