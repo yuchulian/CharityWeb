@@ -26,6 +26,7 @@
 						</thead>
 						<tbody> </tbody>
 					</table>
+
 				</div>
 			</div>
 			
@@ -35,6 +36,11 @@
 
 <script type="text/javascript">
 	util.initPage("/employInfoData/employInfoPaginate", {
+		paginate:{
+			paginateId:"#employInfo",
+			pageNumber:1,
+			pageSize:10
+		},
 		sort : {
 			"id" : "asc"
 		},
@@ -52,6 +58,7 @@
 				},
 				pageUrl : "/employInfoPage/employInfoEdit",
 				title : "员工修改",
+				width : 794,
 				button : {
 					"submit" : {
 						name : "确定",
@@ -87,16 +94,15 @@
 		}
 	},
 	function(data) {
-		console.log(data.list.list);
 		var tableHTML = [],
 			obj = {},
-			employInfoList = data.list.list,
+			employInfoList = data.list,
 			search = data["search"],
 			employInfoUpdate = data["employInfoUpdate"],
 			employInfoDelete = data["employInfoDelete"];
-
 		for (var i = 0; i < employInfoList.length; i++) {
 			obj = employInfoList[i];
+			console.log(obj);
 			tableHTML.push('<tr>');
 			tableHTML.push('	<td>', (i + 1), '</td>');
 			tableHTML.push('	<td><a href="javascript:void(0);" onclick="$(\'#powerPidSearch\').val(', obj.id, ');util.execute(\'', search, '\');">', obj.employ_name, '</a></td>');

@@ -597,59 +597,57 @@
     },
 
     place: function () {
-      if (this.isInline) return;
+        if (this.isInline) return;
 
-      if (!this.zIndex) {
-        var index_highest = 0;
-        $('div').each(function () {
-          var index_current = parseInt($(this).css('zIndex'), 10);
-          if (index_current > index_highest) {
-            index_highest = index_current;
-          }
+        if (!this.zIndex) {
+            var index_highest = 0;
+            $('div').each(function () {
+                var index_current = parseInt($(this).css("zIndex"), 10);
+                if (index_current > index_highest) {
+                    index_highest = index_current;
+                }
+            });
+            this.zIndex = index_highest + 10;
+        }
+
+        var offset, top, left, containerOffset;
+        if (this.container instanceof $) {
+            containerOffset = this.container.offset();
+        } else {
+            containerOffset = $(this.container).offset();
+        }
+
+        if (this.component) {
+            offset = this.component.offset();
+            left = offset.left;
+            if (this.pickerPosition == 'bottom-left' || this.pickerPosition == 'top-left') {
+                left += this.component.outerWidth() - this.picker.outerWidth();
+            }
+        } else {
+            offset = this.element.offset();
+            left = offset.left;
+        }
+
+        if(left+220 > document.body.clientWidth){
+                    left = document.body.clientWidth-220;
+              }
+
+        if (this.pickerPosition == 'top-left' || this.pickerPosition == 'top-right') {
+            top = offset.top - this.picker.outerHeight();
+        } else {
+            top = offset.top + this.height;
+        }
+
+        top = top - containerOffset.top;
+        left = left - containerOffset.left;
+
+        if(this.container != 'body') top = top + document.body.scrollTop
+
+        this.picker.css({
+            top:    top,
+            left:   left,
+            zIndex: this.zIndex
         });
-        this.zIndex = index_highest + 10;
-      }
-
-      var offset, top, left, containerOffset;
-      if (this.container instanceof $) {
-        containerOffset = this.container.offset();
-      } else {
-        containerOffset = $(this.container).offset();
-      }
-
-      if (this.component) {
-        offset = this.component.offset();
-        left = offset.left;
-        if (this.pickerPosition === 'bottom-left' || this.pickerPosition === 'top-left') {
-          left += this.component.outerWidth() - this.picker.outerWidth();
-        }
-      } else {
-        offset = this.element.offset();
-        left = offset.left;
-        if (this.pickerPosition === 'bottom-left' || this.pickerPosition === 'top-left') {
-          left += this.element.outerWidth() - this.picker.outerWidth();
-        }
-      }
-
-      var bodyWidth = document.body.clientWidth || window.innerWidth;
-      if (left + 220 > bodyWidth) {
-        left = bodyWidth - 220;
-      }
-
-      if (this.pickerPosition === 'top-left' || this.pickerPosition === 'top-right') {
-        top = offset.top - this.picker.outerHeight();
-      } else {
-        top = offset.top + this.height;
-      }
-
-      top = top - containerOffset.top+70;
-      left = left - containerOffset.left;
-
-      this.picker.css({
-        top:    top,
-        left:   left,
-        zIndex: this.zIndex
-      });
     },
 
     hour_minute: "^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]",
