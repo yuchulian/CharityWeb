@@ -1,14 +1,21 @@
 package com.jlqr.controller.data;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 
+import com.jfinal.kit.PropKit;
 import com.jlqr.common.ControllerUtil;
 import com.jlqr.common.model.EmployInfo;
+import com.jlqr.common.model.LoginInfo;
+import com.jlqr.common.model.RoleInfo;
 import com.jlqr.service.EmployInfoService;
+import com.jlqr.service.LoginInfoService;
 
 public class EmployInfoData extends ControllerUtil {
 	
 	private EmployInfoService employInfoService = new EmployInfoService();
+	private LoginInfoService loginInfoService = new LoginInfoService();
 	
 	public void employInfoPaginate() {
 		try {
@@ -18,7 +25,35 @@ public class EmployInfoData extends ControllerUtil {
 			e.printStackTrace();
 		}
 	}
-	
+	//开通账号
+	public void employOpenAccount(){
+		Integer id = getParaToInt("id");
+		HashMap<String, String> returnMap = new HashMap<String, String>();
+		LoginInfo employLoginInfo = new LoginInfo();
+		try {
+			EmployInfo employInfo = employInfoService.findEmployInfoById(id);
+			if(employInfo==null){
+				returnMap.put("content","开通失败");
+			}else{
+				employLoginInfo.setLoginName(employInfo.getEmployName());
+				String initPassword = PropKit.get("initPassword");
+				employLoginInfo.setLoginPwd(initPassword);
+				employLoginInfo.setCreateTime(new Date());
+				//保存信息
+				boolean state = loginInfoService.LoginInfoSave(employLoginInfo);
+				if(state){
+					returnMap.put("content","开通成功");
+				}else{
+					returnMap.put("content","开通失败");
+				}
+			}
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		renderJson(returnMap);
+	}	
 	public void employInfoList() {
 		HashMap returnMap = new HashMap();
 		try {

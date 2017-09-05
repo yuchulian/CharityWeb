@@ -90,6 +90,21 @@
 						}
 					}
 				}
+			},
+			"employOpenAccount" : {
+				button : {
+					"submit" : {
+						name : "确定",
+						className : "btn-primary",
+						click : function(dataMap) {
+							util.call("/employInfoData/employOpenAccount", { "id" : dataMap["id"] + "" }, function(returnMsg) {
+								util.refreshPage(dataMap);
+								util.closeModal(dataMap);
+								util.alert(returnMsg["content"]);
+							});
+						}
+					}
+				}
 			}
 		}
 	},
@@ -99,7 +114,8 @@
 			employInfoList = data.list,
 			search = data["search"],
 			employInfoUpdate = data["employInfoUpdate"],
-			employInfoDelete = data["employInfoDelete"];
+			employInfoDelete = data["employInfoDelete"],
+			employOpenAccount = data["employOpenAccount"];
 		for (var i = 0; i < employInfoList.length; i++) {
 			obj = employInfoList[i];
 			console.log(obj);
@@ -111,6 +127,7 @@
 			tableHTML.push('	<td>');
 			tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',employInfoUpdate,'\', {id : ',obj.id,', title: \'员工修改\'});">修改</a>');
 			tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',employInfoDelete,'\', {id : ',obj.id,', pageHtml: \'确定要删除【',obj.employ_name,'】吗？\'});">删除</a>');
+			tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',employOpenAccount,'\', {id : ',obj.id,', pageHtml: \'确定要为【',obj.employ_name,'】开通账号吗？\'});">开通账号</a>');
 			tableHTML.push('	</td>');
 			tableHTML.push('</tr>');
 		}
