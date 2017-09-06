@@ -1,0 +1,73 @@
+<style type="text/css">
+	    .table tr th {text-align: center;}
+	    .table tr td input {text-align: center;}
+</style>
+<form id="employViewForm" class="form-horizontal ">
+	<input type="hidden"  name="loginInfo.id" value="#(loginInfo.id)"/>
+		<table class="table table-bordered table-striped table-hover" >
+		<tr>
+			<th >姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名</th>
+			<td>
+				<input type="text" class="form-control"
+				name="loginInfo.login_name" value="#(loginInfo.login_name)"
+				/>
+	    	</td>
+			<th>密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码</th>
+			<td>
+				<input type="text" class="form-control"
+				name="loginInfo.login_pwd"
+				value="#(loginInfo.login_pwd)"  />
+			</td>
+			<td rowspan="3" style="width: 120px;height: 150px">
+				<div >
+					<img alt="" src="/img/1.jpg" style="width: 120px;height: 150px">
+				</div>
+			</td>
+		  </tr>		 
+		  <tr>
+			<th>账号状态</th>
+			<td>
+				<input type="text" class="form-control"
+				name="loginInfo.login_state"
+				value="#(loginInfo.login_state)" />
+			</td>
+			<th >部门Id</th>
+			<td>
+				<input type="text" class="form-control"
+				name="loginInfo.department_id" value="#(loginInfo.department_id)"
+				/>
+	    	</td>
+		   </tr>
+		 	<tr>
+			
+			<th>角色Id</th>
+			<td>
+				<input type="text" class="form-control"
+				name="loginInfo.login_pwd"
+				value="#(loginInfo.login_pwd)" />
+			</td>
+			<th >开通时间</th>
+			<td>
+				<input type="text" class="form-control"
+				name="loginInfo.create_time" value="#(loginInfo.create_time)"
+				disabled="disabled"
+				/>
+	    	</td>
+		 </tr>		
+	</table>
+</form>
+<script type="text/javascript">
+	$("#employViewForm").validationEngine({
+		showOneMessage : true,
+		promptPosition : "topLeft"
+	});
+	$(".form_datetime").datetimepicker({
+		language : 'zh-CN',
+		minView : 'month',
+		format : 'yyyy-mm-dd',
+		autoclose : true,
+		startView : 2,
+		showMeridian : 1,
+		pickerPosition : "bottom-left"
+	});
+</script>

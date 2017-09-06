@@ -3,6 +3,7 @@ package com.jlqr.controller.data;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 import com.jfinal.kit.PropKit;
 import com.jlqr.common.ControllerUtil;
@@ -39,6 +40,9 @@ public class EmployInfoData extends ControllerUtil {
 				String initPassword = PropKit.get("initPassword");
 				employLoginInfo.setLoginPwd(initPassword);
 				employLoginInfo.setCreateTime(new Date());
+				employLoginInfo.setId(employInfo.getId());
+				employLoginInfo.setLoginImg(employInfo.getEmployImg());
+				//进行判断账户是不是已经开通
 				//保存信息
 				boolean state = loginInfoService.LoginInfoSave(employLoginInfo);
 				if(state){
@@ -53,7 +57,35 @@ public class EmployInfoData extends ControllerUtil {
 			e.printStackTrace();
 		}
 		renderJson(returnMap);
-	}	
+	}
+	//编辑员工账号信息
+	public void employViewEdit(){
+		String id = getPara("id");
+		System.out.println(id);
+		LoginInfo loginInfo = new LoginInfo();
+		List<LoginInfo> findLoginInfo = loginInfoService.findLoginInfoById(Integer.parseInt(id));
+		if(findLoginInfo!=null&&findLoginInfo.size()>0){
+			loginInfo = findLoginInfo.get(0);
+		}
+		setAttr("loginInfo", loginInfo);
+	}
+	//进行保存登录信息
+	public void employViewSave(){
+		HashMap<String,String> returnMsg = new HashMap<String, String>();
+		LoginInfo model = getModel(LoginInfo.class,"loginInfo");
+		EmployInfo employInfo = new EmployInfo();
+		try {
+			loginInfoService.updateLoginInfo(model);
+			employInfo = employInfoService.findEmployInfoById(model.getId());
+			employInfo.setEmployName(model.getLoginName());
+			employInfoService.employInfoSave(employInfo);
+			returnMsg.put("content", "编辑成功");
+		} catch (Exception e) {
+			// TODO: handle exception
+			returnMsg.put("content", "编辑失败");
+		}
+		renderJson(returnMsg);
+	}
 	public void employInfoList() {
 		HashMap returnMap = new HashMap();
 		try {

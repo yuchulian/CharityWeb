@@ -12,10 +12,12 @@ import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 import com.jfinal.plugin.druid.DruidPlugin;
 import com.jfinal.template.Engine;
+import com.jlqr.common.model.EmployView;
 import com.jlqr.common.model._MappingKit;
 import com.jlqr.controller.data.BlogController;
 import com.jlqr.controller.data.DictionaryData;
 import com.jlqr.controller.data.EmployInfoData;
+import com.jlqr.controller.data.EmployViewData;
 import com.jlqr.controller.data.PowerInfoData;
 import com.jlqr.controller.page.DictionaryPage;
 import com.jlqr.controller.page.EmployInfoPage;
@@ -94,6 +96,7 @@ public class MainConfig extends JFinalConfig {
 		
 		// 所有映射在 MappingKit 中自动化搞定
 		_MappingKit.mapping(arp);
+		arp.addMapping("employ_view","id",EmployView.class);
 		me.add(arp);
 	}
 	
