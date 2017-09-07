@@ -108,9 +108,11 @@ public class EmployInfoData extends ControllerUtil {
 	
 	public void employInfoSave() {
 		HashMap returnMsg = new HashMap();
+		EmployInfo EmployInfo = getSessionAttr("employInfo");
+		LoginInfo loginInfo = getSessionAttr("loginInfo");
 		try {
 			EmployInfo employInfo = getModel(EmployInfo.class, "employInfo");
-			employInfoService.employInfoSave(employInfo);
+			employInfoService.employInfoSave(employInfo,EmployInfo,loginInfo);
 			returnMsg.put("content", "保存成功");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -122,7 +124,6 @@ public class EmployInfoData extends ControllerUtil {
 	public void employInfoDelete() {
 		HashMap returnMsg = new HashMap();
 		try {
-			System.out.println("输出:"+getParaToInt("id"));
 			employInfoService.deleteEmployInfoById(getParaToInt("id"));
 			returnMsg.put("content", "删除成功");
 		} catch (Exception e) {

@@ -7,6 +7,7 @@ import com.jfinal.plugin.activerecord.Page;
 import com.jlqr.common.ServiceUtil;
 import com.jlqr.common.model.EmployInfo;
 import com.jlqr.common.model.EmployView;
+import com.jlqr.common.model.LoginInfo;
 
 public class EmployInfoService extends ServiceUtil {
 	public Page<EmployView> employInfoPaginate(Controller controller) throws Exception {
@@ -33,8 +34,34 @@ public class EmployInfoService extends ServiceUtil {
 			employInfo.update();
 		}
 	}
+	
+	public void employInfoSave(EmployInfo employInfo,EmployInfo sessionEmployInfo,LoginInfo sessionLoginInfo) throws Exception {
+		String idPath = "";	
+		if(null == employInfo.getId()) {
+			int id = getMaxColumn(EmployInfo.class, "id") + 1;
+			if(id==1){
+				id = id+1;
+			}
+			if(sessionEmployInfo==null){
+				idPath = ","+ sessionLoginInfo.getId()+","+id+",";
+			}else{
+				idPath = sessionEmployInfo.getEmployIdPath()+id+",";
+			}
+			employInfo.setId(id);
+			employInfo.setEmployIdPath(idPath);
+			employInfo.save();
+		} else {
+			employInfo.update();
+		}
+	}
+	
 	public void deleteEmployInfoById(Integer employInfoId) throws Exception {
 		EmployInfo.dao.deleteById(employInfoId);
+		//进行查询用户是不是已经开通权限,要是开通权限进行删除权限
+		List<LoginInfo> findLoginInfolist = LoginInfo.dao.find("select * from login_info where id = ?",employInfoId);
+		if(findLoginInfolist!=null&&findLoginInfolist.size()>0){
+			LoginInfo.dao.deleteById(findLoginInfolist.get(0).getId());
+		}
 		/*EmployInfo employInfo = this.findEmployInfoById(employInfoId);
 		if(null != employInfo) {
 			Db.update("delete from power_info where power_id_path like '"+employInfo.getPowerIdPath()+"%'");
