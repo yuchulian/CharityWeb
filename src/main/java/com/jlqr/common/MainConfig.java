@@ -17,12 +17,13 @@ import com.jlqr.common.model._MappingKit;
 import com.jlqr.controller.data.BlogController;
 import com.jlqr.controller.data.DictionaryData;
 import com.jlqr.controller.data.EmployInfoData;
-import com.jlqr.controller.data.EmployViewData;
 import com.jlqr.controller.data.PowerInfoData;
+import com.jlqr.controller.data.ProjectInfoData;
 import com.jlqr.controller.data.RoleInfoData;
 import com.jlqr.controller.page.DictionaryPage;
 import com.jlqr.controller.page.EmployInfoPage;
 import com.jlqr.controller.page.PowerInfoPage;
+import com.jlqr.controller.page.ProjectInfoPage;
 import com.jlqr.controller.page.RoleInfoPage;
 import com.jlqr.index.IndexController;
 import com.jlqr.interceptor.ServaceInterceptor;
@@ -67,17 +68,19 @@ public class MainConfig extends JFinalConfig {
 	 * 配置路由
 	 */
 	public void configRoute(Routes me) {
-		me.setBaseViewPath("/WEB-INF");
-		me.add("/", IndexController.class, "/page/index");	// 第三个参数为该Controller的视图存放路径
-		me.add("/blog", BlogController.class, "/page/blog");			// 第三个参数省略时默认与第一个参数值相同，在此即为 "/blog"
-		me.add("/powerInfoPage", PowerInfoPage.class, "/page/powerInfo");
-		me.add("/powerInfoData", PowerInfoData.class, "/page/powerInfo");
-		me.add("/dictionaryPage", DictionaryPage.class, "/page/dictionary");
-		me.add("/dictionaryData", DictionaryData.class, "/page/dictionary");
-		me.add("/employInfoPage", EmployInfoPage.class, "/page/employInfo");
-		me.add("/employInfoData", EmployInfoData.class, "/page/employInfo");
-		me.add("/roleInfoPage", RoleInfoPage.class, "/page/roleInfo");
-		me.add("/roleInfoData", RoleInfoData.class, "/page/roleInfo");
+		me.setBaseViewPath("/WEB-INF/page");
+		me.add("/", IndexController.class, "/index");	// 第三个参数为该Controller的视图存放路径
+		me.add("/blog", BlogController.class, "/blog");			// 第三个参数省略时默认与第一个参数值相同，在此即为 "/blog"
+		me.add("/powerInfoPage", PowerInfoPage.class, "/powerInfo");
+		me.add("/powerInfoData", PowerInfoData.class, "/powerInfo");
+		me.add("/dictionaryPage", DictionaryPage.class, "/dictionary");
+		me.add("/dictionaryData", DictionaryData.class, "/dictionary");
+		me.add("/employInfoPage", EmployInfoPage.class, "/employInfo");
+		me.add("/employInfoData", EmployInfoData.class, "/employInfo");
+		me.add("/roleInfoPage", RoleInfoPage.class, "/roleInfo");
+		me.add("/roleInfoData", RoleInfoData.class, "/roleInfo");
+		me.add("/projectInfoPage", ProjectInfoPage.class, "/projectInfo");
+		me.add("/projectInfoData", ProjectInfoData.class, "/projectInfo");
 	}
 	
 	public void configEngine(Engine me) {

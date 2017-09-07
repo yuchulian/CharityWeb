@@ -24,7 +24,7 @@ public class IndexController extends Controller {
 		if(null == loginInfo) {
 			if(null == getSessionAttr("isClearSession")) {
 				setSessionAttr("isClearSession", true);
-			} else if(getSessionAttr("isClearSession")) {
+			} else if((boolean) getSessionAttr("isClearSession")) {
 				clearSession();
 			}
 		} else {

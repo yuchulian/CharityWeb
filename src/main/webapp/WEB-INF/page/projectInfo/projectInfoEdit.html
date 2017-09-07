@@ -1,0 +1,40 @@
+<form class="form-horizontal" id="powerInfoForm">
+	<input type="hidden" name="powerInfo.id" value="#(powerInfo.id)" />
+	
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span class="red">*</span>权限名称</label>
+		<div class="col-sm-10">
+			<input type="text" class="form-control validate[required]" name="powerInfo.power_name" value="#(powerInfo.power_name)" placeholder="请输入权限名称"/>
+		</div>
+	</div>
+	
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span class="red">*</span>权限图标</label>
+		<div class="col-sm-10">
+			<input type="text" class="form-control validate[required]" name="powerInfo.power_ico" value="#(powerInfo.power_ico)" placeholder="请输入权限图标"/>
+		</div>
+	</div>
+	
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span class="red">*</span>权限路径</label>
+		<div class="col-sm-10">
+			<input type="text" class="form-control validate[required]" name="powerInfo.power_url" value="#(powerInfo.power_url)" placeholder="请输入权限路径"/>
+		</div>
+	</div>
+	
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span class="red">*</span>权限状态</label>
+		<div class="col-sm-10">
+			<div class="form-control">
+				<label> <input type="radio" name="powerInfo.power_state" value="1" #(0 != powerInfo.power_state ? "checked='checked'" : "")/>&nbsp;显示 </label>
+				<label style="margin-left: 15px;"> <input type="radio" name="powerInfo.power_state" value="0" #(0 == powerInfo.power_state ? "checked='checked'" : "")/>&nbsp;隐藏 </label>
+			</div>
+		</div>
+	</div>
+</form>
+<script type="text/javascript">
+	$("#powerInfoForm").validationEngine({
+		showOneMessage: true,
+		promptPosition: "topLeft"
+	});
+</script>
