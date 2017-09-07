@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.lang.StringUtils;
 
 import com.jfinal.core.Controller;
+import com.jlqr.common.model.EmployInfo;
 import com.jlqr.common.model.LoginInfo;
 
 /**
@@ -38,6 +39,7 @@ public class IndexController extends Controller {
 		String redirectPage = "/", returnMsg = "";
 		String loginName = StringUtils.trim(getPara("loginName")), loginPwd = StringUtils.trim(getPara("loginPwd")), rememberPwd = StringUtils.trim(getPara("rememberPwd"));
 		LoginInfo loginInfo = null;
+		EmployInfo employInfo = null;
 		
 		if(!StringUtils.equals("admin", loginName)) {
 			//md5加密
@@ -51,6 +53,7 @@ public class IndexController extends Controller {
 			loginInfo = LoginInfo.dao.findFirst("select * from login_info where login_name = ? and login_pwd = ?", loginName, loginPwd);
 			if(null != loginInfo) {
 				redirectPage = "/home";
+				employInfo = EmployInfo.dao.findById(loginInfo.getId());
 			} else {
 				returnMsg = "用户名或密码错误";
 			}
@@ -58,6 +61,7 @@ public class IndexController extends Controller {
 		
 		setSessionAttr("returnMsg", returnMsg);
 		setSessionAttr("loginInfo", loginInfo);
+		setSessionAttr("employInfo", employInfo);
 		removeSessionAttr("isClearSession");
 		redirect(redirectPage);
 	}
