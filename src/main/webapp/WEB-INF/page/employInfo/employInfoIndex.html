@@ -58,7 +58,7 @@
 				},
 				pageUrl : "/employInfoPage/employInfoEdit",
 				title : "员工修改",
-				width : 794,
+				width : 900,
 				button : {
 					"submit" : {
 						name : "确定",
@@ -105,6 +105,27 @@
 						}
 					}
 				}
+			},
+			"employEditAccount" : {
+				pageUrl : "/employInfoData/employViewEdit",
+				title : "编辑账号",
+				width : 794,
+				button : {
+					"submit" : {
+						name : "确定",
+						className : "btn-primary",
+						click : function(dataMap) {
+							if ($('#employViewForm').validationEngine('validate')) {
+								var loginInfo = util.getModal(dataMap);
+								util.call("/employInfoData/employViewSave", loginInfo, function(returnMsg) {
+									util.refreshPage(dataMap);
+									util.closeModal(dataMap);
+									util.alert(returnMsg["content"]);
+								});
+							}
+						}
+					}
+				}
 			}
 		}
 	},
@@ -115,7 +136,9 @@
 			search = data["search"],
 			employInfoUpdate = data["employInfoUpdate"],
 			employInfoDelete = data["employInfoDelete"],
-			employOpenAccount = data["employOpenAccount"];
+			employOpenAccount = data["employOpenAccount"],
+			employEditAccount = data["employEditAccount"];
+			console.log(employInfoList);
 		for (var i = 0; i < employInfoList.length; i++) {
 			obj = employInfoList[i];
 			console.log(obj);
@@ -127,11 +150,16 @@
 			tableHTML.push('	<td>');
 			tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',employInfoUpdate,'\', {id : ',obj.id,', title: \'员工修改\'});">修改</a>');
 			tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',employInfoDelete,'\', {id : ',obj.id,', pageHtml: \'确定要删除【',obj.employ_name,'】吗？\'});">删除</a>');
-			tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',employOpenAccount,'\', {id : ',obj.id,', pageHtml: \'确定要为【',obj.employ_name,'】开通账号吗？\'});">开通账号</a>');
+			if(obj.login_name==null){
+				tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',employOpenAccount,'\', {id : ',obj.id,', pageHtml: \'确定要为【',obj.employ_name,'】开通账号吗？\'});">开通账号</a>');
+			}else{
+				tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',employEditAccount,'\', {id : ',obj.id,', title: \'编辑账号\'});">编辑账号</a>');
+			}
 			tableHTML.push('	</td>');
 			tableHTML.push('</tr>');
 		}
 		$("#employInfoTable tbody").html(tableHTML.join(""));
 	});
+		
 </script>
 #end

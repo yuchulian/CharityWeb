@@ -2,7 +2,7 @@
 	    .table tr th {text-align: center;}
 	    .table tr td input {text-align: center;}
 </style>
-<form class="form-horizontal ">
+<form id="employInfoForm" class="form-horizontal ">
 	<input type="hidden"  name="employInfo.id" value="#(employInfo.id)"/>
 		<table class="table table-bordered table-striped table-hover" >
 		<tr>
@@ -159,7 +159,7 @@
 		<tr>
 			<th>获得的证书</th>
 			<td colspan="5">
-				<textarea cols="100" rows="10" name="employInfo.employ_diploma">#(employInfo.employ_diploma)</textarea>
+				<textarea class="validate[required]" cols="100" rows="10" name="employInfo.employ_diploma">#(employInfo.employ_diploma)</textarea>
 			</td>
 		</tr>
 	</table>
