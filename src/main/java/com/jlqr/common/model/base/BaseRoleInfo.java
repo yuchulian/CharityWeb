@@ -45,13 +45,13 @@ public abstract class BaseRoleInfo<M extends BaseRoleInfo<M>> extends Model<M> i
 		return getStr("power_path");
 	}
 
-	public M setRoleIdPath(java.lang.String roleIdPath) {
-		set("role_id_path", roleIdPath);
+	public M setRoleGrade(java.lang.Integer roleGrade) {
+		set("role_grade", roleGrade);
 		return (M)this;
 	}
 
-	public java.lang.String getRoleIdPath() {
-		return getStr("role_id_path");
+	public java.lang.Integer getRoleGrade() {
+		return getInt("role_grade");
 	}
 
 	public M setIsAdmin(java.lang.Integer isAdmin) {

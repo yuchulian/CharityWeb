@@ -21,6 +21,7 @@ public class _MappingKit {
 		arp.addMapping("employ_info", "id", EmployInfo.class);
 		arp.addMapping("login_info", "id", LoginInfo.class);
 		arp.addMapping("power_info", "id", PowerInfo.class);
+		arp.addMapping("project_info", "id", ProjectInfo.class);
 		arp.addMapping("role_info", "id", RoleInfo.class);
 	}
 }
