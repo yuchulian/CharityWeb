@@ -5,16 +5,19 @@ import org.apache.commons.lang.StringUtils;
 import com.jlqr.common.ControllerUtil;
 import com.jlqr.common.model.EmployInfo;
 import com.jlqr.common.model.RoleInfo;
+import com.jlqr.interceptor.NewService;
 import com.jlqr.service.RoleInfoService;
 
 public class RoleInfoPage extends ControllerUtil {
-	RoleInfoService roleService = new RoleInfoService();
+	
+	@NewService("RoleInfoService")
+	private RoleInfoService roleService;
 	
 	public void index() {
-		render("RoleIndex.html");
+		render("roleInfoIndex.html");
 	}
 	
-	public void RoleEdit() {
+	public void roleInfoEdit() {
 		RoleInfo roleInfo = new RoleInfo();
 		try {
 			if(StringUtils.isNotBlank(getPara("id"))) {

@@ -1,0 +1,111 @@
+#@layout()
+#define main()
+
+<div class="row">
+	<div class="col-md-12">
+		<div class="panel panel-visible">
+			<div class="panel-body pn">
+				<div id="datatable2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+					<div class="dt-panelmenu clearfix">
+						<button type="button" class="btn btn-primary btn-gradient dark" id="roleInfoAdd">角色添加</button>
+					</div>
+					<table class="table table-striped table-hover dataTable no-footer" id="roleInfoTable">
+						<thead>
+							<tr>
+								<th class="sorting_disabled">&nbsp;</th>
+								<th class="sorting_asc">角色名称</th>
+								<th class="sorting">角色备注</th>
+								<th class="sorting">是否管理员</th>
+								<th class="sorting_disabled width200">操作</th>
+							</tr>
+						</thead>
+						<tbody> </tbody>
+					</table>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	util.initPage("/roleInfoData/roleInfoPaginate", {
+		paginate : {
+            paginateId : "#roleInfoPaginate",
+            pageNumber : 1,
+            pageSize : 10
+        },
+		sort : {
+			"id" : "asc"
+		},
+		modal : {
+			"roleInfoUpdate" : {
+				bind: {
+					"#roleInfoAdd": {
+						title: "角色添加"
+					}
+				},
+				pageUrl : "/roleInfoPage/roleInfoEdit",
+				title : "角色修改",
+				button : {
+					"submit" : {
+						name : "确定",
+						className : "btn-primary",
+						click : function(dataMap) {
+							if($('#roleInfoForm').validationEngine('validate')) {
+								var roleInfo = util.getModal(dataMap);
+								util.call("/roleInfoData/roleInfoSave", roleInfo, function(returnMsg) {
+									util.refreshPage(dataMap);
+									util.closeModal(dataMap);
+									util.alert(returnMsg["content"]);
+								});
+							}
+						}
+					}
+				}
+			},
+			"roleInfoDelete" : {
+				button : {
+					"submit" : {
+						name : "确定",
+						className : "btn-primary",
+						click : function(dataMap) {
+							util.call("/roleInfoData/roleInfoDelete", {
+								"id": dataMap["id"]+""
+							}, function(returnMsg) {
+								util.refreshPage(dataMap);
+								util.closeModal(dataMap);
+								util.alert(returnMsg["content"]);
+							});
+						}
+					}
+				}
+			}
+		}
+	}, function(data) {
+		var tableHTML = [], obj = {},
+			roleInfoUpdate = data["roleInfoUpdate"],
+			roleInfoDelete = data["roleInfoDelete"],
+			roleInfoList = data["list"].list;
+		console.log(data);
+
+		for(var i=0; i<roleInfoList.length; i++) {
+			obj = roleInfoList[i];
+			if (obj.is_admin){
+				obj.is_admin = "是";
+			} else {
+				obj.is_admin = "否";
+			}
+			tableHTML.push('<tr>');
+			tableHTML.push('	<td>',(i+1),'</td>');
+			tableHTML.push('	<td>',obj.role_name,'</td>');
+			tableHTML.push('	<td>',obj.role_remark,'</td>');
+			tableHTML.push('	<td>',obj.is_admin,'</td>');
+			tableHTML.push('	<td><a href="javascript:void(0);" onclick="util.execute(\'',roleInfoDelete,'\', {id : ',obj.id,', pageHtml : \'确定要删除【',obj.role_remark,'】吗？\'});">删除</a>');
+			tableHTML.push('	<a href="javascript:void(0);" onclick="util.execute(\'',roleInfoUpdate,'\', {id : ',obj.id,', title: \'角色修改\'});">修改</a></td>');
+			tableHTML.push('</tr>');
+		}
+		$("#roleInfoTable tbody").html(tableHTML.join(""));
+	});
+</script>
+#end
