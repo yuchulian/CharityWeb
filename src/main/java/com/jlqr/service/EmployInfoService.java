@@ -35,17 +35,19 @@ public class EmployInfoService extends ServiceUtil {
 		}
 	}
 	
-	public void employInfoSave(EmployInfo employInfo,EmployInfo sessionEmployInfo,LoginInfo sessionLoginInfo) throws Exception {
+	public void employInfoSave(EmployInfo employInfo,Controller controller) throws Exception {
 		String idPath = "";	
+		EmployInfo session_employInfo = controller.getSessionAttr("employInfo");
+		LoginInfo session_loginInfo = controller.getSessionAttr("loginInfo");
 		if(null == employInfo.getId()) {
 			int id = getMaxColumn(EmployInfo.class, "id") + 1;
 			if(id==1){
 				id = id+1;
 			}
-			if(sessionEmployInfo==null){
-				idPath = ","+ sessionLoginInfo.getId()+","+id+",";
+			if(session_employInfo==null){
+				idPath = ","+ session_loginInfo.getId()+","+id+",";
 			}else{
-				idPath = sessionEmployInfo.getEmployIdPath()+id+",";
+				idPath = session_employInfo.getEmployIdPath()+id+",";
 			}
 			employInfo.setId(id);
 			employInfo.setEmployIdPath(idPath);

@@ -108,11 +108,9 @@ public class EmployInfoData extends ControllerUtil {
 	
 	public void employInfoSave() {
 		HashMap returnMsg = new HashMap();
-		EmployInfo EmployInfo = getSessionAttr("employInfo");
-		LoginInfo loginInfo = getSessionAttr("loginInfo");
 		try {
 			EmployInfo employInfo = getModel(EmployInfo.class, "employInfo");
-			employInfoService.employInfoSave(employInfo,EmployInfo,loginInfo);
+			employInfoService.employInfoSave(employInfo,this);
 			returnMsg.put("content", "保存成功");
 		} catch (Exception e) {
 			e.printStackTrace();
