@@ -19,10 +19,13 @@ import com.jlqr.controller.data.DictionaryData;
 import com.jlqr.controller.data.EmployInfoData;
 import com.jlqr.controller.data.EmployViewData;
 import com.jlqr.controller.data.PowerInfoData;
+import com.jlqr.controller.data.RoleInfoData;
 import com.jlqr.controller.page.DictionaryPage;
 import com.jlqr.controller.page.EmployInfoPage;
 import com.jlqr.controller.page.PowerInfoPage;
+import com.jlqr.controller.page.RoleInfoPage;
 import com.jlqr.index.IndexController;
+import com.jlqr.interceptor.ServaceInterceptor;
 
 /**
  * 本 demo 仅表达最为粗浅的 jfinal 用法，更为有价值的实用的企业级用法
@@ -43,7 +46,7 @@ public class MainConfig extends JFinalConfig {
 		/**
 		 * 特别注意：Eclipse 之下建议的启动方式
 		 */
-		JFinal.start("src/main/webapp", 80, "/", 5);
+		JFinal.start("src/main/webapp", 8080, "/", 5);
 		
 		/**
 		 * 特别注意：IDEA 之下建议的启动方式，仅比 eclipse 之下少了最后一个参数
@@ -73,6 +76,8 @@ public class MainConfig extends JFinalConfig {
 		me.add("/dictionaryData", DictionaryData.class, "/page/dictionary");
 		me.add("/employInfoPage", EmployInfoPage.class, "/page/employInfo");
 		me.add("/employInfoData", EmployInfoData.class, "/page/employInfo");
+		me.add("/roleInfoPage", RoleInfoPage.class, "/page/roleInfo");
+		me.add("/roleInfoData", RoleInfoData.class, "/page/roleInfo");
 	}
 	
 	public void configEngine(Engine me) {
@@ -109,6 +114,7 @@ public class MainConfig extends JFinalConfig {
 	 */
 	public void configInterceptor(Interceptors me) {
 		me.add(new SessionInViewInterceptor());
+		me.add(new ServaceInterceptor());
 	}
 	
 	/**
