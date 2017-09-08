@@ -9,7 +9,7 @@ import com.jfinal.plugin.activerecord.Page;
 import com.jlqr.common.ServiceUtil;
 import com.jlqr.common.model.ProjectInfo;
 
-public class projectInfoService extends ServiceUtil{
+public class ProjectInfoService extends ServiceUtil{
 
 	public Page<ProjectInfo> projectInfopaginate(Controller controller) throws Exception {
 		// TODO Auto-generated method stub

@@ -6,10 +6,10 @@ import com.jlqr.common.ControllerUtil;
 import com.jlqr.common.model.PowerInfo;
 import com.jlqr.common.model.ProjectInfo;
 import com.jlqr.service.PowerInfoService;
-import com.jlqr.service.projectInfoService;
+import com.jlqr.service.ProjectInfoService;
 
 public class ProjectInfoData extends ControllerUtil {
-	projectInfoService projectInfoService = new projectInfoService();
+	ProjectInfoService projectInfoService = new ProjectInfoService();
 	public void projectInfopaginate(){
 		try {
 			renderJson(projectInfoService.projectInfopaginate(this));
