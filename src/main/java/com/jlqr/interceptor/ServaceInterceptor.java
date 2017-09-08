@@ -7,7 +7,7 @@ import com.jfinal.aop.Interceptor;
 import com.jfinal.aop.Invocation;
 import com.jfinal.core.Controller;
 import com.jfinal.kit.PropKit;
-import com.jlqr.common.Log4jUtils;
+import com.jlqr.common.SystemUtil;
 
 public class ServaceInterceptor implements Interceptor {
 	private static HashMap<String, Object> map = new HashMap<>();
@@ -31,9 +31,9 @@ public class ServaceInterceptor implements Interceptor {
 					field.setAccessible(true);
 					field.set(invocation.getController(), service);
 				} catch (ClassNotFoundException e) {
-					Log4jUtils.logger.error("NewService这个注解错误：没有" + servicePackage + "这个类",e);
+					SystemUtil.logger.error("NewService这个注解错误：没有" + servicePackage + "这个类",e);
 				} catch (IllegalArgumentException | IllegalAccessException | InstantiationException e) {
-					Log4jUtils.logger.error("",e);
+					SystemUtil.logger.error("",e);
 				}
 			}
 		}
