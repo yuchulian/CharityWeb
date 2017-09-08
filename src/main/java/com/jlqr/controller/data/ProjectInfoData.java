@@ -4,49 +4,36 @@ import java.util.HashMap;
 
 import com.jlqr.common.ControllerUtil;
 import com.jlqr.common.model.PowerInfo;
+import com.jlqr.common.model.ProjectInfo;
 import com.jlqr.service.PowerInfoService;
+import com.jlqr.service.projectInfoService;
 
 public class ProjectInfoData extends ControllerUtil {
-	
-	private PowerInfoService powerInfoService = new PowerInfoService();
-	
-	public void powerInfoList() {
-		HashMap returnMap = new HashMap();
+	projectInfoService projectInfoService = new projectInfoService();
+	public void projectInfopaginate(){
 		try {
-			String power_pid = powerInfoService.getPara(this, "power_pid", "0");
-			if("0".equals(power_pid)) {
-				returnMap.put("powerInfo", new PowerInfo());
-			} else {
-				PowerInfo powerInfo = powerInfoService.findPowerInfoById(Integer.parseInt(power_pid));
-				if(null == powerInfo)
-					returnMap.put("powerInfo", new PowerInfo());
-				else
-					returnMap.put("powerInfo", powerInfo);
-			}
-			returnMap.put("powerInfoList", powerInfoService.powerInfoList(this));
+			renderJson(projectInfoService.projectInfopaginate(this));
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new RuntimeException();
 		}
-		renderJson(returnMap);
 	}
-	
-	public void powerInfoSave() {
-		HashMap returnMsg = new HashMap();
+	public void projectInfoSave(){
+		ProjectInfo projectInfo = getModel(ProjectInfo.class,"projectInfo");
+		HashMap<String,String> returnMsg = new HashMap<String,String>();
 		try {
-			PowerInfo powerInfo = getModel(PowerInfo.class, "powerInfo");
-			powerInfoService.powerInfoSave(powerInfo);
-			returnMsg.put("content", "保存成功");
+			projectInfoService.projectInfoSave(projectInfo);
+			returnMsg.put("content","保存成功!");
 		} catch (Exception e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
-			returnMsg.put("content", "保存失败");
+			returnMsg.put("content","保存失败");
 		}
 		renderJson(returnMsg);
 	}
-	
-	public void powerInfoDelete() {
+	public void projectInfoDelete() {
 		HashMap returnMsg = new HashMap();
 		try {
-			powerInfoService.deletePowerInfoById(getParaToInt("id"));
+			projectInfoService.deleteProjectInfoById(getParaToInt("id"));
 			returnMsg.put("content", "删除成功");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -54,7 +41,6 @@ public class ProjectInfoData extends ControllerUtil {
 		}
 		renderJson(returnMsg);
 	}
-	
 }
 
 
