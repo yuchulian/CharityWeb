@@ -24,9 +24,12 @@ public class ActivitiTest {
 	 */
 	@Test
 	public void createProcess() {
+//		Deployment deployment = processEngine.getRepositoryService()// 获取流程定义和部署相关的Service
+//				.createDeployment()// 创建部署对象
+//				.addClasspathResource("testProcess.bpmn").addClasspathResource("testProcess.png").name("请假程序").deploy();// 完成部署
 		Deployment deployment = processEngine.getRepositoryService()// 获取流程定义和部署相关的Service
 				.createDeployment()// 创建部署对象
-				.addClasspathResource("testProcess.bpmn").addClasspathResource("testProcess.png").name("请假程序").deploy();// 完成部署
+				.addClasspathResource("ProjectInfoProcess.bpmn").addClasspathResource("ProjectInfoProcess.png").name("请假程序").deploy();// 完成部署
 		System.out.println(deployment.getId());
 		System.out.println(deployment.getName());
 	}
@@ -36,6 +39,7 @@ public class ActivitiTest {
 	 */
 	@Test
 	public void startProcess() {
+//		String processKey = "`project_info`";
 		String processKey = "myProcess";
 		ProcessInstance processInstance = processEngine.getRuntimeService()// 获取流程实例对象
 				.startProcessInstanceByKey(processKey);
@@ -70,7 +74,7 @@ public class ActivitiTest {
 	 */
 	@Test
 	public void completeTask() {
-		String taskId = "20004";
+		String taskId = "2504";
 		processEngine.getTaskService().complete(taskId);
 		System.out.println("完成任务："+taskId);
 	}

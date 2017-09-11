@@ -14,6 +14,7 @@ import com.jfinal.plugin.druid.DruidPlugin;
 import com.jfinal.template.Engine;
 import com.jlqr.common.model.EmployView;
 import com.jlqr.common.model._MappingKit;
+import com.jlqr.controller.data.ActivitiData;
 import com.jlqr.controller.data.BlogController;
 import com.jlqr.controller.data.DictionaryData;
 import com.jlqr.controller.data.EmployInfoData;
@@ -81,6 +82,7 @@ public class MainConfig extends JFinalConfig {
 		me.add("/roleInfoData", RoleInfoData.class, "/roleInfo");
 		me.add("/projectInfoPage", ProjectInfoPage.class, "/projectInfo");
 		me.add("/projectInfoData", ProjectInfoData.class, "/projectInfo");
+		me.add("/activitiData", ActivitiData.class);//用于流程操作
 	}
 	
 	public void configEngine(Engine me) {

@@ -3,7 +3,6 @@ package com.jlqr.controller.page;
 import org.apache.commons.lang.StringUtils;
 
 import com.jlqr.common.ControllerUtil;
-import com.jlqr.common.model.EmployInfo;
 import com.jlqr.common.model.ProjectInfo;
 import com.jlqr.service.PowerInfoService;
 
@@ -25,4 +24,9 @@ public class ProjectInfoPage extends ControllerUtil {
 		}
 		setAttr("projectInfo", projectInfo);
 	}
+	
+	public void projectTask() {
+		render("projectTaskIndex.html");
+	}
+	
 }
