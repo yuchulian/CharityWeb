@@ -9,6 +9,9 @@ import org.apache.commons.lang.StringUtils;
 import com.jfinal.core.Controller;
 import com.jlqr.common.model.EmployInfo;
 import com.jlqr.common.model.LoginInfo;
+import com.jlqr.common.model.RoleInfo;
+import com.jlqr.interceptor.NewService;
+import com.jlqr.service.RoleInfoService;
 
 /**
  * 该Controller只包含登录界面和主菜单
@@ -16,6 +19,9 @@ import com.jlqr.common.model.LoginInfo;
  *
  */
 public class IndexController extends Controller {
+	@NewService("RoleInfoService")
+	private RoleInfoService roleService;
+	
 	/**
 	 * 初始化系统界面
 	 */
@@ -40,6 +46,7 @@ public class IndexController extends Controller {
 		String loginName = StringUtils.trim(getPara("loginName")), loginPwd = StringUtils.trim(getPara("loginPwd")), rememberPwd = StringUtils.trim(getPara("rememberPwd"));
 		LoginInfo loginInfo = null;
 		EmployInfo employInfo = null;
+		RoleInfo roleInfo = null;
 		
 		if(!StringUtils.equals("admin", loginName)) {
 			//md5加密
@@ -54,11 +61,16 @@ public class IndexController extends Controller {
 			if(null != loginInfo) {
 				redirectPage = "/home";
 				employInfo = EmployInfo.dao.findById(loginInfo.getId());
+				
+				//获取该用户的角色权限信息并保存到session上
+				roleInfo = roleService.getPodwerbyroleid(loginInfo.getRoleId());
+				
 			} else {
 				returnMsg = "用户名或密码错误";
 			}
 		}
 		
+		setSessionAttr("roleInfo", roleInfo);
 		setSessionAttr("returnMsg", returnMsg);
 		setSessionAttr("loginInfo", loginInfo);
 		setSessionAttr("employInfo", employInfo);

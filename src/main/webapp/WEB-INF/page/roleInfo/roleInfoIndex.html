@@ -64,6 +64,37 @@
 					}
 				}
 			},
+			"roleInfoPower" : {
+				pageUrl : "/roleInfoPage/roleInfoPower",	
+				title : "选择权限",
+				button : {
+					"submit" : {
+						name : "确定",
+						className : "btn-primary",
+						click : function(dataMap) {
+							if(login.isSuperAdmin || login.roleId != dataMap["id"]) {
+								var treeObj = $.fn.zTree.getZTreeObj("rolePowerTree");
+								var nodeList = treeObj.getCheckedNodes(true), idList = [], nodeObj = {};
+								for(var i=0; i<nodeList.length; i++) {
+									nodeObj = nodeList[i];
+									idList.push(nodeObj.id);
+								}
+								var roleInfo = {
+									"roleInfo.id" : dataMap["id"],
+									"roleInfo.power_path" : ","+idList.join(",")+","
+								};
+								util.call("/roleInfoData/roleInfoPowerSave", roleInfo, function(returnMsg) {
+									util.closeModal(dataMap);
+									util.alert(returnMsg["content"]);
+								});
+							} else {
+								util.closeModal(dataMap);
+								util.alert("无权限修改该角色");
+							}
+						}
+					}
+				}
+			},
 			"roleInfoDelete" : {
 				button : {
 					"submit" : {
@@ -86,8 +117,8 @@
 		var tableHTML = [], obj = {},
 			roleInfoUpdate = data["roleInfoUpdate"],
 			roleInfoDelete = data["roleInfoDelete"],
-			roleInfoList = data["list"].list;
-		console.log(data);
+			roleInfoPower = data["roleInfoPower"],
+			roleInfoList = data["list"];
 
 		for(var i=0; i<roleInfoList.length; i++) {
 			obj = roleInfoList[i];
@@ -101,8 +132,11 @@
 			tableHTML.push('	<td>',obj.role_name,'</td>');
 			tableHTML.push('	<td>',obj.role_remark,'</td>');
 			tableHTML.push('	<td>',obj.is_admin,'</td>');
-			tableHTML.push('	<td><a href="javascript:void(0);" onclick="util.execute(\'',roleInfoDelete,'\', {id : ',obj.id,', pageHtml : \'确定要删除【',obj.role_remark,'】吗？\'});">删除</a>');
-			tableHTML.push('	<a href="javascript:void(0);" onclick="util.execute(\'',roleInfoUpdate,'\', {id : ',obj.id,', title: \'角色修改\'});">修改</a></td>');
+			tableHTML.push('	<td>');
+			tableHTML.push('	<a href="javascript:void(0);" onclick="util.execute(\'',roleInfoDelete,'\', {id : ',obj.id,', pageHtml : \'确定要删除【',obj.role_remark,'】吗？\'});">删除</a>');
+			tableHTML.push('	<a href="javascript:void(0);" onclick="util.execute(\'',roleInfoUpdate,'\', {id : ',obj.id,', title: \'角色修改\'});">修改</a>');
+			tableHTML.push('	<a href="javascript:void(0);" onclick="util.execute(\'',roleInfoPower,'\', {id : ',obj.id,', title: \'选择权限\'});">选择权限</a>');
+			tableHTML.push('</td>');
 			tableHTML.push('</tr>');
 		}
 		$("#roleInfoTable tbody").html(tableHTML.join(""));

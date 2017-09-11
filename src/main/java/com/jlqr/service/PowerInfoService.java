@@ -1,5 +1,6 @@
 package com.jlqr.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.jfinal.core.Controller;
@@ -8,6 +9,7 @@ import com.jfinal.plugin.activerecord.Page;
 import com.jlqr.common.ServiceUtil;
 import com.jlqr.common.model.PowerInfo;
 import com.jlqr.common.model.ProjectInfo;
+import com.sun.org.apache.regexp.internal.recompile;
 
 public class PowerInfoService extends ServiceUtil {
 	public Page<PowerInfo> powerInfoPaginate(Controller controller) throws Exception {
@@ -28,10 +30,10 @@ public class PowerInfoService extends ServiceUtil {
 			powerInfo.setPowerName(powerInfo.getPowerName().replaceAll("\\,", ""));
 			if(null == powerInfo.getId()) {
 				PowerInfo powerInfoMax = powerInfo.dao.findFirst("select max(id) as id from power_info");
-				
+
 				//自增长id
 				powerInfo.setId(getMaxColumn(PowerInfo.class, "id")+1);
-				
+
 				//组装path和pathname
 				if(null != powerInfoParent) {
 					powerInfo.setPowerIdPath(powerInfoParent.getPowerIdPath()+powerInfo.getId()+",");
@@ -40,7 +42,7 @@ public class PowerInfoService extends ServiceUtil {
 					powerInfo.setPowerIdPath(","+powerInfo.getId()+",");
 					powerInfo.setPowerNamePath(","+powerInfo.getPowerName()+",");
 				}
-				
+
 				powerInfo.save();
 			} else {
 				//组装path和pathname
@@ -49,7 +51,7 @@ public class PowerInfoService extends ServiceUtil {
 				} else {
 					powerInfo.setPowerNamePath(","+powerInfo.getPowerName()+",");
 				}
-				
+
 				//修改该pathname的子类
 				PowerInfo powerInfoOld = this.findPowerInfoById(powerInfo.getId());
 				List<PowerInfo> powerInfoList = powerInfo.dao.find("select * from power_info where power_id_path like '"+powerInfoOld.getPowerIdPath()+"%' and power_id_path <> '"+powerInfoOld.getPowerIdPath()+"'");
@@ -57,7 +59,7 @@ public class PowerInfoService extends ServiceUtil {
 					_powerInfo.setPowerNamePath(_powerInfo.getPowerNamePath().replace(powerInfoOld.getPowerNamePath(), powerInfo.getPowerNamePath()));
 					_powerInfo.update();
 				}
-				
+
 				powerInfo.update();
 			}
 		}
@@ -73,7 +75,22 @@ public class PowerInfoService extends ServiceUtil {
 		ProjectInfo projectInfo = ProjectInfo.dao.findById(id);
 		return projectInfo;
 	}
-	
 
-	
+	/**
+	 * 角色管理用到
+	 * @param state
+	 * @return
+	 */
+	public List<PowerInfo> findAllByStateAndIds(int state, String ids, String ...val){
+		String value = "*";
+		if(val.length>0){
+			value = val[0];
+		}
+		
+		if( ids != null && !"".equals(ids.trim())) {
+			return PowerInfo.dao.find("select " + value + " from power_info where power_state = ? and id in(" + ids + ")", state);
+		}
+		return new ArrayList<>();
+	}
+
 }
