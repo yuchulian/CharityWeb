@@ -5,11 +5,15 @@ import java.util.HashMap;
 import com.jlqr.common.ControllerUtil;
 import com.jlqr.common.model.PowerInfo;
 import com.jlqr.common.model.ProjectInfo;
+import com.jlqr.interceptor.NewService;
 import com.jlqr.service.PowerInfoService;
 import com.jlqr.service.ProjectInfoService;
 
 public class ProjectInfoData extends ControllerUtil {
-	ProjectInfoService projectInfoService = new ProjectInfoService();
+
+	@NewService("ProjectInfoService")
+	ProjectInfoService projectInfoService;
+	
 	public void projectInfopaginate(){
 		try {
 			renderJson(projectInfoService.projectInfopaginate(this));

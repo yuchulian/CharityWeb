@@ -3,6 +3,7 @@ package com.jlqr.common;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.task.Task;
 
 import com.jfinal.plugin.activerecord.Record;
@@ -40,6 +41,23 @@ public abstract class ActivitiUtil {
 			recordList.add(record);
 		}
 		return recordList;
+	}
+	
+	public static List<Record> toDeploymentList(List<Deployment> deploymentList) {
+
+		List<Record> recordList = new ArrayList<Record>();
+		Record record = null;
+		for (Deployment deployment : deploymentList) {
+			record = new Record();
+			record.set("gategory", deployment.getCategory());
+			record.set("deploymentTime", deployment.getDeploymentTime());
+			record.set("id", deployment.getId());
+			record.set("name", deployment.getName());
+			record.set("tenantId", deployment.getTenantId());
+			recordList.add(record);
+		}
+		return recordList;
+	
 	}
 	
 }

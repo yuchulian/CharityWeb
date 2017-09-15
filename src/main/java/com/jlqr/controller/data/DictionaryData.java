@@ -4,10 +4,12 @@ import java.util.HashMap;
 
 import com.jlqr.common.ControllerUtil;
 import com.jlqr.common.model.Dictionary;
+import com.jlqr.interceptor.NewService;
 import com.jlqr.service.DictionaryService;
 public class DictionaryData extends ControllerUtil{
 
-	private DictionaryService dictionaryService = new DictionaryService();
+	@NewService("DictionaryService")
+	private DictionaryService dictionaryService;
 	
 	public void dictionaryList() {
 		HashMap returnMap = new HashMap();

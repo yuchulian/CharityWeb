@@ -168,41 +168,17 @@
 
 				<!-- Start: Sidebar Menu -->
 				<ul class="nav sidebar-menu">
-					<li><a href="/home"> <span
-							class="fa fa-envelope-o"></span> <span class="sidebar-title">首页</span>
-							<span class="sidebar-title-tray"> <span class="label label-xs bg-primary">New</span>
-						</span>
-					</a></li>
-					<li>
-						<a href="/powerInfoPage">
-							<span class="fa fa-envelope-o"></span> <span class="sidebar-title">权限管理</span>
-						</a>
-					</li>
-					<li>
-						<a href="/roleInfoPage">
-							<span class="fa fa-envelope-o"></span> <span class="sidebar-title">角色管理</span>
-						</a>
-					</li>
-					<li>
-						<a href="/employInfoPage">
-							<span class="fa fa-envelope-o"></span> <span class="sidebar-title">员工管理</span>
-						</a>
-					</li>
-					<li>
-						<a href="/dictionaryPage">
-							<span class="fa fa-envelope-o"></span> <span class="sidebar-title">字典管理</span>
-						</a>
-					</li>
-					<li>
-						<a href="/projectInfoPage">
-							<span class="fa fa-envelope-o"></span> <span class="sidebar-title">项目报备</span>
-						</a>
-					</li>
-					<li>
-						<a href="/projectInfoPage/projectTask">
-							<span class="fa fa-envelope-o"></span> <span class="sidebar-title">报备任务</span>
-						</a>
-					</li>
+					
+					#if(null != session)
+						#for(powerInfo : session.powerInfoList)
+							<li>
+								<a href="#(powerInfo.power_url)">
+									<span class="#(powerInfo.power_ico)"></span> <span class="sidebar-title">#(powerInfo.power_name)</span>
+									<span class="sidebar-title-tray hidden"> <span class="label label-xs bg-primary">New</span>
+								</a>
+							</li>
+						#end
+					#end
 
 					<li><a class="accordion-toggle" href="#"> <span
 							class="glyphicon glyphicon-bell"></span> <span

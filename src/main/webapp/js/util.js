@@ -1,3 +1,4 @@
+
 /**
  * 集成增删查改，封装一些常用方法
  * @author LiQiRan
@@ -1095,7 +1096,7 @@ Util.prototype = {
 			}
 			util.showLoading();
 			$("#_uploadForm").ajaxSubmit({
-				url : "/Upload",
+				url : "/uploadData",
 				type : "post",
 				enctype : 'multipart/form-data',
 				iframe: true,
@@ -1155,7 +1156,7 @@ Util.prototype = {
 									return;
 								}
 							}
-							util.call("/Upload/ueditor", {
+							util.call("/uploadData/ueditor", {
 								action : "uploadscrawl",
 								isTmep : true,
 								upfile : screenshot_base64

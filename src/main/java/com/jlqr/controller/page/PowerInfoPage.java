@@ -4,11 +4,13 @@ import org.apache.commons.lang.StringUtils;
 
 import com.jlqr.common.ControllerUtil;
 import com.jlqr.common.model.PowerInfo;
+import com.jlqr.interceptor.NewService;
 import com.jlqr.service.PowerInfoService;
 
 public class PowerInfoPage extends ControllerUtil {
-	
-	private PowerInfoService powerInfoService = new PowerInfoService();
+
+	@NewService("PowerInfoService")
+	private PowerInfoService powerInfoService;
 	
 	public void index() {
 		render("powerInfoIndex.html");

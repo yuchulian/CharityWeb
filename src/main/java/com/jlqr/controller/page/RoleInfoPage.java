@@ -17,6 +17,7 @@ public class RoleInfoPage extends ControllerUtil {
 	
 	@NewService("RoleInfoService")
 	private RoleInfoService roleService;
+	
 	@NewService("PowerInfoService")
 	private PowerInfoService powerInfoService;
 	

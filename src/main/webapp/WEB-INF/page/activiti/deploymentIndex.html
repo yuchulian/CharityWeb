@@ -1,0 +1,75 @@
+#@layout()
+#define main()
+
+<div class="row">
+	<div class="col-md-12">
+		<div class="panel panel-visible">
+		
+			<div class="panel-body pn">
+				<div class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+					<div class="dt-panelmenu clearfix">
+						<button type="button" class="btn btn-primary btn-gradient dark" id="deploymentAdd">部署流程</button>
+					</div>
+					<table class="table table-striped table-hover dataTable no-footer" id="deploymentTable">
+						<thead>
+							<tr>
+<!-- 								<th>&nbsp;</th> -->
+								<th class="sorting_asc">流程编号</th>
+								<th class="sorting">流程名称</th>
+								<th class="sorting_disabled">部署时间</th>
+								<th class="sorting_disabled">操作</th>
+							</tr>
+						</thead>
+						<tbody> </tbody>
+					</table>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	deploymentList();
+	function deploymentList() {
+		util.call("/activitiData/deploymentList", {}, function(returnData) {
+			var tableHTML = [], obj = {};
+			for(var i=0; i<returnData.length; i++) {
+				obj = returnData[i];
+				tableHTML.push('<tr>');
+				tableHTML.push('	<td>',obj.id,'</td>');
+				tableHTML.push('	<td><a href="javascript:void(0);" onclick="">',obj.name,'</a></td>');
+				tableHTML.push('	<td>',obj.deploymentTime,'</td>');
+				tableHTML.push('	<td><a href="javascript:void(0);" onclick="">删除</a></td>');
+				tableHTML.push('</tr>');
+			}
+			$("#deploymentTable tbody").html(tableHTML.join(""));
+		});
+	}
+	
+	util.modal({
+		title: "部署流程定义",
+		bind: {
+			"#deploymentAdd": {}
+		},
+		pageUrl : "/activitiPage/deploymentForm",
+		button: {
+			"deploymentSave": {
+				name: "保存",
+				className : "btn-primary",
+				click : function(dataMap) {
+					if($('#deploymentForm').validationEngine('validate')) {
+						var deployment = util.getModal(dataMap);
+						util.call("/activitiData/deploymentSave", deployment, function(returnMsg) {
+							deploymentList();
+							util.closeModal(dataMap);
+							util.alert(returnMsg["content"]);
+						});
+					}
+					util.closeModal(dataMap);
+				}
+			}
+		}
+	});
+</script>
+#end

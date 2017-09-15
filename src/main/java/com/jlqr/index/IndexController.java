@@ -1,6 +1,7 @@
 package com.jlqr.index;
 
 import java.util.Enumeration;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
@@ -9,8 +10,10 @@ import org.apache.commons.lang.StringUtils;
 import com.jfinal.core.Controller;
 import com.jlqr.common.model.EmployInfo;
 import com.jlqr.common.model.LoginInfo;
+import com.jlqr.common.model.PowerInfo;
 import com.jlqr.common.model.RoleInfo;
 import com.jlqr.interceptor.NewService;
+import com.jlqr.service.PowerInfoService;
 import com.jlqr.service.RoleInfoService;
 
 /**
@@ -21,6 +24,9 @@ import com.jlqr.service.RoleInfoService;
 public class IndexController extends Controller {
 	@NewService("RoleInfoService")
 	private RoleInfoService roleService;
+	
+	@NewService("PowerInfoService")
+	private PowerInfoService powerInfoService;
 	
 	/**
 	 * 初始化系统界面
@@ -47,6 +53,7 @@ public class IndexController extends Controller {
 		LoginInfo loginInfo = null;
 		EmployInfo employInfo = null;
 		RoleInfo roleInfo = null;
+		List<PowerInfo> powerInfoList = null;
 		
 		if(!StringUtils.equals("admin", loginName)) {
 			//md5加密
@@ -65,6 +72,12 @@ public class IndexController extends Controller {
 				//获取该用户的角色权限信息并保存到session上
 				roleInfo = roleService.getPodwerbyroleid(loginInfo.getRoleId());
 				
+				try {
+					powerInfoList = powerInfoService.powerInfoList(this);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				
 			} else {
 				returnMsg = "用户名或密码错误";
 			}
@@ -74,6 +87,7 @@ public class IndexController extends Controller {
 		setSessionAttr("returnMsg", returnMsg);
 		setSessionAttr("loginInfo", loginInfo);
 		setSessionAttr("employInfo", employInfo);
+		setSessionAttr("powerInfoList", powerInfoList);
 		removeSessionAttr("isClearSession");
 		redirect(redirectPage);
 	}

@@ -15,12 +15,14 @@ import com.jfinal.template.Engine;
 import com.jlqr.common.model.EmployView;
 import com.jlqr.common.model._MappingKit;
 import com.jlqr.controller.data.ActivitiData;
-import com.jlqr.controller.data.BlogController;
 import com.jlqr.controller.data.DictionaryData;
+import com.jlqr.controller.data.DownloadData;
 import com.jlqr.controller.data.EmployInfoData;
 import com.jlqr.controller.data.PowerInfoData;
 import com.jlqr.controller.data.ProjectInfoData;
 import com.jlqr.controller.data.RoleInfoData;
+import com.jlqr.controller.data.UploadData;
+import com.jlqr.controller.page.ActivitiPage;
 import com.jlqr.controller.page.DictionaryPage;
 import com.jlqr.controller.page.EmployInfoPage;
 import com.jlqr.controller.page.PowerInfoPage;
@@ -71,7 +73,6 @@ public class MainConfig extends JFinalConfig {
 	public void configRoute(Routes me) {
 		me.setBaseViewPath("/WEB-INF/page");
 		me.add("/", IndexController.class, "/index");	// 第三个参数为该Controller的视图存放路径
-		me.add("/blog", BlogController.class, "/blog");			// 第三个参数省略时默认与第一个参数值相同，在此即为 "/blog"
 		me.add("/powerInfoPage", PowerInfoPage.class, "/powerInfo");
 		me.add("/powerInfoData", PowerInfoData.class, "/powerInfo");
 		me.add("/dictionaryPage", DictionaryPage.class, "/dictionary");
@@ -82,12 +83,16 @@ public class MainConfig extends JFinalConfig {
 		me.add("/roleInfoData", RoleInfoData.class, "/roleInfo");
 		me.add("/projectInfoPage", ProjectInfoPage.class, "/projectInfo");
 		me.add("/projectInfoData", ProjectInfoData.class, "/projectInfo");
-		me.add("/activitiData", ActivitiData.class);//用于流程操作
+
+		me.add("/uploadData", UploadData.class);
+		me.add("/downloadData", DownloadData.class);
+		
+		me.add("/activitiPage", ActivitiPage.class, "/activiti");//用于流程操作
+		me.add("/activitiData", ActivitiData.class, "/activiti");//用于流程操作
 	}
 	
 	public void configEngine(Engine me) {
 		me.addSharedFunction("/WEB-INF/page/common/_layout.html");
-		me.addSharedFunction("/WEB-INF/page/common/_paginate.html");
 	}
 	
 	/**

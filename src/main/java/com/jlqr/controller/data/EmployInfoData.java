@@ -1,6 +1,5 @@
 package com.jlqr.controller.data;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -9,14 +8,16 @@ import com.jfinal.kit.PropKit;
 import com.jlqr.common.ControllerUtil;
 import com.jlqr.common.model.EmployInfo;
 import com.jlqr.common.model.LoginInfo;
-import com.jlqr.common.model.RoleInfo;
+import com.jlqr.interceptor.NewService;
 import com.jlqr.service.EmployInfoService;
 import com.jlqr.service.LoginInfoService;
 
 public class EmployInfoData extends ControllerUtil {
-	
-	private EmployInfoService employInfoService = new EmployInfoService();
-	private LoginInfoService loginInfoService = new LoginInfoService();
+
+	@NewService("EmployInfoService")
+	private EmployInfoService employInfoService;
+	@NewService("LoginInfoService")
+	private LoginInfoService loginInfoService;
 	
 	public void employInfoPaginate() {
 		try {
