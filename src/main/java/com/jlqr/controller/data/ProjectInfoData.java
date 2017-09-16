@@ -3,10 +3,8 @@ package com.jlqr.controller.data;
 import java.util.HashMap;
 
 import com.jlqr.common.ControllerUtil;
-import com.jlqr.common.model.PowerInfo;
 import com.jlqr.common.model.ProjectInfo;
 import com.jlqr.interceptor.NewService;
-import com.jlqr.service.PowerInfoService;
 import com.jlqr.service.ProjectInfoService;
 
 public class ProjectInfoData extends ControllerUtil {
@@ -23,21 +21,20 @@ public class ProjectInfoData extends ControllerUtil {
 	}
 	public void projectInfoSave(){
 		ProjectInfo projectInfo = getModel(ProjectInfo.class,"projectInfo");
-		HashMap<String,String> returnMsg = new HashMap<String,String>();
+		HashMap<String,Object> returnMap = getReturnMap();
 		try {
 			projectInfoService.projectInfoSave(projectInfo);
-			returnMsg.put("content","保存成功!");
+			returnMap.put("returnState", "success");
+			returnMap.put("returnMsg", "保存成功");
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-			returnMsg.put("content","保存失败");
 		}
-		renderJson(returnMsg);
+		renderJson(returnMap);
 	}
 	public void projectInfoDelete() {
 		HashMap returnMsg = new HashMap();
 		try {
-			projectInfoService.deleteProjectInfoById(getParaToInt("id"));
+			projectInfoService.deleteProjectInfoById(getPara("id"));
 			returnMsg.put("content", "删除成功");
 		} catch (Exception e) {
 			e.printStackTrace();

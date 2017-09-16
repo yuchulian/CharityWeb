@@ -88,7 +88,7 @@ public class MainConfig extends JFinalConfig {
 		me.add("/downloadData", DownloadData.class);
 		
 		me.add("/activitiPage", ActivitiPage.class, "/activiti");//用于流程操作
-		me.add("/activitiData", ActivitiData.class, "/activiti");//用于流程操作
+		me.add("/activitiData", ActivitiData.class);//用于流程操作, "/activiti"
 	}
 	
 	public void configEngine(Engine me) {

@@ -8,7 +8,7 @@
 			<div class="panel-body pn">
 				<div class="dataTables_wrapper form-inline dt-bootstrap no-footer">
 					<div class="dt-panelmenu clearfix">
-						<button type="button" class="btn btn-primary btn-gradient dark" id="taskAdd">创建任务</button>
+<!-- 						<button type="button" class="btn btn-primary btn-gradient dark" id="taskAdd">创建任务</button> -->
 					</div>
 					<table class="table table-striped table-hover dataTable no-footer" id="taskTable">
 						<thead>
@@ -30,6 +30,18 @@
 </div>
 
 <script type="text/javascript">
+	/* util.call("/activitiData/startProcess", {
+		"processDefinitionId": "project_info",
+		"id": "1"
+	}, function(returnData) {
+		console.info(returnData);
+	}); */
+
+	var formKeyForm = util.modal({
+		title: "任务办理",
+		pageUrl : "/activitiPage/formKeyForm"
+	});
+	
 	taskList();
 	function taskList() {
 		util.call("/activitiData/taskList", {}, function(returnData) {
@@ -38,16 +50,20 @@
 			for(var i=0; i<returnData.length; i++) {
 				obj = returnData[i];
 				tableHTML.push('<tr>');
+				tableHTML.push('	<td>',(i+1),'</td>');
 				tableHTML.push('	<td>',obj.id,'</td>');
 				tableHTML.push('	<td><a href="javascript:void(0);" onclick="">',obj.name,'</a></td>');
-				tableHTML.push('	<td>',obj.taskTime,'</td>');
-				tableHTML.push('	<td><a href="javascript:void(0);" onclick="">删除</a></td>');
+				tableHTML.push('	<td>',obj.createTime,'</td>');
+				tableHTML.push('	<td>');
+				tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',formKeyForm,'\', {taskId : ',obj.id,', processDefinitionId : \'', obj.processDefinitionId ,'\'});">任务办理</a>');
+				tableHTML.push('	</td>');
 				tableHTML.push('</tr>');
 			}
 			$("#taskTable tbody").html(tableHTML.join(""));
 		});
 	}
-	util.modal({
+	
+	/* util.modal({
 		title: "部署流程定义",
 		bind: {
 			"#taskAdd": {}
@@ -64,18 +80,10 @@
 					}, function(returnMap) {
 						console.info(returnMap);
 					});
-					/* if($('#taskForm').validationEngine('validate')) {
-						var task = util.getModal(dataMap);
-						util.call("/activitiData/taskSave", task, function(returnMsg) {
-							taskList();
-							util.closeModal(dataMap);
-							util.alert(returnMsg["content"]);
-						});
-					} */
 					util.closeModal(dataMap);
 				}
 			}
 		}
-	});
+	}); */
 </script>
 #end

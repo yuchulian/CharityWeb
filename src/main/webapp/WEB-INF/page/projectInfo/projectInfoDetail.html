@@ -1,0 +1,63 @@
+<form class="form-horizontal" id="projectInfoDetail">
+	<input type="hidden" name="projectInfo.id" value="#(projectInfo.id)"/>
+	<table class="table table-bordered table-striped table-hover">
+		<tr>
+			<th>项目编号</th>
+			<td>
+				<label> #(projectInfo.project_number) </label>
+			</td>
+			<th>预计投标时间</th>
+			<td>
+				<label> #(projectInfo.project_bid_time) </label>
+			</td>
+		</tr>
+		<tr>
+			<th>收款计划总备注</th>
+			<td>
+				<label> #(projectInfo.project_collection_plan_remark) </label>
+			</td>
+			<th>付款计划总备注</th>
+			<td>
+				<label> #(projectInfo.project_payment_plan_remark) </label>
+			</td>
+		</tr>
+	</table>
+	
+	
+	#if(null != session.activitiMap)
+		#for(comment : session.activitiMap.commentList)
+			<div>
+				批注人：#(comment.userId)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				批注时间：#(comment.time)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				批注内容：#(comment.fullMessage)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			</div>
+			<br/>
+		#end
+	
+		<textarea style="width: 300px; height: 230px;" id="message"></textarea>
+		#for(sequenceFlow : session.activitiMap.sequenceFlowList)
+			<button type="button" class="btn btn-primary btn-gradient dark" onclick="selectSequenceFlow(this);">#(sequenceFlow)</button>
+		#end
+		
+		<script type="text/javascript">
+			function selectSequenceFlow(self) {
+				var sequenceFlow = $.trim($(self).text());
+				if(sequenceFlow == "通过" || sequenceFlow == "不通过") {
+					util.call("/activitiData/taskComplete", {
+						taskId : "#(session.activitiMap.taskId)",
+						id : "#(projectInfo.id)",
+						message : $.trim($("#message").val()),
+						sequenceFlow : sequenceFlow
+					}, function(returnMap) {
+						console.info(returnMap);
+						util.closeModal("#projectInfoDetail");
+						taskList();
+					});
+				} else if(sequenceFlow == "授权他人审核") {
+					
+				}
+			}
+		</script>
+	#end
+	
+</form>

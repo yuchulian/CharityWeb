@@ -8,8 +8,6 @@ import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.jlqr.common.ServiceUtil;
 import com.jlqr.common.model.PowerInfo;
-import com.jlqr.common.model.ProjectInfo;
-import com.sun.org.apache.regexp.internal.recompile;
 
 public class PowerInfoService extends ServiceUtil {
 	public Page<PowerInfo> powerInfoPaginate(Controller controller) throws Exception {
@@ -69,11 +67,6 @@ public class PowerInfoService extends ServiceUtil {
 		if(null != powerInfo) {
 			Db.update("delete from power_info where power_id_path like '"+powerInfo.getPowerIdPath()+"%'");
 		}
-	}
-	public ProjectInfo findEmployInfoById(int id) {
-		// TODO Auto-generated method stub
-		ProjectInfo projectInfo = ProjectInfo.dao.findById(id);
-		return projectInfo;
 	}
 
 	/**

@@ -30,23 +30,6 @@
 </div>
 
 <script type="text/javascript">
-	deploymentList();
-	function deploymentList() {
-		util.call("/activitiData/deploymentList", {}, function(returnData) {
-			var tableHTML = [], obj = {};
-			for(var i=0; i<returnData.length; i++) {
-				obj = returnData[i];
-				tableHTML.push('<tr>');
-				tableHTML.push('	<td>',obj.id,'</td>');
-				tableHTML.push('	<td><a href="javascript:void(0);" onclick="">',obj.name,'</a></td>');
-				tableHTML.push('	<td>',obj.deploymentTime,'</td>');
-				tableHTML.push('	<td><a href="javascript:void(0);" onclick="">删除</a></td>');
-				tableHTML.push('</tr>');
-			}
-			$("#deploymentTable tbody").html(tableHTML.join(""));
-		});
-	}
-	
 	util.modal({
 		title: "部署流程定义",
 		bind: {
@@ -63,13 +46,52 @@
 						util.call("/activitiData/deploymentSave", deployment, function(returnMsg) {
 							deploymentList();
 							util.closeModal(dataMap);
-							util.alert(returnMsg["content"]);
+							util.alert(returnMsg["returnMsg"]);
 						});
 					}
-					util.closeModal(dataMap);
 				}
 			}
 		}
 	});
+	
+	
+	
+	var deploymentDelete = util.modal({
+		title: "部署删除",
+		button: {
+			"deploymentDelete": {
+				name: "确定",
+				className : "btn-primary",
+				click : function(dataMap) {
+					var deploymentId = dataMap["deploymentId"];
+					util.call("/activitiData/deploymentDelete", {deploymentId : deploymentId}, function(returnMsg) {
+						deploymentList();
+						util.closeModal(dataMap);
+						util.alert(returnMsg["returnMsg"]);
+					});
+				}
+			}
+		}
+	});
+	
+	
+
+	deploymentList();
+	function deploymentList() {
+		util.call("/activitiData/deploymentList", {}, function(returnData) {
+			var tableHTML = [], obj = {};
+			for(var i=0; i<returnData.length; i++) {
+				obj = returnData[i];
+				tableHTML.push('<tr>');
+				tableHTML.push('	<td>',obj.id,'</td>');
+				tableHTML.push('	<td><a href="javascript:void(0);" onclick="">',obj.name,'</a></td>');
+				tableHTML.push('	<td>',obj.deploymentTime,'</td>');
+				tableHTML.push('	<td><a href="javascript:void(0);" onclick="util.execute(\'',deploymentDelete,'\', {deploymentId : ',obj.id,', pageHtml : \'确定要删除【',obj.name,'】吗？\'});">删除</a></td>');
+				tableHTML.push('</tr>');
+			}
+			$("#deploymentTable tbody").html(tableHTML.join(""));
+		});
+	}
+	
 </script>
 #end

@@ -3,6 +3,8 @@ package com.jlqr.controller.page;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.activiti.engine.FormService;
 import org.activiti.engine.RepositoryService;
@@ -16,6 +18,7 @@ import org.activiti.engine.task.Comment;
 import org.activiti.engine.task.Task;
 import org.apache.commons.lang3.StringUtils;
 
+import com.jlqr.common.ActivitiUtil;
 import com.jlqr.common.ControllerUtil;
 import com.jlqr.interceptor.NewService;
 import com.jlqr.service.PowerInfoService;
@@ -66,6 +69,9 @@ public class ActivitiPage extends ControllerUtil {
 	 * 任务表单页面
 	 */
 	public void taskForm() {
+		//获取流程定义列表，即任务选项
+//		List<ProcessDefinition> processDefinitionList = repositoryService.createProcessDefinitionQuery().orderByDeploymentId().asc().latestVersion().list();
+//		setAttr("processDefinitionList", ActivitiUtil.toProcessDefinitionList(processDefinitionList));
 //		render("deploymentForm.html");
 	}
 	
@@ -74,16 +80,18 @@ public class ActivitiPage extends ControllerUtil {
 	 */
 	public void formKeyForm() {
 		HashMap<String,Object> activitiMap = getReturnMap();
-		String processDefinitionId = getPara("processDefinitionId"), taskDefinitionKey = getPara("taskId");
-		String taskFormKey = formService.getTaskFormKey(processDefinitionId, taskDefinitionKey);
+		String taskId = getPara("taskId");//processDefinitionId = getPara("processDefinitionId"), 
+//		String taskFormKey = formService.getTaskFormKey(processDefinitionId, taskId);
 		
 		//获取businessKey
-		Task task = taskService.createTaskQuery().taskId(taskDefinitionKey).singleResult();
+		Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+		String taskFormKey = task.getFormKey();
 		String processInstanceId = task.getProcessInstanceId();
 		ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
 		String businessKey = processInstance.getBusinessKey();
 		
 		//获取当前活动对象
+		String processDefinitionId = task.getProcessDefinitionId();
 		ProcessDefinitionEntity processDefinitionEntity = (ProcessDefinitionEntity) repositoryService.getProcessDefinition(processDefinitionId);
 		String activityId = processInstance.getActivityId();
 		ActivityImpl activityImpl = processDefinitionEntity.findActivity(activityId);
@@ -110,8 +118,21 @@ public class ActivitiPage extends ControllerUtil {
 		activitiMap.put("returnMsg", "操作成功");
 
 		activitiMap.put("businessKey", businessKey);
-		activitiMap.put("commentList", commentList);
+		activitiMap.put("taskId", taskId);
+		activitiMap.put("sequenceFlowList", sequenceFlowList);
+		activitiMap.put("commentList", ActivitiUtil.toCommentList(commentList));
 		setSessionAttr("activitiMap", activitiMap);
+		
+		String[] businessKeyArray = businessKey.split("\\,");
+		if(businessKeyArray.length == 2) {
+			Pattern pattern = Pattern.compile("^.+\\?");
+			Matcher matcher = pattern.matcher(taskFormKey);
+			if(matcher.find()) {
+				taskFormKey += "&id="+businessKeyArray[1];
+			} else {
+				taskFormKey += "?id="+businessKeyArray[1];
+			}
+		}
 		redirect(taskFormKey);//页面重定向
 		
 	}

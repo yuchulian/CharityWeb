@@ -11,16 +11,15 @@ import com.jfinal.core.Controller;
  */
 public abstract class ControllerUtil extends Controller {
 
-	private static HashMap<String, Object> _returnMap = new HashMap<String, Object>();
-
 	/**
 	 * 初始化响应的消息
 	 * @return 
 	 */
 	protected static HashMap<String, Object> getReturnMap() {
-		_returnMap.put("returnState", "error");
-		_returnMap.put("returnMsg", "操作失败");
-		return _returnMap;
+		HashMap<String, Object> returnMap = new HashMap<String, Object>();
+		returnMap.put("returnState", "error");
+		returnMap.put("returnMsg", "操作失败");
+		return returnMap;
 	}
 	
 }

@@ -1,8 +1,6 @@
 package com.jlqr.service;
 
-import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Page;
@@ -12,12 +10,10 @@ import com.jlqr.common.model.ProjectInfo;
 public class ProjectInfoService extends ServiceUtil{
 
 	public Page<ProjectInfo> projectInfopaginate(Controller controller) throws Exception {
-		// TODO Auto-generated method stub
 		return this.paginate(ProjectInfo.class,controller);
 	}
 
 	public void projectInfoSave(ProjectInfo projectInfo) throws Exception {
-		// TODO Auto-generated method stub
 		//进行设置更新的时间
 		projectInfo.setProjectUpdateTime(new Date());
 		if(projectInfo.getId()==null){
@@ -30,8 +26,12 @@ public class ProjectInfoService extends ServiceUtil{
 		}
 	}
 
-	public void deleteProjectInfoById(Integer id) {
-		// TODO Auto-generated method stub
+	public void deleteProjectInfoById(String id) {
 		ProjectInfo.dao.deleteById(id);
 	}
+	
+	public ProjectInfo projectInfoById(String id) throws Exception {
+		return ProjectInfo.dao.findById(id);
+	}
+	
 }

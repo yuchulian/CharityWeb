@@ -133,6 +133,11 @@ $(function() {
 
 var login, Login = function() { };
 Login.prototype = {
+	projectState: {
+		1: "草稿",
+		2: "报备",
+		3: "立项"
+	},
 	userId : "用户Id",
 	userName : "用户账号",
 	name : "用户姓名",

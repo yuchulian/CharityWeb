@@ -27,6 +27,7 @@ import org.apache.commons.lang3.StringUtils;
 import com.jfinal.kit.PropKit;
 import com.jlqr.common.ActivitiUtil;
 import com.jlqr.common.ControllerUtil;
+import com.jlqr.common.model.EmployInfo;
 import com.jlqr.common.model.LoginInfo;
 import com.jlqr.interceptor.NewService;
 
@@ -123,7 +124,11 @@ public class ActivitiData extends ControllerUtil {
 	public void startProcess() {
 		HashMap<String, Object> returnMap = getReturnMap();
 		String processDefinitionId = getPara("processDefinitionId"), id = getPara("id");
-		runtimeService.startProcessInstanceById(processDefinitionId, processDefinitionId+","+id);
+		LoginInfo loginInfo = getSessionAttr("loginInfo");
+		
+		Map<String, Object> variables = new HashMap<String, Object>();
+		variables.put("loginId", loginInfo.getId());
+		runtimeService.startProcessInstanceByKey(processDefinitionId, processDefinitionId+","+id, variables);
 		returnMap.put("returnState", "success");
 		returnMap.put("returnMsg", "启动成功");
 		renderJson(returnMap);
@@ -135,27 +140,33 @@ public class ActivitiData extends ControllerUtil {
 	public void taskComplete() {
 		HashMap<String, Object> returnMap = getReturnMap();
 		String taskId = getPara("taskId"), id = getPara("id"), message = getPara("message"), sequenceFlow = getPara("sequenceFlow");
-		LoginInfo loginInfo = getSessionAttr("loginInfo");
+		EmployInfo employInfo = getSessionAttr("employInfo");
 		
 		Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
 		String processInstanceId = task.getProcessInstanceId();
 		
 		//添加批注
-		Authentication.setAuthenticatedUserId(loginInfo.getId().toString());
-		taskService.addComment(taskId, processInstanceId, message);
+		if(StringUtils.isNotBlank(message)) {
+			Authentication.setAuthenticatedUserId(employInfo.getEmployName());
+			taskService.addComment(taskId, processInstanceId, message);
+		}
 
 		//完成任务
 		Map<String, Object> variables = new HashMap<String, Object>();
-		if(StringUtils.equals("确定", sequenceFlow)) {
+		if(!StringUtils.equals("确定", sequenceFlow)) {
+			variables.put("loginId", employInfo.getId());//需要改的…………………………………………………………………………………………………………
 			variables.put("sequenceFlow", sequenceFlow);
 		}
 		taskService.complete(taskId, variables);
 		
 		//判断流程是否结束 需要修改为监听
-		/*ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
+		ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
 		if(null == processInstance) {
 			//将业务表中的状态修改为通过
-		}*/
+		}
+		
+		returnMap.put("returnState", "success");
+		returnMap.put("returnMsg", "任务办理成功");
 		renderJson(returnMap);
 	}
 	

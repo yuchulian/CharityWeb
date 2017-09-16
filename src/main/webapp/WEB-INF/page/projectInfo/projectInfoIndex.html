@@ -5,9 +5,9 @@
 	<div class="col-md-12">
 		<div class="panel panel-visible">
 		
-			<div class="panel-heading">
+			<!-- <div class="panel-heading">
 				<ol class="breadcrumb" id="projectInfo_menu"> </ol>
-			</div>
+			</div> -->
 			<div class="panel-body pn">
 				<div id="datatable2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
 					<div class="dt-panelmenu clearfix">
@@ -22,6 +22,7 @@
 								<th class="sorting_disabled">预计投标时间</th>
 								<th class="sorting">收款计划总备注</th>
 								<th class="sorting">付款计划总备注</th>
+								<th class="sorting">项目状态</th>
 								<th class="sorting_disabled">操作</th>
 							</tr>
 						</thead>
@@ -71,7 +72,7 @@
 						title : "添加报备"
 					}
 				},
-				pageUrl : "/projectInfoPage/ProjectInfoEdit",
+				pageUrl : "/projectInfoPage/projectInfoEdit",
 				title : "报备修改",
 				button : {
 					"submit" : {
@@ -104,6 +105,31 @@
 						}
 					}
 				}
+			},
+			"projectInfoDetail" : {
+				title : "任务详情",
+				pageUrl : "/projectInfoPage/projectInfoDetail"
+			},
+			"startProcess" : {
+				button : {
+					"submit" : {
+						name : "确定",
+						className : "btn-primary",
+						click : function(dataMap) {
+							var projectInfo = {
+								"projectInfo.id" : dataMap["id"],
+								"projectInfo.project_state" : 2
+							};
+							util.call("/projectInfoData/projectInfoSave", projectInfo, function(returnMsg) {
+								util.call("/activitiData/startProcess", { "processDefinitionId" : "project_info", "id" : dataMap["id"] }, function(returnMsg) {
+									util.refreshPage(dataMap);
+									util.closeModal(dataMap);
+									util.alert(returnMsg["content"]);
+								});
+							});
+						}
+					}
+				}
 			}
 		}
 	},
@@ -112,23 +138,32 @@
 		obj = {},
 		projectInfoList = data.list,
 		search = data["search"],
+		projectInfoDetail = data["projectInfoDetail"],
+		startProcess = data["startProcess"],
 		projectInfoUpdate = data["projectInfoUpdate"],
 		projectInfoDelete = data["projectInfoDelete"];
-	for (var i = 0; i < projectInfoList.length; i++) {
-		obj = projectInfoList[i];
-		tableHTML.push('<tr>');
-		tableHTML.push('	<td>', (i + 1), '</td>');
-		tableHTML.push('	<td><a href="javascript:void(0);" onclick="$(\'#projectInfoSearch\').val(', obj.id, ');util.execute(\'', search, '\');">', obj.project_number, '</a></td>');
-		tableHTML.push('	<td>', obj.project_bid_time, '</td>');
-		tableHTML.push('	<td>', obj.project_collection_plan_remark , '</td>');
-		tableHTML.push('	<td>', obj.project_payment_plan_remark , '</td>');
-		tableHTML.push('	<td>');
-		tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',projectInfoUpdate,'\', {id : ',obj.id,', title: \'报备修改\'});">修改</a>');
-		tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',projectInfoDelete,'\', {id : ',obj.id,', pageHtml: \'确定要删除编号为【',obj.project_number,'】的项目报备吗？\'});">删除</a>');
-		tableHTML.push('	</td>');
-		tableHTML.push('</tr>');
-	}
-	$("#projectInfoTable tbody").html(tableHTML.join(""));
+		console.info(projectInfoList);
+		for (var i = 0; i < projectInfoList.length; i++) {
+			obj = projectInfoList[i];
+			tableHTML.push('<tr>');
+			tableHTML.push('	<td>', (i + 1), '</td>');
+			tableHTML.push('	<td>', obj.project_number, '</td>');
+			tableHTML.push('	<td>', obj.project_bid_time, '</td>');
+			tableHTML.push('	<td>', obj.project_collection_plan_remark , '</td>');
+			tableHTML.push('	<td>', obj.project_payment_plan_remark , '</td>');
+			tableHTML.push('	<td>', login.projectState[obj.project_state] , '</td>');
+			tableHTML.push('	<td>');
+// 			if(obj.project_state == 1) {
+				tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',projectInfoUpdate,'\', {id : ',obj.id,', title: \'报备修改\'});">修改</a>');
+				tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',projectInfoDelete,'\', {id : ',obj.id,', pageHtml: \'确定要删除编号为【',obj.project_number,'】的项目报备吗？\'});">删除</a>');
+				tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',startProcess,'\', {id : ',obj.id,', pageHtml: \'确定要启动【',obj.project_number,'】吗？\'});">启动任务</a>');
+// 			} else {
+				tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',projectInfoDetail,'\', {id : ',obj.id,'});">查看任务</a>');
+// 			}
+			tableHTML.push('	</td>');
+			tableHTML.push('</tr>');
+		}
+		$("#projectInfoTable tbody").html(tableHTML.join(""));
 	});
 </script>
 #end
