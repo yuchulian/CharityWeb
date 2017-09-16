@@ -4,11 +4,13 @@ import org.apache.commons.lang.StringUtils;
 
 import com.jlqr.common.ControllerUtil;
 import com.jlqr.common.model.EmployInfo;
+import com.jlqr.interceptor.NewService;
 import com.jlqr.service.EmployInfoService;
 
 public class EmployInfoPage extends ControllerUtil {
-	
-	private EmployInfoService employInfoService = new EmployInfoService();
+
+	@NewService("EmployInfoService")
+	private EmployInfoService employInfoService;
 	
 	public void index() {
 		render("employInfoIndex.html");

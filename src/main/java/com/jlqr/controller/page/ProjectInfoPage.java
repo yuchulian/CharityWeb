@@ -4,11 +4,13 @@ import org.apache.commons.lang.StringUtils;
 
 import com.jlqr.common.ControllerUtil;
 import com.jlqr.common.model.ProjectInfo;
+import com.jlqr.interceptor.NewService;
 import com.jlqr.service.PowerInfoService;
 
 public class ProjectInfoPage extends ControllerUtil {
-	
-	private PowerInfoService powerInfoService = new PowerInfoService();
+
+	@NewService("PowerInfoService")
+	private PowerInfoService powerInfoService;
 	
 	public void index() {
 		render("projectInfoIndex.html");
@@ -23,10 +25,6 @@ public class ProjectInfoPage extends ControllerUtil {
 			e.printStackTrace();
 		}
 		setAttr("projectInfo", projectInfo);
-	}
-	
-	public void projectTask() {
-		render("projectTaskIndex.html");
 	}
 	
 }

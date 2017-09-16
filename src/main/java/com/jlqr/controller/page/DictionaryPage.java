@@ -4,10 +4,12 @@ import org.apache.commons.lang.StringUtils;
 
 import com.jlqr.common.ControllerUtil;
 import com.jlqr.common.model.Dictionary;
+import com.jlqr.interceptor.NewService;
 import com.jlqr.service.DictionaryService;
 public class DictionaryPage extends ControllerUtil{
 
-	private DictionaryService dictionaryService = new DictionaryService();
+	@NewService("DictionaryService")
+	private DictionaryService dictionaryService;
 	
 	public void index() {
 		render("dictionaryIndex.html");

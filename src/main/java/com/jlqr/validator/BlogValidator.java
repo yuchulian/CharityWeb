@@ -2,7 +2,6 @@ package com.jlqr.validator;
 
 import com.jfinal.core.Controller;
 import com.jfinal.validate.Validator;
-import com.jlqr.common.model.Blog;
 
 /**
  * 本 demo 仅表达最为粗浅的 jfinal 用法，更为有价值的实用的企业级用法
@@ -18,7 +17,7 @@ public class BlogValidator extends Validator {
 	}
 	
 	protected void handleError(Controller controller) {
-		controller.keepModel(Blog.class);
+//		controller.keepModel(Blog.class);
 		
 		String actionKey = getActionKey();
 		if (actionKey.equals("/blog/save"))

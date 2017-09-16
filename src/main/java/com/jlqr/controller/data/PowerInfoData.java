@@ -4,11 +4,13 @@ import java.util.HashMap;
 
 import com.jlqr.common.ControllerUtil;
 import com.jlqr.common.model.PowerInfo;
+import com.jlqr.interceptor.NewService;
 import com.jlqr.service.PowerInfoService;
 
 public class PowerInfoData extends ControllerUtil {
-	
-	private PowerInfoService powerInfoService = new PowerInfoService();
+
+	@NewService("PowerInfoService")
+	private PowerInfoService powerInfoService;
 	
 	public void powerInfoList() {
 		HashMap returnMap = new HashMap();
