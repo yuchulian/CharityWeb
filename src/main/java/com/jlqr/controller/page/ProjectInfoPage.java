@@ -3,6 +3,7 @@ package com.jlqr.controller.page;
 import org.apache.commons.lang.StringUtils;
 
 import com.jlqr.common.ControllerUtil;
+import com.jlqr.common.model.EmployView;
 import com.jlqr.common.model.ProjectInfo;
 import com.jlqr.interceptor.NewService;
 import com.jlqr.service.ProjectInfoService;
@@ -13,6 +14,7 @@ public class ProjectInfoPage extends ControllerUtil {
 	private ProjectInfoService projectInfoService;
 	
 	public void index() {
+		EmployView employView = getSessionAttr("employView");
 		render("projectInfoIndex.html");
 	}
 	

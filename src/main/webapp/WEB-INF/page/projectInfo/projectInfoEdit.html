@@ -9,7 +9,7 @@
 }
 </style>
 <form id="projectInfoForm">
-	<div class="container" id="projectInfoForm">
+	<div class="container">
 		<input type="hidden" name="projectInfo.id" value="#(projectInfo.id)">
 		<table id="projectTable" style="width: 1000px;" border="1px"
 			cellspacing="0px" cellpadding="0px">
@@ -21,13 +21,11 @@
 					<label>#(project_update_time)</label>
 				</div>
 			</tr>
-			<tr style="">
+			<tr>
 				<th style="width: 200px;">项目编号</th>
 				<td style="width: 1150px;" colspan="6">
 					<div>
-						<input contenteditable="true" class="form-control"
-							placeholder="请输入项目编号" name="projectInfo.project_number"
-							value="#(projectInfo.project_number)" />
+						<input class="form-control" placeholder="请输入项目编号" name="projectInfo.project_number" type="text" value="#(projectInfo.project_number)" id="project_number"/>
 					</div>
 				</td>
 				<th style="width: 200px;">填表时间</th>
