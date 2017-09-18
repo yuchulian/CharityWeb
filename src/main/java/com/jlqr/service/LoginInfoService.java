@@ -1,25 +1,28 @@
 package com.jlqr.service;
 
-import java.util.List;
+import java.util.Date;
 
-import com.jfinal.plugin.activerecord.tx.TxConfig;
 import com.jlqr.common.ServiceUtil;
 import com.jlqr.common.model.LoginInfo;
 
 public class LoginInfoService extends ServiceUtil{
-	public boolean LoginInfoSave(LoginInfo loginInfo){
-		if(loginInfo!=null){
-			//进行保存账号
-			return loginInfo.save();
+	
+	public void LoginInfoSave(LoginInfo loginInfo, Integer id) throws Exception{
+		if(null != id) {
+			loginInfo.setId(id);
+			loginInfo.setCreateTime(new Date());
+			loginInfo.save();
+		} else {
+			loginInfo.update();
 		}
-		return false;
 	}
-	public List<LoginInfo> findLoginInfoById(int id){
-		List<LoginInfo> findLoginInfo = LoginInfo.dao.find("select * from login_info where id =?",id);
-		return findLoginInfo;
+	
+	public LoginInfo findLoginInfoById(Integer id) throws Exception{
+		return LoginInfo.dao.findById(id);
 	}
+	
 	//保存登录信息
-	public void updateLoginInfo(LoginInfo loginInfo){
-		loginInfo.update();
-	}
+//	public void updateLoginInfo(LoginInfo loginInfo){
+//		loginInfo.update();
+//	}
 }

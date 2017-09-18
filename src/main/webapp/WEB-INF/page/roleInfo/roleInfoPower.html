@@ -6,14 +6,14 @@
 <script type="text/javascript">
 	var role_privilege = "#(roleInfo.power_path)";
 	$(function() {
-		var nodeList = [], obj = {}, list = #(powers), nodeObj = {};
+		var nodeList = [], obj = {}, powerInfoList = #(powerInfoList), nodeObj = {};
 		nodeList.push({ id : 0, pId : 0, name : "全选", open : true });
-		for(var i=0; i<list.length; i++) {
-			obj = list[i];
+		for(var i=0; i<powerInfoList.length; i++) {
+			obj = powerInfoList[i];
 			nodeObj = {
 				id : obj.id,
-				pId : obj.pid,
-				name : obj.name,
+				pId : obj.power_pid,
+				name : obj.power_name,
 				open : true
 			};
 			if(role_privilege.indexOf(","+obj.id+",") > -1) {

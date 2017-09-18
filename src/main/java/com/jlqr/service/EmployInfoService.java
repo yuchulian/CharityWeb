@@ -49,7 +49,12 @@ public class EmployInfoService extends ServiceUtil {
 	}
 	
 	public void employInfoSave(EmployInfo employInfo,Controller controller) throws Exception {
-		
+		if(null == employInfo.getId()) {
+			employInfo.setId(getMaxColumn(EmployInfo.class, "id") + 1);
+			employInfo.save();
+		} else {
+			employInfo.update();
+		}
 		/**
 		 * 重做
 			String idPath = "";
@@ -96,7 +101,7 @@ public class EmployInfoService extends ServiceUtil {
 		
 		String departmentId = employView.getDepartmentId();
 		if(StringUtils.isNotBlank(departmentId) && departmentId.length() > 2) {
-			String[] departmentIdList = departmentId.substring(1, departmentId.length() - 2).split("\\,");
+			String[] departmentIdList = departmentId.substring(1, departmentId.length() - 1).split("\\,");
 			for (String _departmentId : departmentIdList) {
 				departmentIdCondition.add("department_id like '%,"+_departmentId+",%'");
 			}
@@ -105,11 +110,11 @@ public class EmployInfoService extends ServiceUtil {
 		String roleId = employView.getRoleId();
 		if(StringUtils.isNotBlank(roleId) && roleId.length() > 2) {
 			//获取当前登录人最高等级的角色
-			RoleInfo loginRoleInfo = RoleInfo.dao.findFirst("select * from role_info where id in ? order by role_grade desc", roleId.substring(1, roleId.length() - 2));
+			RoleInfo loginRoleInfo = RoleInfo.dao.findFirst("select * from role_info where id in ("+roleId.substring(1, roleId.length() - 1)+") order by role_grade desc");
 			
 			if(null != loginRoleInfo) {
 				//获取我的上一级的角色
-				List<RoleInfo> leaderRoleInfoList = RoleInfo.dao.find("select * from role_info where role_grade = ?", loginRoleInfo.getRoleGrade() + 1);
+				List<RoleInfo> leaderRoleInfoList = RoleInfo.dao.find("select * from role_info where role_grade = ?", loginRoleInfo.getRoleGrade() - 1);
 				if(null != leaderRoleInfoList) {
 					//获取我的上一级领导
 					for (RoleInfo roleInfo : leaderRoleInfoList) {
@@ -120,7 +125,7 @@ public class EmployInfoService extends ServiceUtil {
 		}
 		
 		if(roleIdCondition.size() > 0 && departmentIdCondition.size() > 0) {
-			employViewList = EmployView.dao.find("select * from employ_view where ? and ?", StringUtils.join(roleIdCondition, " or "), StringUtils.join(departmentIdCondition, " or "));
+			employViewList = EmployView.dao.find("select * from employ_view where ("+StringUtils.join(roleIdCondition, " or ")+") and ("+StringUtils.join(departmentIdCondition, " or ")+")");
 			if(null == employViewList)
 				employViewList = new ArrayList<EmployView>();
 		}

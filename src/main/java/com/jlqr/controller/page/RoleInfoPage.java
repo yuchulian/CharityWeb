@@ -6,7 +6,6 @@ import org.apache.commons.lang.StringUtils;
 
 import com.jfinal.kit.JsonKit;
 import com.jlqr.common.ControllerUtil;
-import com.jlqr.common.model.LoginInfo;
 import com.jlqr.common.model.PowerInfo;
 import com.jlqr.common.model.RoleInfo;
 import com.jlqr.interceptor.NewService;
@@ -38,6 +37,26 @@ public class RoleInfoPage extends ControllerUtil {
 	}
 	
 	public void roleInfoPower() {
+//		List<PowerInfo> powerInfoList = null;
+//		try {
+//			powerInfoList = powerInfoService.powerInfoList(this);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		
+//		if(null == powerInfoList)
+//			powerInfoList = new ArrayList<PowerInfo>();
+		RoleInfo roleInfo = new RoleInfo();
+		try {
+			roleInfo = roleService.findRoleById(getParaToInt("id"));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		List<PowerInfo> powerInfoList = getSessionAttr("powerInfoList");
+		setAttr("powerInfoList", JsonKit.toJson(powerInfoList));
+		setAttr("roleInfo", roleInfo);
+		
 		/**
 		 * 重做
 			RoleInfo roleInfo = new RoleInfo();

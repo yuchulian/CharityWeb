@@ -83,7 +83,7 @@
 								util.call("/employInfoData/employInfoSave", employInfo, function(returnMsg) {
 									util.refreshPage(dataMap);
 									util.closeModal(dataMap);
-									util.alert(returnMsg["content"]);
+									util.alert(returnMsg["returnMsg"]);
 								});
 // 							}
 						}
@@ -99,13 +99,13 @@
 							util.call("/employInfoData/employInfoDelete", { "id" : dataMap["id"] + "" }, function(returnMsg) {
 								util.refreshPage(dataMap);
 								util.closeModal(dataMap);
-								util.alert(returnMsg["content"]);
+								util.alert(returnMsg["returnMsg"]);
 							});
 						}
 					}
 				}
 			},
-			"employOpenAccount" : {
+			/* "employOpenAccount" : {
 				button : {
 					"submit" : {
 						name : "确定",
@@ -114,15 +114,14 @@
 							util.call("/employInfoData/employOpenAccount", { "id" : dataMap["id"] + "" }, function(returnMsg) {
 								util.refreshPage(dataMap);
 								util.closeModal(dataMap);
-								util.alert(returnMsg["content"]);
+								util.alert(returnMsg["returnMsg"]);
 							});
 						}
 					}
 				}
-			},
+			}, */
 			"employEditAccount" : {
-				pageUrl : "/employInfoData/employViewEdit",
-				title : "编辑账号",
+				pageUrl : "/employInfoPage/employViewEdit",
 				width : 794,
 				button : {
 					"submit" : {
@@ -131,10 +130,39 @@
 						click : function(dataMap) {
 							if ($('#employViewForm').validationEngine('validate')) {
 								var loginInfo = util.getModal(dataMap);
+								
+								//角色
+								var treeObj = $.fn.zTree.getZTreeObj("roleInfoTree");
+								var nodeList = treeObj.getCheckedNodes(true), idList = [], nodeObj = {};
+								for(var i=0; i<nodeList.length; i++) {
+									nodeObj = nodeList[i];
+									idList.push(nodeObj.id);
+								}
+								loginInfo["loginInfo.role_id"] = ","+idList.join(",")+",";
+								if(!idList.length) {
+									util.alert("最少勾选一个角色");
+									return;
+								}
+								
+								//部门
+								treeObj = $.fn.zTree.getZTreeObj("departmentTree");
+								nodeList = treeObj.getCheckedNodes(true),
+								idList = [];
+								nodeObj = {};
+								for(var i=0; i<nodeList.length; i++) {
+									nodeObj = nodeList[i];
+									idList.push(nodeObj.id);
+								}
+								if(!idList.length) {
+									util.alert("最少勾选一个部门");
+									return;
+								}
+								loginInfo["loginInfo.department_id"] = ","+idList.join(",")+",";
+								
 								util.call("/employInfoData/employViewSave", loginInfo, function(returnMsg) {
 									util.refreshPage(dataMap);
 									util.closeModal(dataMap);
-									util.alert(returnMsg["content"]);
+									util.alert(returnMsg["returnMsg"]);
 								});
 							}
 						}
@@ -152,10 +180,8 @@
 			employInfoDelete = data["employInfoDelete"],
 			employOpenAccount = data["employOpenAccount"],
 			employEditAccount = data["employEditAccount"];
-			console.log(employInfoList);
 		for (var i = 0; i < employInfoList.length; i++) {
 			obj = employInfoList[i];
-			console.log(obj);
 			tableHTML.push('<tr>');
 			tableHTML.push('	<td>', (i + 1), '</td>');
 			tableHTML.push('	<td><a href="javascript:void(0);" onclick="$(\'#powerPidSearch\').val(', obj.id, ');util.execute(\'', search, '\');">', obj.employ_name, '</a></td>');
@@ -165,9 +191,9 @@
 			tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',employInfoUpdate,'\', {id : ',obj.id,', title: \'员工修改\'});">修改</a>');
 			tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',employInfoDelete,'\', {id : ',obj.id,', pageHtml: \'确定要删除【',obj.employ_name,'】吗？\'});">删除</a>');
 			if(obj.login_name==null){
-				tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',employOpenAccount,'\', {id : ',obj.id,', pageHtml: \'确定要为【',obj.employ_name,'】开通账号吗？\'});">开通账号</a>');
+				tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',employEditAccount,'\', {\'employInfo.id\' : ',obj.id,', \'employInfo.employ_name\' : \'',obj.employ_name,'\', title: \'开通账号\'});">开通账号</a>');
 			}else{
-				tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',employEditAccount,'\', {id : ',obj.id,', title: \'编辑账号\'});">编辑账号</a>');
+				tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',employEditAccount,'\', {\'employInfo.id\' : ',obj.id,', title: \'设置账号\'});">设置账号</a>');
 			}
 			tableHTML.push('	</td>');
 			tableHTML.push('</tr>');

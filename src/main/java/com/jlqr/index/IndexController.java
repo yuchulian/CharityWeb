@@ -1,19 +1,24 @@
 package com.jlqr.index;
 
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 
 import com.jfinal.core.Controller;
 import com.jlqr.common.model.EmployView;
 import com.jlqr.common.model.LoginInfo;
 import com.jlqr.common.model.PowerInfo;
+import com.jlqr.common.model.RoleInfo;
 import com.jlqr.interceptor.NewService;
 import com.jlqr.service.EmployInfoService;
 import com.jlqr.service.PowerInfoService;
+import com.jlqr.service.RoleInfoService;
 
 /**
  * 该Controller只包含登录界面和主菜单
@@ -26,6 +31,9 @@ public class IndexController extends Controller {
 	
 	@NewService("EmployInfoService")
 	private EmployInfoService employInfoService;
+	
+	@NewService("RoleInfoService")
+	private RoleInfoService roleInfoService;
 	
 	@NewService("PowerInfoService")
 	private PowerInfoService powerInfoService;
@@ -58,28 +66,40 @@ public class IndexController extends Controller {
 //		RoleInfo roleInfo = null;
 		List<PowerInfo> powerInfoList = null;
 		
-		if(!StringUtils.equals("admin", loginName)) {
-			//md5加密
-		}
-		
 		if(StringUtils.isBlank(loginName)) {
 			returnMsg = "账号必填";
 		} else if (StringUtils.isBlank(loginPwd)) {
 			returnMsg = "密码必填";
 		} else {
-			loginInfo = LoginInfo.dao.findFirst("select * from login_info where login_name = ? and login_pwd = ?", loginName, loginPwd);
+			loginInfo = LoginInfo.dao.findFirst("select * from login_info where login_name = ? and login_pwd = ?", loginName, DigestUtils.md5Hex(loginPwd));
 			if(null != loginInfo) {
 				redirectPage = "/home";
 				employView = employInfoService.findEmployViewById(loginInfo.getId());
-//				employInfo = EmployInfo.dao.findById(loginInfo.getId());
 				
-				//获取该用户的角色权限信息并保存到session上
-//				roleInfo = roleService.getPodwerbyroleid(loginInfo.getRoleId());
-				
-				try {
-					powerInfoList = powerInfoService.powerInfoList(this);
-				} catch (Exception e) {
-					e.printStackTrace();
+				String loginRole = employView.getRoleId();
+				if(StringUtils.isNotBlank(loginRole) && loginRole.length() > 2) {
+					try {
+						List<String> powerIdList = new ArrayList<String>();
+						
+						String powerPath = "";
+						List<RoleInfo> roleInfoList = roleInfoService.roleInfoListInId(loginRole.substring(1, loginRole.length()-1));
+						for (RoleInfo roleInfo : roleInfoList) {
+							powerPath += roleInfo.getPowerPath();
+						}
+						
+						String[] _powerIdList = powerPath.split("\\,");
+						HashMap<String, String> powerIdMap = new HashMap<String, String>();
+						for (String _powerId : _powerIdList) {
+							if(StringUtils.isNotBlank(_powerId) && !powerIdMap.containsKey(_powerId)) {
+								powerIdList.add(_powerId);
+								powerIdMap.put(_powerId, _powerId);
+							}
+						}
+						
+						powerInfoList = powerInfoService.findPowerInfoListInId(StringUtils.join(powerIdList, ","));
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
 				
 			} else {

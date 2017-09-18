@@ -25,31 +25,59 @@
 	
 	
 	#if(null != session.activitiMap)
-		#for(comment : session.activitiMap.commentList)
-			<div>
-				批注人：#(comment.userId)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				批注时间：#(comment.time)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				批注内容：#(comment.fullMessage)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			</div>
-			<br/>
-		#end
 	
-		<textarea style="width: 300px; height: 230px;" id="message"></textarea>
-		#for(sequenceFlow : session.activitiMap.sequenceFlowList)
-			<button type="button" class="btn btn-primary btn-gradient dark" onclick="selectSequenceFlow(this);">#(sequenceFlow)</button>
-		#end
+		<div class="form-group">
+			<label class="col-sm-3 control-label">历史批注信息</label>
+			<div class="col-sm-8">
+				#for(comment : session.activitiMap.commentList)
+					<div>
+						批注人：#(comment.userId)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						批注时间：#(comment.time)<br/>
+						批注内容：#(comment.fullMessage)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					</div>
+				#end
+			</div>
+		</div>
+	
+		<div class="form-group">
+			<label class="col-sm-3 control-label">我的批注</label>
+			<div class="col-sm-8">
+				<textarea class="form-control" id="message"></textarea>
+			</div>
+		</div>
+	
+		<div class="form-group">
+			<label class="col-sm-3 control-label"><span class="red">*</span>我的上级</label>
+			<div class="col-sm-8">
+				<select class="form-control" id="assignee">
+					#for(employView : session.activitiMap.employViewList)
+						<option value="#(employView.id)">#(employView.employ_name)</option>
+					#end
+				</select>
+			</div>
+		</div>
+	
+		
+		<div class="form-group">
+			<div class="col-sm-12" style="text-align: center;">
+				#for(sequenceFlow : session.activitiMap.sequenceFlowList)
+					<button type="button" class="btn btn-primary btn-gradient dark" onclick="selectSequenceFlow(this);">#(sequenceFlow)</button>
+				#end
+			</div>
+		</div>
 		
 		<script type="text/javascript">
 			function selectSequenceFlow(self) {
-				var sequenceFlow = $.trim($(self).text());
+				var sequenceFlow = $.trim($(self).text()), assignee = $("#assignee").val();
 				if(sequenceFlow == "通过" || sequenceFlow == "不通过") {
 					util.call("/activitiData/taskComplete", {
 						taskId : "#(session.activitiMap.taskId)",
 						id : "#(projectInfo.id)",
 						message : $.trim($("#message").val()),
-						sequenceFlow : sequenceFlow
+						sequenceFlow : sequenceFlow,
+						assignee : assignee
 					}, function(returnMap) {
-						console.info(returnMap);
+						util.alert(returnMap["returnMsg"]);
 						util.closeModal("#projectInfoDetail");
 						taskList();
 					});

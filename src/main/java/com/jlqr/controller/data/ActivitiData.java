@@ -138,7 +138,7 @@ public class ActivitiData extends ControllerUtil {
 	 */
 	public void taskComplete() {
 		HashMap<String, Object> returnMap = getReturnMap();
-		String taskId = getPara("taskId"), id = getPara("id"), message = getPara("message"), sequenceFlow = getPara("sequenceFlow");
+		String taskId = getPara("taskId"), id = getPara("id"), message = getPara("message"), sequenceFlow = getPara("sequenceFlow"), assignee = getPara("assignee");
 		EmployView employView = getSessionAttr("employView");
 		
 		Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
@@ -150,22 +150,24 @@ public class ActivitiData extends ControllerUtil {
 			taskService.addComment(taskId, processInstanceId, message);
 		}
 
-		//完成任务
-		Map<String, Object> variables = new HashMap<String, Object>();
-		if(!StringUtils.equals("确定", sequenceFlow)) {
-			variables.put("loginId", employView.getId());//需要改的…………………………………………………………………………………………………………
-			variables.put("sequenceFlow", sequenceFlow);
+		if(StringUtils.isNotBlank(assignee)) {
+			//完成任务
+			Map<String, Object> variables = new HashMap<String, Object>();
+			if(!StringUtils.equals("确定", sequenceFlow)) {
+				variables.put("loginId", assignee);
+				variables.put("sequenceFlow", sequenceFlow);
+			}
+			taskService.complete(taskId, variables);
+			
+			//判断流程是否结束 需要修改为监听
+			ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
+			if(null == processInstance) {
+				//将业务表中的状态修改为通过
+			}
+			
+			returnMap.put("returnState", "success");
+			returnMap.put("returnMsg", "任务办理成功");
 		}
-		taskService.complete(taskId, variables);
-		
-		//判断流程是否结束 需要修改为监听
-		ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
-		if(null == processInstance) {
-			//将业务表中的状态修改为通过
-		}
-		
-		returnMap.put("returnState", "success");
-		returnMap.put("returnMsg", "任务办理成功");
 		renderJson(returnMap);
 	}
 	

@@ -1,10 +1,10 @@
 package com.jlqr.controller.data;
 
-import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 
-import com.jfinal.kit.PropKit;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.StringUtils;
+
 import com.jlqr.common.ControllerUtil;
 import com.jlqr.common.model.EmployInfo;
 import com.jlqr.common.model.LoginInfo;
@@ -30,7 +30,7 @@ public class EmployInfoData extends ControllerUtil {
 	}
 	
 	//开通账号
-	public void employOpenAccount(){
+	/*public void employOpenAccount(){
 		Integer id = getParaToInt("id");
 		HashMap<String, String> returnMap = new HashMap<String, String>();
 		LoginInfo employLoginInfo = new LoginInfo();
@@ -60,36 +60,30 @@ public class EmployInfoData extends ControllerUtil {
 			e.printStackTrace();
 		}
 		renderJson(returnMap);
-	}
+	}*/
 	
-	//编辑员工账号信息
-	public void employViewEdit(){
-		String id = getPara("id");
-		System.out.println(id);
-		LoginInfo loginInfo = new LoginInfo();
-		List<LoginInfo> findLoginInfo = loginInfoService.findLoginInfoById(Integer.parseInt(id));
-		if(findLoginInfo!=null&&findLoginInfo.size()>0){
-			loginInfo = findLoginInfo.get(0);
-		}
-		setAttr("loginInfo", loginInfo);
-	}
 	
 	//进行保存登录信息
 	public void employViewSave(){
-		HashMap<String,String> returnMsg = new HashMap<String, String>();
-		LoginInfo model = getModel(LoginInfo.class,"loginInfo");
-		EmployInfo employInfo = new EmployInfo();
-		try {
-			loginInfoService.updateLoginInfo(model);
-			employInfo = employInfoService.findEmployInfoById(model.getId());
-			employInfo.setEmployName(model.getLoginName());
-			employInfoService.employInfoSave(employInfo);
-			returnMsg.put("content", "编辑成功");
-		} catch (Exception e) {
-			// TODO: handle exception
-			returnMsg.put("content", "编辑失败");
+		HashMap<String, Object> returnMap = getReturnMap();
+		
+		LoginInfo loginInfo = getModel(LoginInfo.class,"loginInfo");
+		EmployInfo employInfo = getModel(EmployInfo.class,"employInfo");
+		Integer id = employInfo.getId();
+		if(StringUtils.isNotBlank(loginInfo.getLoginPwd())) {
+			loginInfo.setLoginPwd(DigestUtils.md5Hex(loginInfo.getLoginPwd()));
 		}
-		renderJson(returnMsg);
+		if(null != loginInfo.getId())
+			id = null;
+		try {
+			loginInfoService.LoginInfoSave(loginInfo, id);
+			
+			returnMap.put("returnState", "success");
+			returnMap.put("returnMsg", "保存成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		renderJson(returnMap);
 	}
 	
 	public void employInfoList() {

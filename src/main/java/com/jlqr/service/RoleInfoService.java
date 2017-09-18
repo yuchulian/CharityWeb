@@ -5,10 +5,10 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Page;
 import com.jlqr.common.ServiceUtil;
+import com.jlqr.common.model.EmployView;
 import com.jlqr.common.model.LoginInfo;
 import com.jlqr.common.model.PowerInfo;
 import com.jlqr.common.model.RoleInfo;
@@ -22,6 +22,10 @@ public class RoleInfoService extends ServiceUtil {
 
 	public Page<RoleInfo> roleInfoPaginate(Controller controller) throws Exception {
 		return this.paginate(RoleInfo.class, controller);
+	}
+	
+	public List<RoleInfo> roleInfoListInId(String roleId) throws Exception {
+		return RoleInfo.dao.find("select * from role_info where id in (?)", roleId);
 	}
 
 	public void roleInfoSave(RoleInfo roleInfo) throws Exception {
@@ -75,5 +79,22 @@ public class RoleInfoService extends ServiceUtil {
 		}
 
 		return null;
+	}
+	
+	/**
+	 * 根据当前登录人角色最低等级，获取下一级角色集合
+	 */
+	public List<RoleInfo> roleInfoByGradePlus(EmployView employView) throws Exception {
+		String roleId = employView.getRoleId();
+		if(StringUtils.isNotBlank(roleId) && roleId.length() > 2) {
+			//获取当前登录人最高等级的角色
+			RoleInfo loginRoleInfo = RoleInfo.dao.findFirst("select * from role_info where id in("+roleId.substring(1, roleId.length() - 1)+") order by role_grade asc");
+			
+			if(null != loginRoleInfo) {
+				//获取我的上一级的角色
+				return RoleInfo.dao.find("select * from role_info where role_grade > ?", loginRoleInfo.getRoleGrade());// + 1
+			}
+		}
+		return new ArrayList<RoleInfo>();
 	}
 }

@@ -3,53 +3,63 @@ package com.jlqr.controller.data;
 import java.util.HashMap;
 
 import com.jlqr.common.ControllerUtil;
-import com.jlqr.common.SystemUtil;
-import com.jlqr.common.model.LoginInfo;
 import com.jlqr.common.model.RoleInfo;
 import com.jlqr.interceptor.NewService;
+import com.jlqr.service.PowerInfoService;
 import com.jlqr.service.RoleInfoService;
 
 public class RoleInfoData extends ControllerUtil {
 
 	@NewService("RoleInfoService")
-	private RoleInfoService roleService;
+	private RoleInfoService roleInfoService;
+	
+	@NewService("PowerInfoService")
+	private PowerInfoService powerInfoService;
 	
 	public void roleInfoPaginate() {
 		try {
-			renderJson(roleService.roleInfoPaginate(this));
+			renderJson(roleInfoService.roleInfoPaginate(this));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
 	public void roleInfoSave() {
-		
-		HashMap returnMsg = new HashMap();
+		HashMap<String,Object> returnMap = getReturnMap();
 		try {
 			RoleInfo roleInfo = getModel(RoleInfo.class, "roleInfo");
-			roleService.roleInfoSave(roleInfo);
-			returnMsg.put("content", "保存成功");
+			roleInfoService.roleInfoSave(roleInfo);
+			returnMap.put("returnState", "success");
+			returnMap.put("returnMsg", "保存成功");
 		} catch (Exception e) {
 			e.printStackTrace();
-			returnMsg.put("content", "保存失败");
 		}
-		renderJson(returnMsg);
-		
+		renderJson(returnMap);
 	}
 	
 	public void roleInfoDelete() {
-		HashMap returnMsg = new HashMap();
+		HashMap<String,Object> returnMap = getReturnMap();
 		try {
-			roleService.deleteRoleInfoById(getParaToInt("id"));
-			returnMsg.put("content", "删除成功");
+			roleInfoService.deleteRoleInfoById(getParaToInt("id"));
+			returnMap.put("returnState", "success");
+			returnMap.put("returnMsg", "删除成功");
 		} catch (Exception e) {
 			e.printStackTrace();
-			returnMsg.put("content", "删除失败");
 		}
-		renderJson(returnMsg);
+		renderJson(returnMap);
 	}
 	
 	public void roleInfoPowerSave() {
+		HashMap<String,Object> returnMap = getReturnMap();
+		RoleInfo roleInfo = getModel(RoleInfo.class, "roleInfo");
+		try {
+			roleInfoService.roleInfoSave(roleInfo);
+			returnMap.put("returnState", "success");
+			returnMap.put("returnMsg", "保存成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		renderJson(returnMap);
 		
 		/**
 		 * 重做

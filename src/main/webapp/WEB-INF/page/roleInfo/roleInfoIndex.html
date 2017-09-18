@@ -57,7 +57,7 @@
 								util.call("/roleInfoData/roleInfoSave", roleInfo, function(returnMsg) {
 									util.refreshPage(dataMap);
 									util.closeModal(dataMap);
-									util.alert(returnMsg["content"]);
+									util.alert(returnMsg["returnMsg"]);
 								});
 							}
 						}
@@ -85,7 +85,7 @@
 								};
 								util.call("/roleInfoData/roleInfoPowerSave", roleInfo, function(returnMsg) {
 									util.closeModal(dataMap);
-									util.alert(returnMsg["content"]);
+									util.alert(returnMsg["returnMsg"]);
 								});
 							} else {
 								util.closeModal(dataMap);
@@ -106,7 +106,7 @@
 							}, function(returnMsg) {
 								util.refreshPage(dataMap);
 								util.closeModal(dataMap);
-								util.alert(returnMsg["content"]);
+								util.alert(returnMsg["returnMsg"]);
 							});
 						}
 					}

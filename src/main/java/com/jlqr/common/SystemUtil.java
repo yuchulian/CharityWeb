@@ -9,8 +9,13 @@ import java.util.UUID;
 
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.ProcessEngines;
+import org.apache.commons.lang.StringUtils;
 
 import com.jfinal.log.Log;
+import com.jfinal.plugin.activerecord.Record;
+import com.jlqr.common.model.Dictionary;
+import com.jlqr.common.model.LoginInfo;
+import com.jlqr.common.model.RoleInfo;
 
 public class SystemUtil {
 	
@@ -73,6 +78,50 @@ public class SystemUtil {
         listB.remove("");
         boolean containsAll = listA.containsAll(listB);
 		return containsAll;
+	}
+	
+	/**
+	 * 将字典集合转换为zTree对象
+	 */
+	public static List<Record> toDictionaryList(List<Dictionary> dictionaryList, LoginInfo loginInfo) {
+		List<Record> recordList = new ArrayList<Record>();
+		Record record = null;
+		if(null != dictionaryList) {
+			for (Dictionary dictionary : dictionaryList) {
+				record = new Record();
+				record.set("id", dictionary.getId());
+				record.set("pId", dictionary.getDictionaryPid());
+				record.set("name", dictionary.getDictionaryName());
+				record.set("open", true);
+				if(StringUtils.defaultIfEmpty(loginInfo.getDepartmentId(), "").indexOf(","+dictionary.getId()+",") > -1) {
+					record.set("checked", true);
+				}
+				recordList.add(record);
+			}
+		}
+		return recordList;
+	}
+	
+	/**
+	 * 将集合转换为zTree对象
+	 */
+	public static List<Record> toRoleInfoList(List<RoleInfo> roleInfoList, LoginInfo loginInfo) {
+		List<Record> recordList = new ArrayList<Record>();
+		Record record = null;
+		if(null != roleInfoList) {
+			for (RoleInfo roleInfo : roleInfoList) {
+				record = new Record();
+				record.set("id", roleInfo.getId());
+				record.set("pId", 0);
+				record.set("name", roleInfo.getRoleName());
+				record.set("open", true);
+				if(StringUtils.defaultString(loginInfo.getRoleId(), "").indexOf(","+roleInfo.getId()+",") > -1) {
+					record.set("checked", true);
+				}
+				recordList.add(record);
+			}
+		}
+		return recordList;
 	}
 	
 }

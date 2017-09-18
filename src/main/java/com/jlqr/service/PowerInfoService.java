@@ -10,18 +10,27 @@ import com.jlqr.common.ServiceUtil;
 import com.jlqr.common.model.PowerInfo;
 
 public class PowerInfoService extends ServiceUtil {
+	
 	public Page<PowerInfo> powerInfoPaginate(Controller controller) throws Exception {
 		return this.paginate(PowerInfo.class, controller);
 	}
+	
 	public List<PowerInfo> powerInfoList(Controller controller) throws Exception {
 		return this.list(PowerInfo.class, controller);
 	}
+	
 	public PowerInfo findPowerInfoById(Integer id) throws Exception {
 		return PowerInfo.dao.findById(id);
 	}
+	
 	public List<PowerInfo> findPowerInfoListByPId(Integer power_pid) throws Exception {
 		return PowerInfo.dao.find("select * from power_info where power_pid = "+power_pid);
 	}
+	
+	public List<PowerInfo> findPowerInfoListInId(String powerId) throws Exception {
+		return PowerInfo.dao.find("select * from power_info where id in("+powerId+") order by id asc");
+	}
+	
 	public void powerInfoSave(PowerInfo powerInfo) throws Exception {
 		if(null != powerInfo) {
 			PowerInfo powerInfoParent = this.findPowerInfoById(powerInfo.getPowerPid());
@@ -62,6 +71,7 @@ public class PowerInfoService extends ServiceUtil {
 			}
 		}
 	}
+	
 	public void deletePowerInfoById(Integer powerInfoId) throws Exception {
 		PowerInfo powerInfo = this.findPowerInfoById(powerInfoId);
 		if(null != powerInfo) {
