@@ -8,13 +8,12 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.lang.StringUtils;
 
 import com.jfinal.core.Controller;
-import com.jlqr.common.model.EmployInfo;
+import com.jlqr.common.model.EmployView;
 import com.jlqr.common.model.LoginInfo;
 import com.jlqr.common.model.PowerInfo;
-import com.jlqr.common.model.RoleInfo;
 import com.jlqr.interceptor.NewService;
+import com.jlqr.service.EmployInfoService;
 import com.jlqr.service.PowerInfoService;
-import com.jlqr.service.RoleInfoService;
 
 /**
  * 该Controller只包含登录界面和主菜单
@@ -22,8 +21,11 @@ import com.jlqr.service.RoleInfoService;
  *
  */
 public class IndexController extends Controller {
-	@NewService("RoleInfoService")
-	private RoleInfoService roleService;
+//	@NewService("RoleInfoService")
+//	private RoleInfoService roleService;
+	
+	@NewService("EmployInfoService")
+	private EmployInfoService employInfoService;
 	
 	@NewService("PowerInfoService")
 	private PowerInfoService powerInfoService;
@@ -32,8 +34,8 @@ public class IndexController extends Controller {
 	 * 初始化系统界面
 	 */
 	public void index() {
-		LoginInfo loginInfo = getSessionAttr("loginInfo");
-		if(null == loginInfo) {
+		EmployView employView = getSessionAttr("employView");
+		if(null == employView) {
 			if(null == getSessionAttr("isClearSession")) {
 				setSessionAttr("isClearSession", true);
 			} else if((boolean) getSessionAttr("isClearSession")) {
@@ -51,8 +53,9 @@ public class IndexController extends Controller {
 		String redirectPage = "/", returnMsg = "";
 		String loginName = StringUtils.trim(getPara("loginName")), loginPwd = StringUtils.trim(getPara("loginPwd")), rememberPwd = StringUtils.trim(getPara("rememberPwd"));
 		LoginInfo loginInfo = null;
-		EmployInfo employInfo = null;
-		RoleInfo roleInfo = null;
+		EmployView employView = null;
+//		EmployInfo employInfo = null;
+//		RoleInfo roleInfo = null;
 		List<PowerInfo> powerInfoList = null;
 		
 		if(!StringUtils.equals("admin", loginName)) {
@@ -67,10 +70,11 @@ public class IndexController extends Controller {
 			loginInfo = LoginInfo.dao.findFirst("select * from login_info where login_name = ? and login_pwd = ?", loginName, loginPwd);
 			if(null != loginInfo) {
 				redirectPage = "/home";
-				employInfo = EmployInfo.dao.findById(loginInfo.getId());
+				employView = employInfoService.findEmployViewById(loginInfo.getId());
+//				employInfo = EmployInfo.dao.findById(loginInfo.getId());
 				
 				//获取该用户的角色权限信息并保存到session上
-				roleInfo = roleService.getPodwerbyroleid(loginInfo.getRoleId());
+//				roleInfo = roleService.getPodwerbyroleid(loginInfo.getRoleId());
 				
 				try {
 					powerInfoList = powerInfoService.powerInfoList(this);
@@ -83,10 +87,11 @@ public class IndexController extends Controller {
 			}
 		}
 		
-		setSessionAttr("roleInfo", roleInfo);
+//		setSessionAttr("roleInfo", roleInfo);
+//		setSessionAttr("employInfo", employInfo);
+		setSessionAttr("employView", employView);
 		setSessionAttr("returnMsg", returnMsg);
 		setSessionAttr("loginInfo", loginInfo);
-		setSessionAttr("employInfo", employInfo);
 		setSessionAttr("powerInfoList", powerInfoList);
 		removeSessionAttr("isClearSession");
 		redirect(redirectPage);

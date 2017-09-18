@@ -38,21 +38,24 @@ public class RoleInfoPage extends ControllerUtil {
 	}
 	
 	public void roleInfoPower() {
-		RoleInfo roleInfo = new RoleInfo();
-		try {
-			//获取拥有ip的权限
-			String powerInfoIds = roleService.getPowerInfoIdsByUserRole((LoginInfo)getSessionAttr("loginInfo"),(RoleInfo)getSessionAttr("roleInfo"));
-			List<PowerInfo> powers = powerInfoService.findAllByStateAndIds(1, powerInfoIds, "id,power_pid pid,power_name name");
-			setAttr("powers", JsonKit.toJson(powers));
-
-			if(StringUtils.isNotBlank(getPara("id"))) {
-				roleInfo = roleService.findRoleById(Integer.parseInt(getPara("id")));
+		/**
+		 * 重做
+			RoleInfo roleInfo = new RoleInfo();
+			try {
+				//获取拥有ip的权限
+				String powerInfoIds = roleService.getPowerInfoIdsByUserRole((LoginInfo)getSessionAttr("loginInfo"),(RoleInfo)getSessionAttr("roleInfo"));
+				List<PowerInfo> powers = powerInfoService.findAllByStateAndIds(1, powerInfoIds, "id,power_pid pid,power_name name");
+				setAttr("powers", JsonKit.toJson(powers));
+	
+				if(StringUtils.isNotBlank(getPara("id"))) {
+					roleInfo = roleService.findRoleById(Integer.parseInt(getPara("id")));
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		setAttr("roleInfo", roleInfo);
-		setAttr("roleInfo", roleInfo);
-		render("roleInfoPower.html");
+			setAttr("roleInfo", roleInfo);
+			setAttr("roleInfo", roleInfo);
+			render("roleInfoPower.html");
+		 */
 	}
 }

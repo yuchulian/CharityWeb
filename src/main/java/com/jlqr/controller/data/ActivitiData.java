@@ -27,8 +27,7 @@ import org.apache.commons.lang3.StringUtils;
 import com.jfinal.kit.PropKit;
 import com.jlqr.common.ActivitiUtil;
 import com.jlqr.common.ControllerUtil;
-import com.jlqr.common.model.EmployInfo;
-import com.jlqr.common.model.LoginInfo;
+import com.jlqr.common.model.EmployView;
 import com.jlqr.interceptor.NewService;
 
 public class ActivitiData extends ControllerUtil {
@@ -113,8 +112,8 @@ public class ActivitiData extends ControllerUtil {
 	 * 查询根据当前登录人获取任务
 	 */
 	public void taskList() {
-		LoginInfo loginInfo = getSessionAttr("loginInfo");
-		List<Task> taskList = taskService.createTaskQuery().taskAssignee(loginInfo.getId().toString()).orderByTaskCreateTime().desc().list();
+		EmployView employView = getSessionAttr("employView");
+		List<Task> taskList = taskService.createTaskQuery().taskAssignee(employView.getId().toString()).orderByTaskCreateTime().desc().list();
 		renderJson(ActivitiUtil.toTaskList(taskList));
 	}
 	
@@ -124,10 +123,10 @@ public class ActivitiData extends ControllerUtil {
 	public void startProcess() {
 		HashMap<String, Object> returnMap = getReturnMap();
 		String processDefinitionId = getPara("processDefinitionId"), id = getPara("id");
-		LoginInfo loginInfo = getSessionAttr("loginInfo");
+		EmployView employView = getSessionAttr("employView");
 		
 		Map<String, Object> variables = new HashMap<String, Object>();
-		variables.put("loginId", loginInfo.getId());
+		variables.put("loginId", employView.getId());
 		runtimeService.startProcessInstanceByKey(processDefinitionId, processDefinitionId+","+id, variables);
 		returnMap.put("returnState", "success");
 		returnMap.put("returnMsg", "启动成功");
@@ -140,21 +139,21 @@ public class ActivitiData extends ControllerUtil {
 	public void taskComplete() {
 		HashMap<String, Object> returnMap = getReturnMap();
 		String taskId = getPara("taskId"), id = getPara("id"), message = getPara("message"), sequenceFlow = getPara("sequenceFlow");
-		EmployInfo employInfo = getSessionAttr("employInfo");
+		EmployView employView = getSessionAttr("employView");
 		
 		Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
 		String processInstanceId = task.getProcessInstanceId();
 		
 		//添加批注
 		if(StringUtils.isNotBlank(message)) {
-			Authentication.setAuthenticatedUserId(employInfo.getEmployName());
+			Authentication.setAuthenticatedUserId(employView.getEmployName());
 			taskService.addComment(taskId, processInstanceId, message);
 		}
 
 		//完成任务
 		Map<String, Object> variables = new HashMap<String, Object>();
 		if(!StringUtils.equals("确定", sequenceFlow)) {
-			variables.put("loginId", employInfo.getId());//需要改的…………………………………………………………………………………………………………
+			variables.put("loginId", employView.getId());//需要改的…………………………………………………………………………………………………………
 			variables.put("sequenceFlow", sequenceFlow);
 		}
 		taskService.complete(taskId, variables);

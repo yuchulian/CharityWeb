@@ -1,6 +1,9 @@
 package com.jlqr.service;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
 
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Page;
@@ -8,20 +11,30 @@ import com.jlqr.common.ServiceUtil;
 import com.jlqr.common.model.EmployInfo;
 import com.jlqr.common.model.EmployView;
 import com.jlqr.common.model.LoginInfo;
+import com.jlqr.common.model.RoleInfo;
 
 public class EmployInfoService extends ServiceUtil {
+	
 	public Page<EmployView> employInfoPaginate(Controller controller) throws Exception {
 		return this.paginate(EmployView.class, controller);
 	}
+	
+	public EmployView findEmployViewById(Integer id) {
+		return EmployView.dao.findById(id);
+	}
+	
 	public List<EmployInfo> employInfoList(Controller controller) throws Exception {
 		return this.list(EmployInfo.class, controller);
 	}
+	
 	public EmployInfo findEmployInfoById(Integer id) throws Exception {
 		return EmployInfo.dao.findById(id);
 	}
+	
 	public List<EmployInfo> findEmployInfoListByPId(Integer power_pid) throws Exception {
 		return EmployInfo.dao.find("select * from power_info where power_pid = "+power_pid);
 	}
+	
 	public void employInfoSave(EmployInfo employInfo) throws Exception {
 		if(null == employInfo.getId()) {
 			int id = getMaxColumn(EmployInfo.class, "id") + 1;
@@ -36,25 +49,29 @@ public class EmployInfoService extends ServiceUtil {
 	}
 	
 	public void employInfoSave(EmployInfo employInfo,Controller controller) throws Exception {
-		String idPath = "";	
-		EmployInfo session_employInfo = controller.getSessionAttr("employInfo");
-		LoginInfo session_loginInfo = controller.getSessionAttr("loginInfo");
-		if(null == employInfo.getId()) {
-			int id = getMaxColumn(EmployInfo.class, "id") + 1;
-			if(id==1){
-				id = id+1;
+		
+		/**
+		 * 重做
+			String idPath = "";
+			EmployInfo session_employInfo = controller.getSessionAttr("employInfo");
+			LoginInfo session_loginInfo = controller.getSessionAttr("loginInfo");
+			if(null == employInfo.getId()) {
+				int id = getMaxColumn(EmployInfo.class, "id") + 1;
+				if(id==1){
+					id = id+1;
+				}
+				if(session_employInfo==null){
+					idPath = ","+ session_loginInfo.getId()+","+id+",";
+				}else{
+					idPath = session_employInfo.getEmployIdPath()+id+",";
+				}
+				employInfo.setId(id);
+				employInfo.setEmployIdPath(idPath);
+				employInfo.save();
+			} else {
+				employInfo.update();
 			}
-			if(session_employInfo==null){
-				idPath = ","+ session_loginInfo.getId()+","+id+",";
-			}else{
-				idPath = session_employInfo.getEmployIdPath()+id+",";
-			}
-			employInfo.setId(id);
-			employInfo.setEmployIdPath(idPath);
-			employInfo.save();
-		} else {
-			employInfo.update();
-		}
+		 */
 	}
 	
 	public void deleteEmployInfoById(Integer employInfoId) throws Exception {
@@ -70,6 +87,46 @@ public class EmployInfoService extends ServiceUtil {
 		}*/
 	}
 	
+	/**
+	 * 根据角色等级和部门获取我的上级
+	 */
+	public List<EmployView> findLeaderList(EmployView employView) {
+		List<EmployView> employViewList = new ArrayList<EmployView>();
+		List<String> roleIdCondition = new ArrayList<String>(), departmentIdCondition = new ArrayList<String>();
+		
+		String departmentId = employView.getDepartmentId();
+		if(StringUtils.isNotBlank(departmentId) && departmentId.length() > 2) {
+			String[] departmentIdList = departmentId.substring(1, departmentId.length() - 2).split("\\,");
+			for (String _departmentId : departmentIdList) {
+				departmentIdCondition.add("department_id like '%,"+_departmentId+",%'");
+			}
+		}
+
+		String roleId = employView.getRoleId();
+		if(StringUtils.isNotBlank(roleId) && roleId.length() > 2) {
+			//获取当前登录人最高等级的角色
+			RoleInfo loginRoleInfo = RoleInfo.dao.findFirst("select * from role_info where id in ? order by role_grade desc", roleId.substring(1, roleId.length() - 2));
+			
+			if(null != loginRoleInfo) {
+				//获取我的上一级的角色
+				List<RoleInfo> leaderRoleInfoList = RoleInfo.dao.find("select * from role_info where role_grade = ?", loginRoleInfo.getRoleGrade() + 1);
+				if(null != leaderRoleInfoList) {
+					//获取我的上一级领导
+					for (RoleInfo roleInfo : leaderRoleInfoList) {
+						roleIdCondition.add("role_id like '%,"+roleInfo.getId()+",%'");
+					}
+				}
+			}
+		}
+		
+		if(roleIdCondition.size() > 0 && departmentIdCondition.size() > 0) {
+			employViewList = EmployView.dao.find("select * from employ_view where ? and ?", StringUtils.join(roleIdCondition, " or "), StringUtils.join(departmentIdCondition, " or "));
+			if(null == employViewList)
+				employViewList = new ArrayList<EmployView>();
+		}
+		
+		return employViewList;
+	}
 
 	
 }

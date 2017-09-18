@@ -20,13 +20,18 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.jlqr.common.ActivitiUtil;
 import com.jlqr.common.ControllerUtil;
+import com.jlqr.common.model.EmployView;
 import com.jlqr.interceptor.NewService;
+import com.jlqr.service.EmployInfoService;
 import com.jlqr.service.PowerInfoService;
 
 public class ActivitiPage extends ControllerUtil {
 
 	@NewService("PowerInfoService")
 	private PowerInfoService powerInfoService;
+	
+	@NewService("EmployInfoService")
+	private EmployInfoService employInfoService;
 	
 	@NewService("FormService")
 	private FormService formService;
@@ -114,13 +119,19 @@ public class ActivitiPage extends ControllerUtil {
 		//获取批注列表
 		List<Comment> commentList = taskService.getProcessInstanceComments(processInstanceId);
 		
+		//获取当前登录人的领导
+//		LoginInfo loginInfo = getSessionAttr("loginInfo");
+//		RoleInfo roleInfo = getSessionAttr("roleInfo");
+		EmployView employView = getSessionAttr("employView");
+		List<EmployView> employViewList = employInfoService.findLeaderList(employView);
+		
 		activitiMap.put("returnState", "success");
 		activitiMap.put("returnMsg", "操作成功");
-
 		activitiMap.put("businessKey", businessKey);
 		activitiMap.put("taskId", taskId);
 		activitiMap.put("sequenceFlowList", sequenceFlowList);
 		activitiMap.put("commentList", ActivitiUtil.toCommentList(commentList));
+		activitiMap.put("employViewList", employViewList);
 		setSessionAttr("activitiMap", activitiMap);
 		
 		String[] businessKeyArray = businessKey.split("\\,");

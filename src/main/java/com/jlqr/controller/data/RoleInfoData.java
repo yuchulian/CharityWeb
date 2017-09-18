@@ -50,6 +50,9 @@ public class RoleInfoData extends ControllerUtil {
 	}
 	
 	public void roleInfoPowerSave() {
+		
+		/**
+		 * 重做
 		HashMap returnMsg = new HashMap();
 		try {
 			//获取拥有权限的ip
@@ -71,7 +74,7 @@ public class RoleInfoData extends ControllerUtil {
 			e.printStackTrace();
 			returnMsg.put("content", "保存失败");
 		}
-		renderJson(returnMsg);
+		renderJson(returnMsg);*/
 	}
 	
 }

@@ -78,14 +78,14 @@
 						name : "确定",
 						className : "btn-primary",
 						click : function(dataMap) {
-							if ($('#employInfoForm').validationEngine('validate')) {
+// 							if ($('#employInfoForm').validationEngine('validate')) {
 								var employInfo = util.getModal(dataMap);
 								util.call("/employInfoData/employInfoSave", employInfo, function(returnMsg) {
 									util.refreshPage(dataMap);
 									util.closeModal(dataMap);
 									util.alert(returnMsg["content"]);
 								});
-							}
+// 							}
 						}
 					}
 				}

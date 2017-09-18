@@ -54,22 +54,22 @@ public abstract class BaseLoginInfo<M extends BaseLoginInfo<M>> extends Model<M>
 		return getInt("login_state");
 	}
 
-	public M setDepartmentId(java.lang.Integer departmentId) {
+	public M setDepartmentId(java.lang.String departmentId) {
 		set("department_id", departmentId);
 		return (M)this;
 	}
 
-	public java.lang.Integer getDepartmentId() {
-		return getInt("department_id");
+	public java.lang.String getDepartmentId() {
+		return getStr("department_id");
 	}
 
-	public M setRoleId(java.lang.Integer roleId) {
+	public M setRoleId(java.lang.String roleId) {
 		set("role_id", roleId);
 		return (M)this;
 	}
 
-	public java.lang.Integer getRoleId() {
-		return getInt("role_id");
+	public java.lang.String getRoleId() {
+		return getStr("role_id");
 	}
 
 	public M setCreateTime(java.util.Date createTime) {

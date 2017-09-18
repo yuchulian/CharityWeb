@@ -16,6 +16,7 @@ public class EmployInfoData extends ControllerUtil {
 
 	@NewService("EmployInfoService")
 	private EmployInfoService employInfoService;
+	
 	@NewService("LoginInfoService")
 	private LoginInfoService loginInfoService;
 	
@@ -27,6 +28,7 @@ public class EmployInfoData extends ControllerUtil {
 			e.printStackTrace();
 		}
 	}
+	
 	//开通账号
 	public void employOpenAccount(){
 		Integer id = getParaToInt("id");
@@ -59,6 +61,7 @@ public class EmployInfoData extends ControllerUtil {
 		}
 		renderJson(returnMap);
 	}
+	
 	//编辑员工账号信息
 	public void employViewEdit(){
 		String id = getPara("id");
@@ -70,6 +73,7 @@ public class EmployInfoData extends ControllerUtil {
 		}
 		setAttr("loginInfo", loginInfo);
 	}
+	
 	//进行保存登录信息
 	public void employViewSave(){
 		HashMap<String,String> returnMsg = new HashMap<String, String>();
@@ -87,6 +91,7 @@ public class EmployInfoData extends ControllerUtil {
 		}
 		renderJson(returnMsg);
 	}
+	
 	public void employInfoList() {
 		HashMap returnMap = new HashMap();
 		try {
