@@ -22,6 +22,7 @@ public class ProjectInfoService extends ServiceUtil{
 			projectInfo.setId(id);
 			projectInfo.setProjectCreateTime(new Date());
 			projectInfo.setProjectCollector(employView.getId());
+			projectInfo.setProjectState(1);
 			projectInfo.save();
 		}else{
 			projectInfo.update();

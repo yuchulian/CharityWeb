@@ -22,7 +22,15 @@
 	<div class="form-group">
 		<label class="col-sm-2 control-label"><span class="red">*</span>角色等级</label>
 		<div class="col-sm-10">
-			<input type="text" class="form-control validate[required, custom[integer], max[99], min[-99]]" name="roleInfo.role_grade" value="#(roleInfo.role_grade)" placeholder="请输入角色等级"/>
+			<select class="form-control validate[required]" name="roleInfo.role_grade">
+				#for(dictionary : roleGrade)
+					#if(dictionary.dictionary_type == roleInfo.role_grade+"")
+						<option value="#(dictionary.dictionary_type)" selected="selected">#(dictionary.dictionary_name)</option>
+					#else
+						<option value="#(dictionary.dictionary_type)">#(dictionary.dictionary_name)</option>
+					#end
+				#end
+			</select>
 		</div>
 	</div>
 	

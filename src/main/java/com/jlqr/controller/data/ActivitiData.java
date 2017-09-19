@@ -25,6 +25,7 @@ import org.activiti.engine.task.Task;
 import org.apache.commons.lang3.StringUtils;
 
 import com.jfinal.kit.PropKit;
+import com.jfinal.plugin.activerecord.Db;
 import com.jlqr.common.ActivitiUtil;
 import com.jlqr.common.ControllerUtil;
 import com.jlqr.common.model.EmployView;
@@ -138,7 +139,7 @@ public class ActivitiData extends ControllerUtil {
 	 */
 	public void taskComplete() {
 		HashMap<String, Object> returnMap = getReturnMap();
-		String taskId = getPara("taskId"), id = getPara("id"), message = getPara("message"), sequenceFlow = getPara("sequenceFlow"), assignee = getPara("assignee");
+		String taskId = getPara("taskId"), id = getPara("id"), message = getPara("message"), sequenceFlow = getPara("sequenceFlow"), assignee = getPara("assignee"), tableInfo = getPara("tableInfo");
 		EmployView employView = getSessionAttr("employView");
 		
 		Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
@@ -148,6 +149,11 @@ public class ActivitiData extends ControllerUtil {
 		if(StringUtils.isNotBlank(message)) {
 			Authentication.setAuthenticatedUserId(employView.getEmployName());
 			taskService.addComment(taskId, processInstanceId, message);
+		}
+		
+		//assignee为空，说明被驳回
+		if(StringUtils.isBlank(assignee)) {
+			
 		}
 
 		if(StringUtils.isNotBlank(assignee)) {
@@ -159,10 +165,16 @@ public class ActivitiData extends ControllerUtil {
 			}
 			taskService.complete(taskId, variables);
 			
-			//判断流程是否结束 需要修改为监听
+			//判断流程是否结束
 			ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
 			if(null == processInstance) {
 				//将业务表中的状态修改为通过
+				String processDefinitionId = task.getProcessDefinitionId();
+				String[] processDefinitionIdList = processDefinitionId.split("\\:");
+				String[] tableInfoList = tableInfo.split("\\,");
+				if(processDefinitionIdList.length > 1 && tableInfoList.length > 1) {
+					Db.update("update "+processDefinitionIdList[0]+" set "+tableInfoList[0]+" = "+tableInfoList[1]);
+				}
 			}
 			
 			returnMap.put("returnState", "success");

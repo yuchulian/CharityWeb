@@ -22,7 +22,6 @@ public class EmployInfoData extends ControllerUtil {
 	
 	public void employInfoPaginate() {
 		try {
-			System.out.println(employInfoService.employInfoPaginate(this));
 			renderJson(employInfoService.employInfoPaginate(this));
 		} catch (Exception e) {
 			e.printStackTrace();

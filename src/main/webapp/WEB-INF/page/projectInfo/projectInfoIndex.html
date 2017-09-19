@@ -155,13 +155,13 @@
 			tableHTML.push('	<td>', obj.project_payment_plan_remark , '</td>');
 			tableHTML.push('	<td>', login.projectState[obj.project_state] , '</td>');
 			tableHTML.push('	<td>');
-// 			if(obj.project_state == 1) {
+			if(obj.project_state == 1) {
 				tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',projectInfoUpdate,'\', {id : ',obj.id,', title: \'报备修改\'});">修改</a>');
 				tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',projectInfoDelete,'\', {id : ',obj.id,', pageHtml: \'确定要删除编号为【',obj.project_number,'】的项目报备吗？\'});">删除</a>');
 				tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',startProcess,'\', {id : ',obj.id,', pageHtml: \'确定要启动【',obj.project_number,'】吗？\'});">启动任务</a>');
-// 			} else {
+			} else {
 				tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',projectInfoDetail,'\', {id : ',obj.id,'});">查看任务</a>');
-// 			}
+			}
 			tableHTML.push('	</td>');
 			tableHTML.push('</tr>');
 		}

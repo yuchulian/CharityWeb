@@ -105,147 +105,149 @@
 						id="inlineCheckbox3" value="3"> C
 					</label><br /> <span> (A代表重大项目且成交性高;B代表不同项目且成交性高;C代表成交性的不确定) </span>
 				</div> #if(null != session.activitiMap)
+			</th>
+			<th colspan="5">
+				<div style="margin-left: 30px;">
+					<span class="glyphicon glyphicon-record">申请项目推进费用:
+						<input style="width: 100px"
+					name="projectInfo.project_push_expenses"
+					value="#(projectInfo.project_push_expenses)" />元(默认项目总额1%)
+					</span><br />
+					<span class="glyphicon glyphicon-record">申请项目推进费用:
+						<input style="width: 100px"
+					name="projectInfo.project_push_expenses"
+					value="#(projectInfo.project_push_expenses)" />元(高于项目总额1%)
+					</span>
+				</div>
+			</th>
+		</tr>
+		<tr style="height: 50px;">
+			<th width="200px"><span>理由</span></th>
+			<td colspan="4" style="height: 100px;"><textarea
+				class="form-control" style="width: 350px; height: 100px;"
+				name="projectInfo.project_push_excess">#(projectInfo.project_push_excess)</textarea>
+			</td>
+		</tr>
+		<!-- <tr style="height: 50px;">
+			<th>部门负责人意见</th>
+			<td><textarea class="form-control" style="height: 60px;"></textarea>
+			</td>
+			<th>原因</th>
+			<td colspan="2"><textarea class="form-control"
+				style="height: 60px;"></textarea></td>
+			<td colspan="5">
+				<div class="form-group" style="margin: 5px">
+						<label>签名:</label> <input placeholder="请输入签名" type="text"
+					style="width: 150px;height: 30px">
+						<label>时间:</label> <input placeholder="请输入时间" type="text"
+					style="width: 150px;height: 30px">
+				</div>
+			</td>
+		</tr>
+		<tr style="height: 50px;">
+			<th>单位主管意见</th>
+			<td><textarea class="form-control" style="height: 60px;"></textarea>
+			</td>
+			<th>原因</th>
+			<td colspan="2"><textarea class="form-control"
+				style="height: 60px;"></textarea></td>
+			<td colspan="5">
+					<div class="form-group" style="margin: 5px">
+						<label>签名:</label> <input placeholder="请输入签名" type="text"
+					style="width: 150px;height: 30px">
+						<label>时间:</label> <input placeholder="请输入时间" type="text"
+					style="width: 150px;height: 30px">
+					</div>
+			</td>
+		</tr>
+		<tr style="height: 50px;">
+			<th>公司意见</th>
+			<td><textarea class="form-control form_datetime"
+				style="height: 60px;"></textarea></td>
+			<th>原因</th>
+			<td colspan="2"><textarea class="form-control form_datetime"
+				style="height: 60px;"></textarea></td>
+			<td colspan="5">
+				<div class="form-group" style="margin: 5px">
+						<label>签名:</label> <input placeholder="请输入签名" type="text"
+					style="width: 150px;height: 30px">
+						<label>时间:</label> <input placeholder="请输入时间" type="text"
+					style="width: 150px;height: 30px">
+				</div>
+			</td>
+		</tr> -->
+		<!-- <tr>
+			<td colspan="10" style="text-align: left;">
+				<form class="form-inline">
+					<button class="btn btn-primary">添加附件</button>
+				</form>
+			</td>
+		</tr> -->
+	</table>
+	<div class="form-group">
+				<label class="col-sm-3 control-label">历史批注信息</label>
+		<div class="col-sm-8">
+			#for(comment : session.activitiMap.commentList)
+				<div>
+					批注人：#(comment.userId)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					批注时间：#(comment.time)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					批注内容：#(comment.fullMessage)
+				</div>
+			#end
+		</div>
+	</div>
 
-				<th colspan="5">
-					<div style="margin-left: 30px;">
-						<span class="glyphicon glyphicon-record">申请项目推进费用:
-							<input style="width: 100px"
-						name="projectInfo.project_push_expenses"
-						value="#(projectInfo.project_push_expenses)" />元(默认项目总额1%)
-						</span><br />
-						<span class="glyphicon glyphicon-record">申请项目推进费用:
-							<input style="width: 100px"
-						name="projectInfo.project_push_expenses"
-						value="#(projectInfo.project_push_expenses)" />元(高于项目总额1%)
-						</span>
-					</div>
-				</th>
-			</tr>
-			<tr style="height: 50px;">
-				<th width="200px"><span>理由</span></th>
-				<td colspan="4" style="height: 100px;"><textarea
-					class="form-control" style="width: 350px; height: 100px;"
-					name="projectInfo.project_push_excess">#(projectInfo.project_push_excess)</textarea>
-				</td>
-			</tr>
-			<tr style="height: 50px;">
-				<th>部门负责人意见</th>
-				<td><textarea class="form-control" style="height: 60px;"></textarea>
-				</td>
-				<th>原因</th>
-				<td colspan="2"><textarea class="form-control"
-					style="height: 60px;"></textarea></td>
-				<td colspan="5">
-					<div class="form-group" style="margin: 5px">
-							<label>签名:</label> <input placeholder="请输入签名" type="text"
-						style="width: 150px;height: 30px">
-							<label>时间:</label> <input placeholder="请输入时间" type="text"
-						style="width: 150px;height: 30px">
-					</div>
-				</td>
-			</tr>
-			<tr style="height: 50px;">
-				<th>单位主管意见</th>
-				<td><textarea class="form-control" style="height: 60px;"></textarea>
-				</td>
-				<th>原因</th>
-				<td colspan="2"><textarea class="form-control"
-					style="height: 60px;"></textarea></td>
-				<td colspan="5">
-						<div class="form-group" style="margin: 5px">
-							<label>签名:</label> <input placeholder="请输入签名" type="text"
-						style="width: 150px;height: 30px">
-							<label>时间:</label> <input placeholder="请输入时间" type="text"
-						style="width: 150px;height: 30px">
-						</div>
-				</td>
-			</tr>
-			<tr style="height: 50px;">
-				<th>公司意见</th>
-				<td><textarea class="form-control form_datetime"
-					style="height: 60px;"></textarea></td>
-				<th>原因</th>
-				<td colspan="2"><textarea class="form-control form_datetime"
-					style="height: 60px;"></textarea></td>
-				<td colspan="5">
-					<div class="form-group" style="margin: 5px">
-							<label>签名:</label> <input placeholder="请输入签名" type="text"
-						style="width: 150px;height: 30px">
-							<label>时间:</label> <input placeholder="请输入时间" type="text"
-						style="width: 150px;height: 30px">
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<td colspan="10" style="text-align: left;">
-					<form class="form-inline">
-						<button class="btn btn-primary">添加附件</button>
-					</form>
-				</td>
-			</tr>
-		</table>
-<div class="form-group">
-					<label class="col-sm-3 control-label">历史批注信息</label>
-			<div class="col-sm-8">
-				#for(comment : session.activitiMap.commentList)
-					<div>
-						批注人：#(comment.userId)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						批注时间：#(comment.time)<br />
-						批注内容：#(comment.fullMessage)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					</div>
+	<div class="form-group">
+		<label class="col-sm-3 control-label">我的批注</label>
+		<div class="col-sm-8">
+			<textarea class="form-control" id="message"></textarea>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label class="col-sm-3 control-label"><span class="red">*</span>我的上级</label>
+		<div class="col-sm-8">
+			<select class="form-control" id="assignee">
+				#for(employView : session.activitiMap.employViewList)
+					<option value="#(employView.id)">#(employView.employ_name)</option>
 				#end
-			</div>
+			</select>
 		</div>
+	</div>
+
 	
-		<div class="form-group">
-			<label class="col-sm-3 control-label">我的批注</label>
-			<div class="col-sm-8">
-				<textarea class="form-control" id="message"></textarea>
-			</div>
+	<div class="form-group">
+		<div class="col-sm-12" style="text-align: center;">
+			#for(sequenceFlow : session.activitiMap.sequenceFlowList)
+				<button type="button" class="btn btn-primary btn-gradient dark"
+						onclick="selectSequenceFlow(this);">#(sequenceFlow)</button>
+			#end
 		</div>
+	</div>
 	
-		<div class="form-group">
-			<label class="col-sm-3 control-label"><span class="red">*</span>我的上级</label>
-			<div class="col-sm-8">
-				<select class="form-control" id="assignee">
-					#for(employView : session.activitiMap.employViewList)
-						<option value="#(employView.id)">#(employView.employ_name)</option>
-					#end
-				</select>
-			</div>
-		</div>
-	
-		
-		<div class="form-group">
-			<div class="col-sm-12" style="text-align: center;">
-				#for(sequenceFlow : session.activitiMap.sequenceFlowList)
-					<button type="button" class="btn btn-primary btn-gradient dark"
-							onclick="selectSequenceFlow(this);">#(sequenceFlow)</button>
-				#end
-			</div>
-		</div>
-		
-		<script type="text/javascript">
-			function selectSequenceFlow(self) {
-				var sequenceFlow = $.trim($(self).text()), assignee = $("#assignee").val();
-				if(sequenceFlow == "通过" || sequenceFlow == "不通过") {
-					util.call("/activitiData/taskComplete", {
-						taskId : "#(session.activitiMap.taskId)",
-						id : "#(projectInfo.id)",
-						message : $.trim($("#message").val()),
-						sequenceFlow : sequenceFlow,
-						assignee : assignee
-					}, function(returnMap) {
-						util.alert(returnMap["returnMsg"]);
-						util.closeModal("#projectInfoDetail");
-						taskList();
-					});
-				} else if(sequenceFlow == "授权他人审核") {
-					
+	<script type="text/javascript">
+		function selectSequenceFlow(self) {
+			var sequenceFlow = $.trim($(self).text()), assignee = $("#assignee").val();
+			if(sequenceFlow == "通过" || sequenceFlow == "不通过") {
+				if(sequenceFlow == "不通过") {
+					assignee = #(projectInfo.project_collector);
 				}
+				util.call("/activitiData/taskComplete", {
+					taskId : "#(session.activitiMap.taskId)",
+					id : "#(projectInfo.id)",
+					message : $.trim($("#message").val()),
+					sequenceFlow : sequenceFlow,
+					assignee : assignee,
+					tableInfo : "project_state,3"
+				}, function(returnMap) {
+					util.alert(returnMap["returnMsg"]);
+					util.closeModal("#projectInfoDetail");
+					taskList();
+				});
+			} else if(sequenceFlow == "授权他人审核") {
+				util.alert("待开发……");
 			}
-		</script>
+		}
+	</script>
 	#end
-	
-
-			</form>
+</form>

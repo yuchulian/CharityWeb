@@ -92,7 +92,7 @@ public class RoleInfoService extends ServiceUtil {
 			
 			if(null != loginRoleInfo) {
 				//获取我的上一级的角色
-				return RoleInfo.dao.find("select * from role_info where role_grade > ?", loginRoleInfo.getRoleGrade());// + 1
+				return RoleInfo.dao.find("select * from role_info where role_grade >= ?", loginRoleInfo.getRoleGrade());// + 1
 			}
 		}
 		return new ArrayList<RoleInfo>();

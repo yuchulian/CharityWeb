@@ -5,10 +5,13 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 
 import com.jfinal.kit.JsonKit;
+import com.jfinal.kit.PropKit;
 import com.jlqr.common.ControllerUtil;
+import com.jlqr.common.model.Dictionary;
 import com.jlqr.common.model.PowerInfo;
 import com.jlqr.common.model.RoleInfo;
 import com.jlqr.interceptor.NewService;
+import com.jlqr.service.DictionaryService;
 import com.jlqr.service.PowerInfoService;
 import com.jlqr.service.RoleInfoService;
 
@@ -20,20 +23,26 @@ public class RoleInfoPage extends ControllerUtil {
 	@NewService("PowerInfoService")
 	private PowerInfoService powerInfoService;
 	
+	@NewService("DictionaryService")
+	private DictionaryService dictionaryService;
+	
 	public void index() {
 		render("roleInfoIndex.html");
 	}
 	
 	public void roleInfoEdit() {
 		RoleInfo roleInfo = new RoleInfo();
+		List<Dictionary> roleGrade = null;
 		try {
 			if(StringUtils.isNotBlank(getPara("id"))) {
 				roleInfo = roleService.findRoleById(Integer.parseInt(getPara("id")));
 			}
+			roleGrade = dictionaryService.findDictionaryListByPId(PropKit.getInt("roleGrade"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		setAttr("roleInfo", roleInfo);
+		setAttr("roleGrade", roleGrade);
 	}
 	
 	public void roleInfoPower() {

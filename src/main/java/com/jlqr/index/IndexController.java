@@ -7,10 +7,12 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import org.activiti.engine.ProcessEngine;
+import org.activiti.engine.ProcessEngineConfiguration;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 
-import com.jfinal.core.Controller;
+import com.jlqr.common.ControllerUtil;
 import com.jlqr.common.model.EmployView;
 import com.jlqr.common.model.LoginInfo;
 import com.jlqr.common.model.PowerInfo;
@@ -25,7 +27,7 @@ import com.jlqr.service.RoleInfoService;
  * @author LiQiRan
  *
  */
-public class IndexController extends Controller {
+public class IndexController extends ControllerUtil {
 //	@NewService("RoleInfoService")
 //	private RoleInfoService roleService;
 	
@@ -147,6 +149,21 @@ public class IndexController extends Controller {
 	 */
 	public void home() {
 		
+	}
+	
+	/**
+	 * 初始化activiti
+	 */
+	public void initActiviti() {
+		HashMap<String,Object> returnMap = getReturnMap();
+		try {
+			ProcessEngine processEngine = ProcessEngineConfiguration.createProcessEngineConfigurationFromResource("activiti.cfg.xml").buildProcessEngine();
+			returnMap.put("returnState", "success");
+			returnMap.put("returnMsg", "初始化成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		renderJson(returnMap);
 	}
 	
 }
