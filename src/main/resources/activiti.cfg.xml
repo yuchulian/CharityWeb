@@ -13,5 +13,6 @@
 		<property name="jdbcUsername" value="root" />
 		<property name="jdbcPassword" value="root" />
 		<property name="databaseSchemaUpdate" value="true" />
+<!-- 		<property name="jobExecutorActivate" value="true" /> -->
 	</bean>
 </beans>
