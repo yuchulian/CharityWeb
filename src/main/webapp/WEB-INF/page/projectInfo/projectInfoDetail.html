@@ -1,7 +1,7 @@
 <form class="form-horizontal" id="projectInfoDetail">
 	<input type="hidden" name="projectInfo.id" value="#(projectInfo.id)" />
 	<table id="projectTable" style="width: 100%;" border="1px"
-		cellspacing="0px" cellpadding="0px" align="center">
+		cellspacing="0px" cellpadding="0px" align="center" >
 		<caption class="h1" style="text-align: center;">项目报备表</caption>
 		<tr style="border: 1px solid white; border-bottom: 1px solid black;">
 			<td colspan="7"></td>
@@ -16,14 +16,14 @@
 				<div>
 					<input contenteditable="true" class="form-control"
 						placeholder="请输入项目编号" name="projectInfo.project_number"
-						value="#(projectInfo.project_number)" />
+						value="#(projectInfo.project_number)" disabled="disabled" />
 				</div>
 			</td>
 			<th style="width: 200px;">填表时间</th>
 			<td style="width: 300px;" colspan="2"><input
 				class="form-control form_datetime" placeholder="请输入填表时间"
 				name="projectInfo.project_create_time"
-				value="#(projectInfo.project_create_time)"></td>
+				value="#(projectInfo.project_create_time)" disabled="disabled"></td>
 		</tr>
 		<tr>
 			<th>项目所在单位</th>
@@ -36,7 +36,7 @@
 				<div>
 					<input contenteditable="true" class="form-control"
 						placeholder="请输入项目主管" name="projectInfo.project_number"
-						value="#(projectInfo.project_number)" />
+						value="#(projectInfo.project_number)" disabled="disabled"/>
 				</div>
 			</td>
 			<th style="width: 200px;">收集人</th>
@@ -44,7 +44,7 @@
 				<div>
 					<input contenteditable="true" class="form-control"
 						placeholder="请输入收集人" name="projectInfo.project_number"
-						value="#(projectInfo.project_number)" />
+						value="#(projectInfo.project_number)" disabled="disabled"/>
 				</div>
 			</td>
 			<th style="width: 200px;">所属部门</th>
@@ -66,26 +66,26 @@
 		</tr>
 		<tr style="height: 100px;">
 			<td><textarea class="form-control" style="height: 100px;"
-					name="projectInfo.project_name">#(projectInfo.project_name)</textarea>
+					name="projectInfo.project_name" disabled="disabled">#(projectInfo.project_name)</textarea>
 			</td>
 			<td><textarea class="form-control" style="height: 100px;"
-					name="projectInfo.project_budget">#(projectInfo.project_budget)</textarea>
-			</td>
-			<td colspan="2"><textarea class="form-control"
-					style="height: 100px;" name="projectInfo.project_situation">#(projectInfo.project_situation)</textarea></td>
-			<td><textarea class="form-control" style="height: 100px;"
-					name="projectInfo.project_capital_situation">#(projectInfo.project_capital_situation)</textarea>
+					name="projectInfo.project_budget" disabled="disabled">#(projectInfo.project_budget)</textarea>
 			</td>
 			<td colspan="2"><textarea class="form-control"
-					style="height: 100px;" name="projectInfo.project_contact">#(projectInfo.project_contact)</textarea></td>
+					style="height: 100px;" name="projectInfo.project_situation" disabled="disabled">#(projectInfo.project_situation)</textarea></td>
 			<td><textarea class="form-control" style="height: 100px;"
-					name="projectInfo.project_charge_guardian">#(projectInfo.project_charge_guardian)</textarea>
+					name="projectInfo.project_capital_situation" disabled="disabled">#(projectInfo.project_capital_situation)</textarea>
+			</td>
+			<td colspan="2"><textarea class="form-control"
+					style="height: 100px;" name="projectInfo.project_contact" disabled="disabled">#(projectInfo.project_contact)</textarea></td>
+			<td><textarea class="form-control" style="height: 100px;"
+					name="projectInfo.project_charge_guardian" disabled="disabled">#(projectInfo.project_charge_guardian)</textarea>
 			</td>
 			<td><textarea class="form-control" style="height: 100px;"
-					name="projectInfo.project_charge_leader">#(projectInfo.project_charge_leader)</textarea>
+					name="projectInfo.project_charge_leader" disabled="disabled">#(projectInfo.project_charge_leader)</textarea>
 			</td>
 			<td><textarea class="form-control" style="height: 100px;"
-					name="projectInfo.project_remark">#(projectInfo.project_remark)</textarea>
+					name="projectInfo.project_remark" disabled="disabled">#(projectInfo.project_remark)</textarea>
 			</td>
 		</tr>
 		<tr height="50px">
@@ -97,13 +97,17 @@
 			</select></td>
 			<th colspan="3" rowspan="2">
 				<div>
-					<span>项目优先级别:</span> <label class="checkbox-inline"> <input
-						type="checkbox" id="inlineCheckbox1" value="1"> A
-					</label> <label class="checkbox-inline"> <input type="checkbox"
-						id="inlineCheckbox2" value="2"> B
-					</label> <label class="checkbox-inline"> <input type="checkbox"
-						id="inlineCheckbox3" value="3"> C
-					</label><br /> <span> (A代表重大项目且成交性高;B代表不同项目且成交性高;C代表成交性的不确定) </span>
+						<span>项目优先级别:</span> <label class="checkbox-inline"> <label
+							class="radio-inline"> <input type="radio"
+								name="projectInfo.project_priority" id="inlineRadio1" value="1"
+								#(1 == projectInfo.project_priority ? "checked='checked'" : "") >A
+						</label> <label class="radio-inline"> <input type="radio"
+								name="projectInfo.project_priority" id="inlineRadio2" value="2"
+								#(2 == projectInfo.project_priority ? "checked='checked'" : "")>B
+						</label> <label class="radio-inline"> <input type="radio"
+								name="projectInfo.project_priority" id="inlineRadio3" value="3"
+								#(3 == projectInfo.project_priority ? "checked='checked'" : "")>C
+						</label> <br /> <span> (A代表重大项目且成交性高;B代表不同项目且成交性高;C代表成交性的不确定) </span>
 				</div> #if(null != session.activitiMap)
 			</th>
 			<th colspan="5">
@@ -111,12 +115,12 @@
 					<span class="glyphicon glyphicon-record">申请项目推进费用:
 						<input style="width: 100px"
 					name="projectInfo.project_push_expenses"
-					value="#(projectInfo.project_push_expenses)" />元(默认项目总额1%)
+					value="#(projectInfo.project_push_expenses)" disabled="disabled"/>元(默认项目总额1%)
 					</span><br />
 					<span class="glyphicon glyphicon-record">申请项目推进费用:
 						<input style="width: 100px"
 					name="projectInfo.project_push_expenses"
-					value="#(projectInfo.project_push_expenses)" />元(高于项目总额1%)
+					value="#(projectInfo.project_push_expenses)" disabled="disabled"/>元(高于项目总额1%)
 					</span>
 				</div>
 			</th>
@@ -125,7 +129,7 @@
 			<th width="200px"><span>理由</span></th>
 			<td colspan="4" style="height: 100px;"><textarea
 				class="form-control" style="width: 350px; height: 100px;"
-				name="projectInfo.project_push_excess">#(projectInfo.project_push_excess)</textarea>
+				name="projectInfo.project_push_excess" disabled="disabled">#(projectInfo.project_push_excess)</textarea>
 			</td>
 		</tr>
 		<!-- <tr style="height: 50px;">
@@ -185,8 +189,8 @@
 		</tr> -->
 	</table>
 	<div class="form-group">
-				<label class="col-sm-3 control-label">历史批注信息</label>
-		<div class="col-sm-8">
+				<label class="col-sm-2 control-label">历史批注信息</label>
+		<div class="col-sm-9">
 			#for(comment : session.activitiMap.commentList)
 				<div>
 					批注人：#(comment.userId)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -198,15 +202,15 @@
 	</div>
 
 	<div class="form-group">
-		<label class="col-sm-3 control-label">我的批注</label>
-		<div class="col-sm-8">
+		<label class="col-sm-2 control-label">我的批注</label>
+		<div class="col-sm-9">
 			<textarea class="form-control" id="message"></textarea>
 		</div>
 	</div>
 
 	<div class="form-group">
-		<label class="col-sm-3 control-label"><span class="red">*</span>我的上级</label>
-		<div class="col-sm-8">
+		<label class="col-sm-2 control-label"><span class="red">*</span>我的上级</label>
+		<div class="col-sm-9">
 			<select class="form-control" id="assignee">
 				#for(employView : session.activitiMap.employViewList)
 					<option value="#(employView.id)">#(employView.employ_name)</option>

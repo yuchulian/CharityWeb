@@ -82,7 +82,6 @@
 						click : function(dataMap) {
 							if ($('#projectInfoForm').validationEngine('validate')) {
 								var projectInfo = util.getModal(dataMap);
-								projectInfo["projectInfo.project_number"] = $.trim($("#project_number").val());
 								util.call("/projectInfoData/projectInfoSave", projectInfo, function(returnMsg) {
 									util.refreshPage(dataMap);
 									util.closeModal(dataMap);
@@ -110,7 +109,8 @@
 			},
 			"projectInfoDetail" : {
 				title : "任务详情",
-				pageUrl : "/projectInfoPage/projectInfoDetail"
+				pageUrl : "/projectInfoPage/projectInfoDetail",
+				width:1000
 			},
 			"startProcess" : {
 				button : {
