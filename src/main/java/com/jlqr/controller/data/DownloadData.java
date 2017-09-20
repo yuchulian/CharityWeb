@@ -21,8 +21,9 @@ public class DownloadData extends ControllerUtil{
 
 	public void index() {
 		try {
-			String filePath = getPara("filePath"), fileName = StringUtils.defaultString(getPara("fileName"), "");
+			String filePath = getPara("filePath"), fileName = StringUtils.defaultString(getPara("fileName"), "").replaceAll("[^0-9a-zA-Z\\u4e00-\\u9fa5]", "");
 			if(StringUtils.isNotBlank(filePath)) {
+				filePath = filePath.replaceAll("^[^0-9a-zA-Z]*", "/");
 				File file = new File(PropKit.get("downloadPath")+filePath);
 				if(file.exists()) {
 					if(StringUtils.isBlank(fileName)) {
@@ -50,6 +51,7 @@ public class DownloadData extends ControllerUtil{
 		try {
 			String filePath = getPara("filePath");
 			if(StringUtils.isNotBlank(filePath)) {
+				filePath = filePath.replaceAll("^[^0-9a-zA-Z]*", "/");
 				File imgFile = new File(PropKit.get("downloadPath")+filePath);
 				if(imgFile.exists()) {
 					renderFile(imgFile);
