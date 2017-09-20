@@ -77,31 +77,39 @@ public class IndexController extends ControllerUtil {
 			if(null != loginInfo) {
 				redirectPage = "/home";
 				employView = employInfoService.findEmployViewById(loginInfo.getId());
-				
-				String loginRole = employView.getRoleId();
-				if(StringUtils.isNotBlank(loginRole) && loginRole.length() > 2) {
-					try {
+
+				try {
+					String loginRole = employView.getRoleId();
+					if(StringUtils.isNotBlank(loginRole) && loginRole.length() > 2) {
 						List<String> powerIdList = new ArrayList<String>();
 						
 						String powerPath = "";
+						Integer roleGrade = 6;
 						List<RoleInfo> roleInfoList = roleInfoService.roleInfoListInId(loginRole.substring(1, loginRole.length()-1));
 						for (RoleInfo roleInfo : roleInfoList) {
+							if(roleGrade > roleInfo.getRoleGrade()) {
+								roleGrade = roleInfo.getRoleGrade();
+							}
 							powerPath += roleInfo.getPowerPath();
 						}
 						
-						String[] _powerIdList = powerPath.split("\\,");
-						HashMap<String, String> powerIdMap = new HashMap<String, String>();
-						for (String _powerId : _powerIdList) {
-							if(StringUtils.isNotBlank(_powerId) && !powerIdMap.containsKey(_powerId)) {
-								powerIdList.add(_powerId);
-								powerIdMap.put(_powerId, _powerId);
+						if(roleGrade == 1) {
+							powerInfoList = powerInfoService.powerInfoList(this);
+						} else {
+							String[] _powerIdList = powerPath.split("\\,");
+							HashMap<String, String> powerIdMap = new HashMap<String, String>();
+							for (String _powerId : _powerIdList) {
+								if(StringUtils.isNotBlank(_powerId) && !powerIdMap.containsKey(_powerId)) {
+									powerIdList.add(_powerId);
+									powerIdMap.put(_powerId, _powerId);
+								}
 							}
+							
+							powerInfoList = powerInfoService.findPowerInfoListInId(StringUtils.join(powerIdList, ","));
 						}
-						
-						powerInfoList = powerInfoService.findPowerInfoListInId(StringUtils.join(powerIdList, ","));
-					} catch (Exception e) {
-						e.printStackTrace();
 					}
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
 				
 			} else {
