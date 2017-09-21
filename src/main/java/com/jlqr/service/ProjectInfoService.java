@@ -1,6 +1,5 @@
 package com.jlqr.service;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -10,6 +9,7 @@ import com.jlqr.common.ServiceUtil;
 import com.jlqr.common.model.Dictionary;
 import com.jlqr.common.model.EmployView;
 import com.jlqr.common.model.ProjectInfo;
+import com.jlqr.common.model.ProjectInfoView;
 
 public class ProjectInfoService extends ServiceUtil{
 
@@ -32,7 +32,7 @@ public class ProjectInfoService extends ServiceUtil{
 		}
 	}
 
-	public void deleteProjectInfoById(String id) {
+	public void deleteProjectInfoById(String id) throws Exception{
 		ProjectInfo.dao.deleteById(id);
 	}
 	
@@ -40,14 +40,8 @@ public class ProjectInfoService extends ServiceUtil{
 		return ProjectInfo.dao.findById(id);
 	}
 
-	public List<Dictionary> projectDepartment(Integer pid) {
-		// TODO Auto-generated method stub
-		return Dictionary.dao.find("select * from dictionary where dictionary_pid =?",pid);
+	public ProjectInfoView projectInfoViewById(Integer id) throws Exception {
+		return ProjectInfoView.dao.findById(id);
 	}
 
-	public List<Dictionary> projectType(Integer pid) {
-		// TODO Auto-generated method stub
-		return Dictionary.dao.find("select * from dictionary where dictionary_pid =?",pid);
-	}
-	
 }

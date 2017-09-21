@@ -62,5 +62,9 @@ public class DictionaryService extends ServiceUtil {
 		Dictionary dictionary = this.findDictionaryById(dictionaryId);
 		Db.update("delete from dictionary where dictionary_id_path like '"+dictionary.getDictionaryIdPath()+"%'");
 	}
+	public List<Dictionary> dictionaryByPid(Integer pid) throws Exception{
+		return Dictionary.dao.find("select * from dictionary where dictionary_pid =?",pid);
+	}
+	
 	
 }

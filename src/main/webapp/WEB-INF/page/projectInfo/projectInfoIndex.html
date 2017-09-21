@@ -19,9 +19,9 @@
 							<tr>
 								<th>&nbsp;</th>
 								<th class="sorting_asc">项目编号</th>
-								<th class="sorting_disabled">预计投标时间</th>
-								<th class="sorting">收款计划总备注</th>
-								<th class="sorting">付款计划总备注</th>
+								<th class="sorting_disabled">项目名称</th>
+								<th class="sorting">项目预算</th>
+								<th class="sorting">收集人</th>
 								<th class="sorting">项目状态</th>
 								<th class="sorting_disabled">操作</th>
 							</tr>
@@ -73,7 +73,7 @@
 					}
 				},
 				pageUrl : "/projectInfoPage/projectInfoEdit",
-				width:1050,
+				width:1300,
 				title : "报备修改",
 				button : {
 					"submit" : {
@@ -81,7 +81,12 @@
 						className : "btn-primary",
 						click : function(dataMap) {
 							if ($('#projectInfoForm').validationEngine('validate')) {
-								var projectInfo = util.getModal(dataMap);
+								var projectInfo = util.getModal(dataMap), $this = "";
+								$("#projectTable td[id]").each(function() {
+									$this = $(this);
+									projectInfo["projectInfo."+$this.attr("id")] = $.trim($this.text());
+								});
+								console.info(projectInfo);
 								util.call("/projectInfoData/projectInfoSave", projectInfo, function(returnMsg) {
 									util.refreshPage(dataMap);
 									util.closeModal(dataMap);
@@ -110,7 +115,7 @@
 			"projectInfoDetail" : {
 				title : "任务详情",
 				pageUrl : "/projectInfoPage/projectInfoDetail",
-				width:1000
+				width:1300
 			},
 			"startProcess" : {
 				button : {
@@ -150,9 +155,9 @@
 			tableHTML.push('<tr>');
 			tableHTML.push('	<td>', (i + 1), '</td>');
 			tableHTML.push('	<td>', obj.project_number, '</td>');
-			tableHTML.push('	<td>', obj.project_bid_time, '</td>');
-			tableHTML.push('	<td>', obj.project_collection_plan_remark , '</td>');
-			tableHTML.push('	<td>', obj.project_payment_plan_remark , '</td>');
+			tableHTML.push('	<td>', obj.project_name, '</td>');
+			tableHTML.push('	<td>', obj.project_budget , '</td>');
+			tableHTML.push('	<td>', obj.project_collector , '</td>');
 			tableHTML.push('	<td>', login.projectState[obj.project_state] , '</td>');
 			tableHTML.push('	<td>');
 			if(obj.project_state == 1) {

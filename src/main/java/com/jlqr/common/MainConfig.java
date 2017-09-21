@@ -13,6 +13,7 @@ import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 import com.jfinal.plugin.druid.DruidPlugin;
 import com.jfinal.template.Engine;
 import com.jlqr.common.model.EmployView;
+import com.jlqr.common.model.ProjectInfoView;
 import com.jlqr.common.model._MappingKit;
 import com.jlqr.controller.data.ActivitiData;
 import com.jlqr.controller.data.DictionaryData;
@@ -111,7 +112,8 @@ public class MainConfig extends JFinalConfig {
 		
 		// 所有映射在 MappingKit 中自动化搞定
 		_MappingKit.mapping(arp);
-		arp.addMapping("employ_view","id",EmployView.class);
+		arp.addMapping("employ_view", "id", EmployView.class);
+		arp.addMapping("project_info_view", "id", ProjectInfoView.class);
 		me.add(arp);
 	}
 	

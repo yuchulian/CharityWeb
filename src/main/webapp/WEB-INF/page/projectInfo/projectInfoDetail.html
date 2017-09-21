@@ -1,204 +1,96 @@
 <style type="text/css">
-#projectInfoDetail tr th {
-	text-align: center;
-}
-
-#projectInfoDetail tr td {
-	text-align: center;
-}
+	#projectTable{ width: 1024px; word-wrap:break-word; word-break:break-all; }
+	#projectTable tr:nth-child(1) > *{ border: none; border-bottom: 1px solid #ccc; }
+	#projectTable select{ width: 100%; height: 100%; }
+	#projectTable label{ margin-right: 15px; }
+	#projectTable th, #projectTable td{ border: 1px solid #ccc; text-align: center; height: 40px; line-height: auto; }
 </style>
-<form class="form-horizontal" id="projectInfoDetail">
-	<input type="hidden" name="projectInfo.id" value="#(projectInfo.id)" />
-	<table id="projectTable" style="width: 100%;" border="1px"
-		cellspacing="0px" cellpadding="0px" align="center" >
-		<caption class="h1" style="text-align: center;">项目报备表</caption>
-		<tr style="border: 1px solid white; border-bottom: 1px solid black;">
-			<td colspan="7"></td>
-			<td>更新时间:</td>
-			<div>
-				<label>#(project_update_time)</label>
-			</div>
+<div class="form-horizontal">		
+	<table align="center" id="projectTable">
+		<tr>
+			<td class="width100"></td>
+			<td class="width100"></td>
+			<td class="width100"></td>
+			<td class="width100"></td>
+			<td class="width100"></td>
+			<td class="width100"></td>
+			<th class="width100">更新时间:</th>
+			<td colspan="2">#(projectInfo.project_update_time)</td>
 		</tr>
-		<tr style="">
-			<th style="width: 200px;">项目编号</th>
-			<td style="width: 1150px;" colspan="6">
-				<div>
-					<input contenteditable="true" class="form-control"
-						placeholder="请输入项目编号" name="projectInfo.project_number"
-						value="#(projectInfo.project_number)" disabled="disabled" />
-				</div>
+		<tr>
+			<th>项目编号</th>
+			<td colspan="5">
+				#(projectInfo.project_number)
 			</td>
-			<th style="width: 200px;">填表时间</th>
-			<td style="width: 300px;" colspan="2"><input
-				class="form-control form_datetime" placeholder="请输入填表时间"
-				name="projectInfo.project_create_time"
-				value="#(projectInfo.project_create_time)" disabled="disabled"></td>
+			<th>填表时间</th>
+			<td colspan="2">#(projectInfo.project_create_time)</td>
 		</tr>
 		<tr>
 			<th>项目所在单位</th>
-			<td style="width: 400px;"><select class="form-control">
-					<option>广东省</option>
-					<option>福建省</option>
-			</select></td>
-			<th style="width: 200px;">项目主管</th>
-			<td width="200px">
-				<div>
-					<input contenteditable="true" class="form-control"
-						placeholder="请输入项目主管" name="projectInfo.project_number"
-						value="#(projectInfo.project_number)" disabled="disabled"/>
-				</div>
+			<td>
+				#(projectInfo.project_unit_name)
 			</td>
-			<th style="width: 200px;">收集人</th>
+			<th>项目主管</th>
+			<td>田七</td>
+			<th>收集人</th>
+			<td>
+				#(projectInfo.project_collector_name)
+			</td>
+			<th>所属部门</th>
 			<td colspan="2">
-				<div>
-					<input contenteditable="true" class="form-control"
-						placeholder="请输入收集人" name="projectInfo.project_number"
-						value="#(projectInfo.project_number)" disabled="disabled"/>
-				</div>
+				#(projectInfo.project_department_name)
 			</td>
-			<th style="width: 200px;">所属部门</th>
-			<td style="width: 200px;" colspan="2"><select
-				class="form-control">
-					<option>市场部</option>
-					<option>网络部</option>
-			</select></td>
 		</tr>
-		<tr style="height: 50px">
+		<tr>
 			<th>项目名称</th>
 			<th>项目预算</th>
 			<th colspan="2">项目情况</th>
 			<th>资金落实情况</th>
-			<th colspan="2">单位接口人</th>
-			<th>主管、部门的负责人</th>
-			<th>主管领导</th>
+			<th>单位接口人</th>
+			<th>主管、部门负责人</th>
+			<th class="width100">主管领导</th>
 			<th>备注</th>
 		</tr>
-		<tr style="height: 100px;">
-			<td><textarea class="form-control" style="height: 100px;"
-					name="projectInfo.project_name" disabled="disabled">#(projectInfo.project_name)</textarea>
-			</td>
-			<td><textarea class="form-control" style="height: 100px;"
-					name="projectInfo.project_budget" disabled="disabled">#(projectInfo.project_budget)</textarea>
-			</td>
-			<td colspan="2"><textarea class="form-control"
-					style="height: 100px;" name="projectInfo.project_situation" disabled="disabled">#(projectInfo.project_situation)</textarea></td>
-			<td><textarea class="form-control" style="height: 100px;"
-					name="projectInfo.project_capital_situation" disabled="disabled">#(projectInfo.project_capital_situation)</textarea>
-			</td>
-			<td colspan="2"><textarea class="form-control"
-					style="height: 100px;" name="projectInfo.project_contact" disabled="disabled">#(projectInfo.project_contact)</textarea></td>
-			<td><textarea class="form-control" style="height: 100px;"
-					name="projectInfo.project_charge_guardian" disabled="disabled">#(projectInfo.project_charge_guardian)</textarea>
-			</td>
-			<td><textarea class="form-control" style="height: 100px;"
-					name="projectInfo.project_charge_leader" disabled="disabled">#(projectInfo.project_charge_leader)</textarea>
-			</td>
-			<td><textarea class="form-control" style="height: 100px;"
-					name="projectInfo.project_remark" disabled="disabled">#(projectInfo.project_remark)</textarea>
-			</td>
+		<tr>
+			<td>#(projectInfo.project_name)</td>
+			<td>#(projectInfo.project_budget)</td>
+			<td colspan="2">#(projectInfo.project_situation)</td>
+			<td>#(projectInfo.project_capital_situation)</td>
+			<td>单位接口人</td>
+			<td>主管、部门负责人</td>
+			<td>主管领导</td>
+			<td>#(projectInfo.project_remark)</td>
 		</tr>
-		<tr height="50px">
+		<tr>
 			<th rowspan="2">项目类别</th>
-			<td rowspan="2" style="margin-top: 20px;"><select
-				class="form-control">
-					<option>市场部</option>
-					<option>网络部</option>
-			</select></td>
-			<th colspan="3" rowspan="2">
-				<div>
-						<span>项目优先级别:</span> <label class="checkbox-inline"> <label
-							class="radio-inline"> <input type="radio"
-								name="projectInfo.project_priority" id="inlineRadio1" value="1"
-								#(1 == projectInfo.project_priority ? "checked='checked'" : "") >A
-						</label> <label class="radio-inline"> <input type="radio"
-								name="projectInfo.project_priority" id="inlineRadio2" value="2"
-								#(2 == projectInfo.project_priority ? "checked='checked'" : "")>B
-						</label> <label class="radio-inline"> <input type="radio"
-								name="projectInfo.project_priority" id="inlineRadio3" value="3"
-								#(3 == projectInfo.project_priority ? "checked='checked'" : "")>C
-						</label> <br /> <span> (A代表重大项目且成交性高;B代表不同项目且成交性高;C代表成交性的不确定) </span>
-				</div>
-			</th>
-			<th colspan="5">
-				<div style="margin-left: 30px;">
-					<span class="glyphicon glyphicon-record">申请项目推进费用:
-						<input style="width: 100px"
-					name="projectInfo.project_push_expenses"
-					value="#(projectInfo.project_push_expenses)" disabled="disabled"/>元(默认项目总额1%)
-					</span><br />
-					<span class="glyphicon glyphicon-record">申请项目推进费用:
-						<input style="width: 100px"
-					name="projectInfo.project_push_expenses"
-					value="#(projectInfo.project_push_expenses)" disabled="disabled"/>元(高于项目总额1%)
-					</span>
-				</div>
-			</th>
-		</tr>
-		<tr style="height: 50px;">
-			<th width="200px"><span>理由</span></th>
-			<td colspan="4" style="height: 100px;"><textarea
-				class="form-control" style="width: 350px; height: 100px;"
-				name="projectInfo.project_push_excess" disabled="disabled">#(projectInfo.project_push_excess)</textarea>
+			<td rowspan="2">
+				#(projectInfo.project_type_name)
 			</td>
-		</tr>
-		<!-- <tr style="height: 50px;">
-			<th>部门负责人意见</th>
-			<td><textarea class="form-control" style="height: 60px;"></textarea>
+			<td rowspan="2" colspan="2">
+				项目优先级别
+				<span style="color: red;">
+					#if(1 == projectInfo.project_priority)
+						A
+					#elseif(1 == projectInfo.project_priority)
+						B
+					#else
+						C
+					#end
+				</span>
+				<br/>
+				(A代表重大项目且成交性高;B代表不同项目且成交性高;C代表成交性的不确定)
 			</td>
-			<th>原因</th>
-			<td colspan="2"><textarea class="form-control"
-				style="height: 60px;"></textarea></td>
 			<td colspan="5">
-				<div class="form-group" style="margin: 5px">
-						<label>签名:</label> <input placeholder="请输入签名" type="text"
-					style="width: 150px;height: 30px">
-						<label>时间:</label> <input placeholder="请输入时间" type="text"
-					style="width: 150px;height: 30px">
-				</div>
+				申请项目推进费用:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;元<br/>
+				<span style="color: red;">(若申请项目推进费用高于项目总费用的1%,请说明理由)</span>
 			</td>
 		</tr>
-		<tr style="height: 50px;">
-			<th>单位主管意见</th>
-			<td><textarea class="form-control" style="height: 60px;"></textarea>
-			</td>
-			<th>原因</th>
-			<td colspan="2"><textarea class="form-control"
-				style="height: 60px;"></textarea></td>
-			<td colspan="5">
-					<div class="form-group" style="margin: 5px">
-						<label>签名:</label> <input placeholder="请输入签名" type="text"
-					style="width: 150px;height: 30px">
-						<label>时间:</label> <input placeholder="请输入时间" type="text"
-					style="width: 150px;height: 30px">
-					</div>
-			</td>
+		<tr>
+			<th>理由</th>
+			<td colspan="4">#(projectInfo.project_push_excess)</td>
 		</tr>
-		<tr style="height: 50px;">
-			<th>公司意见</th>
-			<td><textarea class="form-control form_datetime"
-				style="height: 60px;"></textarea></td>
-			<th>原因</th>
-			<td colspan="2"><textarea class="form-control form_datetime"
-				style="height: 60px;"></textarea></td>
-			<td colspan="5">
-				<div class="form-group" style="margin: 5px">
-						<label>签名:</label> <input placeholder="请输入签名" type="text"
-					style="width: 150px;height: 30px">
-						<label>时间:</label> <input placeholder="请输入时间" type="text"
-					style="width: 150px;height: 30px">
-				</div>
-			</td>
-		</tr> -->
-		<!-- <tr>
-			<td colspan="10" style="text-align: left;">
-				<form class="form-inline">
-					<button class="btn btn-primary">添加附件</button>
-				</form>
-			</td>
-		</tr> -->
-	</table>
-	
-	 #if(null != session.activitiMap)
+	</table>	
+	#if(null != session.activitiMap)
 	<div class="form-group">
 				<label class="col-sm-2 control-label">历史批注信息</label>
 		<div class="col-sm-9">
@@ -265,4 +157,4 @@
 		}
 	</script>
 	#end
-</form>
+</div>

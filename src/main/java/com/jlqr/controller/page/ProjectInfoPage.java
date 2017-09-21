@@ -9,13 +9,17 @@ import com.jlqr.common.ControllerUtil;
 import com.jlqr.common.model.Dictionary;
 import com.jlqr.common.model.EmployView;
 import com.jlqr.common.model.ProjectInfo;
+import com.jlqr.common.model.ProjectInfoView;
 import com.jlqr.interceptor.NewService;
+import com.jlqr.service.DictionaryService;
 import com.jlqr.service.ProjectInfoService;
 
 public class ProjectInfoPage extends ControllerUtil {
 
 	@NewService("ProjectInfoService")
 	private ProjectInfoService projectInfoService;
+	@NewService("DictionaryService")
+	private DictionaryService dictionaryService;
 	
 	public void index() {
 		EmployView employView = getSessionAttr("employView");
@@ -23,33 +27,36 @@ public class ProjectInfoPage extends ControllerUtil {
 	}
 	
 	public void projectInfoEdit(){
-		ProjectInfo projectInfo = new ProjectInfo();
+		ProjectInfoView projectInfoView = new ProjectInfoView();
 		List<Dictionary> dictionaryDepartment = null;
 		List<Dictionary> dictionaryType = null;
+		List<Dictionary> dictionaryUnit = null;
 		try {
 			if(StringUtils.isNotBlank(getPara("id"))) {
-				projectInfo = projectInfoService.projectInfoById(getPara("id"));
+				projectInfoView = projectInfoService.projectInfoViewById(getParaToInt("id"));
 			}
-			dictionaryDepartment = projectInfoService.projectDepartment(PropKit.getInt("projectDepartment"));
-			dictionaryType = projectInfoService.projectType(PropKit.getInt("projectType")); 
+			dictionaryDepartment = dictionaryService.dictionaryByPid(PropKit.getInt("projectDepartment"));
+			dictionaryType = dictionaryService.dictionaryByPid(PropKit.getInt("projectType"));
+			dictionaryUnit = dictionaryService.dictionaryByPid(PropKit.getInt("projectUnit"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		setAttr("projectInfo", projectInfo);
+		setAttr("projectInfo", projectInfoView);
 		setAttr("dictionaryDepartment",dictionaryDepartment);
 		setAttr("dictionaryType",dictionaryType);
-		}
+		setAttr("dictionaryUnit", dictionaryUnit);
+	}
 	
 	public void projectInfoDetail(){
-		ProjectInfo projectInfo = new ProjectInfo();
+		ProjectInfoView projectInfoView = null;
 		try {
 			if(StringUtils.isNotBlank(getPara("id"))) {
-				projectInfo = projectInfoService.projectInfoById(getPara("id"));
+				projectInfoView = projectInfoService.projectInfoViewById(getParaToInt("id"));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		setAttr("projectInfo", projectInfo);
+		setAttr("projectInfo", projectInfoView);
 	}
 	
 }
