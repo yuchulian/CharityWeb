@@ -1,3 +1,12 @@
+<style type="text/css">
+#projectInfoDetail tr th {
+	text-align: center;
+}
+
+#projectInfoDetail tr td {
+	text-align: center;
+}
+</style>
 <form class="form-horizontal" id="projectInfoDetail">
 	<input type="hidden" name="projectInfo.id" value="#(projectInfo.id)" />
 	<table id="projectTable" style="width: 100%;" border="1px"
@@ -108,7 +117,7 @@
 								name="projectInfo.project_priority" id="inlineRadio3" value="3"
 								#(3 == projectInfo.project_priority ? "checked='checked'" : "")>C
 						</label> <br /> <span> (A代表重大项目且成交性高;B代表不同项目且成交性高;C代表成交性的不确定) </span>
-				</div> #if(null != session.activitiMap)
+				</div>
 			</th>
 			<th colspan="5">
 				<div style="margin-left: 30px;">
@@ -188,6 +197,8 @@
 			</td>
 		</tr> -->
 	</table>
+	
+	 #if(null != session.activitiMap)
 	<div class="form-group">
 				<label class="col-sm-2 control-label">历史批注信息</label>
 		<div class="col-sm-9">

@@ -1,10 +1,13 @@
 package com.jlqr.service;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Page;
 import com.jlqr.common.ServiceUtil;
+import com.jlqr.common.model.Dictionary;
 import com.jlqr.common.model.EmployView;
 import com.jlqr.common.model.ProjectInfo;
 
@@ -35,6 +38,16 @@ public class ProjectInfoService extends ServiceUtil{
 	
 	public ProjectInfo projectInfoById(String id) throws Exception {
 		return ProjectInfo.dao.findById(id);
+	}
+
+	public List<Dictionary> projectDepartment(Integer pid) {
+		// TODO Auto-generated method stub
+		return Dictionary.dao.find("select * from dictionary where dictionary_pid =?",pid);
+	}
+
+	public List<Dictionary> projectType(Integer pid) {
+		// TODO Auto-generated method stub
+		return Dictionary.dao.find("select * from dictionary where dictionary_pid =?",pid);
 	}
 	
 }
