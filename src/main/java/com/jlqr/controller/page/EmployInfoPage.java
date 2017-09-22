@@ -39,7 +39,9 @@ public class EmployInfoPage extends ControllerUtil {
 	
 	public void employInfoEdit() {
 		EmployInfo employInfo = new EmployInfo();
+		List<Dictionary> employEducation = null;
 		try {
+			employEducation = dictionaryService.findDictionaryListByPId(PropKit.getInt("employEducationId"));
 			if(StringUtils.isNotBlank(getPara("id"))) {
 				employInfo = employInfoService.findEmployInfoById(getParaToInt("id"));
 				if(null == employInfo)
@@ -48,6 +50,7 @@ public class EmployInfoPage extends ControllerUtil {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		setAttr("employEducation", employEducation);
 		setAttr("employInfo", employInfo);
 	}
 

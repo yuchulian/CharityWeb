@@ -72,14 +72,19 @@
 				},
 				pageUrl : "/employInfoPage/employInfoEdit",
 				title : "员工修改",
-				width : 1500,
+				width : 1100,
 				button : {
 					"submit" : {
 						name : "确定",
 						className : "btn-primary",
 						click : function(dataMap) {
 // 							if ($('#employInfoForm').validationEngine('validate')) {
-								var employInfo = util.getModal(dataMap);
+								var employInfo = util.getModal(dataMap),$this="";
+								$("#employInfo_id td[id]").each(function() {
+									$this = $(this);
+									console.log($this.text());
+									employInfo["employInfo."+$this.attr("id")] = $.trim($this.text());
+								});
 								util.call("/employInfoData/employInfoSave", employInfo, function(returnMsg) {
 									util.refreshPage(dataMap);
 									util.closeModal(dataMap);

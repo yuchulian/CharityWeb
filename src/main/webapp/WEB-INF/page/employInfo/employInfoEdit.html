@@ -1,159 +1,113 @@
+<style type="text/css">
+	#employInfo_id{ width: 1024px; word-wrap:break-word; word-break:break-all;}
+	#employInfo_id tr:nth-child(1) > *{ border: none; border-bottom: 1px solid #ccc; }
+	#employInfo_id th, #employInfo_id td{ border: 1px solid #ccc; text-align: center; height: 40px; line-height: auto; }
+	#employInfo_id img,select{width: 100%;height: 100%}
+</style>
 <form id="employInfoForm" class="form-horizontal ">
 	<input type="hidden"  name="employInfo.id" value="#(employInfo.id)"/>
-		<table class="table table-bordered table-striped table-hover" >
+	<table id="employInfo_id" align="center">
+	<caption>
+		<h1>员工信息表</h1>
+	</caption>
 		<tr>
-			<th >姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名</th>
-			<td>
-				<input type="text" class="form-control validate[required]"
-				name="employInfo.employ_name" value="#(employInfo.employ_name)"
-				placeholder="请输入员工姓名" />
-	    	</td>
-			<th>工&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号</th>
-			<td>
-				<input type="text" class="form-control validate[required]"
-				name="employInfo.employ_job_number"
-				value="#(employInfo.employ_job_number)" placeholder="请输入员工工号" />
-			</td>
-			<th>民&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;族</th>
-			<td><input class="form-control" value="汉族"/></td>		
-			<td rowspan="4" style="width: 150px;height: 200px">
-				<div >
-					<img alt="" src="/img/1.jpg" style="width: 150px;height: 200px">
-				</div>
-			</td>
+			<td colspan="5"></td>
+			<th>工号</th>
+			<td contenteditable="true" id="employ_job_number">#(employInfo.employ_job_number)</td>
 		</tr>
 		<tr>
-			<th>出生年月</th>
-			<td><input type="text"
-				class="form-control validate[required] form_datetime"
-				name="employInfo.employ_birthday"
-				value="#(employInfo.employ_birthday)" placeholder="请输入员工出生日期" /></td>
-			<th>性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别</th>
-			<td><label style="margin-left: 40px;"> <input type="radio" name="employInfo.employ_sex"
-				value="1" #(0 != employInfo.employ_sex ? "checked='checked' " : "")/>&nbsp;男
-			</label> <label style="margin-left: 40px;"> <input type="radio"
-				name="employInfo.employ_sex" value="0"
-				#(0 == employInfo.employ_sex ? "checked='checked' " : "")/>&nbsp;女
-			</label></td>
-			<th>年&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;龄</th>
-			<td><input type="text" class="form-control validate[required]"
-				name="employInfo.employ_age" value="#(employInfo.employ_age)"
-				placeholder="请输入员工年龄" /></td>	
-				
+			<th style="width: 120px">姓名</th>
+			<td style="width: 170px" contenteditable="true" id="employ_name">#(employInfo.employ_name)</td>
+			<th style="width: 120px" >性别</th>
+			<td style="width: 170px" >
+				<label style="margin-left: 10px" class="radio-inline"><input type="radio" value="1" name="employInfo.employ_sex" #(1 == employInfo.employ_sex ? "checked='checked'" : "")/>男</label>
+				<label style="margin-left: 40px" class="radio-inline"><input type="radio" value="2" name="employInfo.employ_sex" #(2 == employInfo.employ_sex ? "checked='checked'" : "")/>女</label>
+			</td>
+			<th style="width: 120px">籍贯</th>
+			<td style="width: 170px" contenteditable="true" id="employ_nativeplace">#(employInfo.employ_nativeplace)</td>
+			<th rowspan="5" style="height: 200px">
+				<img  src="">
+			</th>
 		</tr>
 		<tr>
-			<th>政治面貌</th>
-			<td><input class="form-control validate[required]" name="employInfo.employ_politics" value="#(employInfo.employ_politics)"
-			placeholder="请输入员工政治面貌"/></td>
-			<th>婚姻状况</th>
-			<td ><input class="form-control validate[required]" name="#(employInfo.employ_marrage)" value="#(employInfo.employ_marrage)"
-			placeholder="请输入员工婚姻状态"/></td>
+			<th>年龄</th>
+			<td contenteditable="true" id="employ_age">#(employInfo.employ_age)</td>
+			<th>婚姻状态</th>
+			<td  colspan="3">
+				<label style="margin-left: 10px" class="radio-inline"><input type="radio" value="1" name="employInfo.employ_marrage" #(1 == employInfo.employ_marrage ? "checked='checked'" : "")/>未婚</label>
+				<label style="margin-left: 10px" class="radio-inline"><input type="radio" value="2" name="employInfo.employ_marrage" #(2 == employInfo.employ_marrage ? "checked='checked'" : "")/>已婚</label>
+				<label style="margin-left: 10px" class="radio-inline"><input type="radio" value="3" name="employInfo.employ_marrage" #(3 == employInfo.employ_marrage ? "checked='checked'" : "")/>离异</label>
+			</td>		
+		</tr>
+		<tr>
+			<th>出生时间</th>
+			<td class="form_datetime" id="employ_birthday">#(employInfo.employ_birthday)</td>			
 			<th>健康状态</th>
-			<td><input class="form-control validate[required]" name="employInfo.employ_health" value="#(employInfo.employ_health)"
-			placeholder="请输入员工健康状态"/></td>		
+			<td colspan="3" contenteditable="true" id="employ_health">#(employInfo.employ_health)</td>	
 		</tr>
 		<tr>
-			<th>血&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;型</th>
-			<td >	
-			<label> <input type="radio"
-				name="employInfo.employ_blood_type" value="1"
-				#("2" != employInfo.employ_blood_type && "3"!=employInfo.employ_blood_type
-				&& "4"!= employInfo.employ_blood_type ? "checked='checked' " : "") />&nbsp;O型
-			</label> <label style="margin-left: 15px;"> <input type="radio"
-				name="employInfo.employ_blood_type" value="2"
-				#("2" == employInfo.employ_blood_type ? "checked='checked' " : "") style="margin-left: 20px;"/>&nbsp;A型
-			</label> <label style="margin-left: 15px;"> <input type="radio"
-				name="employInfo.employ_blood_type" value="3"
-				#("3" == employInfo.employ_blood_type ? "checked='checked' " : "") style="margin-left: 20px;"/>&nbsp;B型
-			</label> <label style="margin-left: 15px;"> <input type="radio"
-				name="employInfo.employ_blood_type" value="4"
-				#("4" == employInfo.employ_blood_type ? "checked='checked' " : "") style="margin-left: 20px;"/>&nbsp;AB型
-			</label></td>
-			<th>籍&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;贯</th>
-			<td><input type="text" class="form-control validate[required]"
-				name="employInfo.employ_nativeplace"
-				value="#(employInfo.employ_nativeplace)" placeholder="请输入员工籍贯" /></td>
-			<th>户口所在地</th>
-			<td >
-			<input type="text" class="form-control validate[required]"
-				name="employInfo.employ_domicile"
-				value="#(employInfo.employ_domicile)" placeholder="请输入员工居住地址" /></td>
+			<th>血型</th>
+			<td id="employ_blood_type" contenteditable="true">
+				#(employInfo.employ_blood_type)
+			</td>
+			<th>身份证号码</th>
+			<td colspan="3" contenteditable="true" id ="employ_identity_card">#(employInfo.employ_identity_card)</td>
 		</tr>
-		
-		<tr>
-			<th>身份证号</th>
-			<td><input type="text" class="form-control validate[required,custom[idCard]]"
-				name="employInfo.employ_identity_card"
-				value="#(employInfo.employ_identity_card)" placeholder="请输入员工身份证号码" /></td>
-			<th>档案所在地</th>
-			<td >
-			    <input type="text" class="form-control validate[required]"
-				name="employInfo.employ_dossier_place"
-				value="#(employInfo.employ_dossier_place)" placeholder="请输入员工档案所在地" /></td>
-			<th >联系方式</th>
-			<td colspan="2"><input type="text" class="form-control validate[required,custom[phone]]"
-				name="employInfo.employ_phone" value="#(employInfo.employ_phone)"
-				placeholder="请输入员工联系方式" /></td>
-		</tr>
-		<tr>
-			<th>邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱</th>
-			<td ><input class="form-control" name="employInfo.employ_email" value="#(employInfo.employ_email)"
-				placeholder="请输入员工邮箱"
-			/></td>
-			<th>Q&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Q</th>
-			<td><input type="text" class="form-control validate[required]"
-				name="employInfo.employ_qq" value="#(employInfo.employ_qq)"
-				placeholder="请输入员工QQ号码" /></td>
-			<th>学&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;历</th>
-			<td colspan="2"><input class="form-control" value="本科"/></td>
-		</tr>
-		
 		<tr>
 			<th>毕业院校</th>
-			<td><input type="text" class="form-control validate[required]"
-				name="employInfo.employ_graduation"
-				value="#(employInfo.employ_graduation)" placeholder="请输入员工毕业院校" /></td>
-			<th>专&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;业</th>
-			<td ><input type="text" class="form-control validate[required]"
-				name="employInfo.employ_speciality"
-				value="#(employInfo.employ_speciality)" placeholder="请输入员工专业" /></td>
-			<th>学&nbsp;&nbsp;历&nbsp;&nbsp;ID</th>
-			<td colspan="2"><input type="text" class="form-control validate[required]"
-				name="employInfo.employ_education_id"
-				value="#(employInfo.employ_education_id)" placeholder="请输入员工学历ID" /></td>
+			<td colspan="2" contenteditable="true" id="employ_graduation">#(employInfo.employ_graduation)</td>
+			<th>学历</th>
+			<td colspan="2"  id="employ_education_id">
+				<select id="employ_education_id" name="employInfo.employ_education_id">
+					#for(education : employEducation) 
+						#if(education.id+""==employInfo.employ_education_id+"")
+							<option value="#(education.id)" selected="selected">#(education.dictionary_name)</option>
+						#else
+							<option value="#(education.id)">#(education.dictionary_name)</option>
+						#end
+					#end
+				</select>
+			</td>
 		</tr>
 		<tr>
-			
-			<th>学&nbsp;&nbsp;位&nbsp;&nbsp;ID</th>
-			<td >
-			<input type="text" class="form-control validate[required]"
-				name="employInfo.employ_degree_id"
-				value="#(employInfo.employ_degree_id)" placeholder="请输入员工学位ID" /></td>
-			<th>外语水平</th>
-			<td><input class="form-control validate[required]" name="employInfo.employ_wsk" value="#(employInfo.employ_wsk)"
-			placeholder="请输入员工外语水平"
-			/></td>
-			<th>外&nbsp;&nbsp;语ID</th>
-			<td colspan="2"><input class="form-control" placeholder="请输入员工外语ID"/></td>
+			<th>户口所在地 </th>
+			<td colspan="2" contenteditable="true" id="employ_domicile">#(employInfo.employ_domicile)</td>
+			<th>档案所在地</th>
+			<td colspan="3" contenteditable="true" id="employ_dossier_place">#(employInfo.employ_dossier_place)</td>	
 		</tr>
-		
+		<tr>
+			<th>学位</th>
+			<td contenteditable="true" id="employ_degree_id">#(employInfo.employ_degree_id)</td>
+			<th>政治面貌</th>
+			<td contenteditable="true" id ="employ_politics">#(employInfo.employ_politics)</td>
+			<th>外语水平</th>
+			<td colspan="2" contenteditable="true" id ="employ_wsk">#(employInfo.employ_wsk)</td>
+		</tr>
+		<tr>
+			<th>语种</th>
+			<td contenteditable="true" id="employ_language_id">
+				#(employInfo.employ_language_id)
+			</td>	
+			<th>专业</th>
+			<td colspan="4" contenteditable="true" id="employ_speciality">#(employInfo.employ_speciality)</td>
+		</tr>
+		<tr>
+			<th>获得证书</th>
+			<td colspan="6" contenteditable="true" id="employ_diploma">#(employInfo.employ_diploma)</td>		
+		</tr>
 		<tr>
 			<th>参加工作时间</th>
-			<td><input type="text"
-				class="form-control validate[required] form_datetime"
-				name="employInfo.employ_job_time"
-				value="#(employInfo.employ_job_time)" placeholder="请输入员工参加工作时间" /></td>
+			<td class="form_datetime" id="employ_job_time">#(employInfo.employ_job_time)</td>
 			<th>加入公司时间</th>
-			<td><input type="text"
-				class="form-control validate[required] form_datetime"
-				name="employInfo.employ_join_time"
-				value="#(employInfo.employ_join_time)" placeholder="请输入员工加入公司时间" /></td>
+			<td class="form_datetime" id="employ_join_time">#(employInfo.employ_join_time)</td>
+			<th>联系方式</th>
+			<td colspan="2" contenteditable="true" id="employ_phone">#(employInfo.employ_phone)</td>
 		</tr>
 		<tr>
-			<th>获得的证书</th>
-			<td colspan="8">
-				<textarea class="validate[required]" cols="170" rows="4" name="employInfo.employ_diploma">#(employInfo.employ_diploma)</textarea>
-			</td>
+			<th>电子邮箱</th>
+			<td colspan="2" contenteditable="true" id="employ_email">#(employInfo.employ_email)</td>
+			<th>QQ</th>
+			<td colspan="3" contenteditable="true" id ="employ_qq">#(employInfo.employ_qq)</td>
 		</tr>
 	</table>
 </form>

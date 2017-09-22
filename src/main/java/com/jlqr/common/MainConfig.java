@@ -12,6 +12,7 @@ import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 import com.jfinal.plugin.druid.DruidPlugin;
 import com.jfinal.template.Engine;
+import com.jlqr.common.model.EmployInfoView;
 import com.jlqr.common.model.EmployView;
 import com.jlqr.common.model.ProjectInfoView;
 import com.jlqr.common.model._MappingKit;
@@ -114,6 +115,7 @@ public class MainConfig extends JFinalConfig {
 		_MappingKit.mapping(arp);
 		arp.addMapping("employ_view", "id", EmployView.class);
 		arp.addMapping("project_info_view", "id", ProjectInfoView.class);
+		arp.addMapping("employ_info_view", EmployInfoView.class);
 		me.add(arp);
 	}
 	
