@@ -97,14 +97,14 @@
 				<td rowspan="2" colspan="2">
 					项目优先级别
 					<br/>
-					<label><input type="radio" name="projectInfo.project_priority" value="1" #(1 == projectInfo.project_priority ? "checked='checked'" : "") />A</label>
+					<label><input type="radio" name="projectInfo.project_priority" checked value="1" #(1 == projectInfo.project_priority ? "checked='checked'" : "") />A</label>
 					<label><input type="radio" name="projectInfo.project_priority" value="2" #(2 == projectInfo.project_priority ? "checked='checked'" : "") />B</label>
 					<label><input type="radio" name="projectInfo.project_priority" value="3" #(3 == projectInfo.project_priority ? "checked='checked'" : "") />C</label>
 					<br/>
 					(A代表重大项目且成交性高;B代表不同项目且成交性高;C代表成交性的不确定)
 				</td>
 				<td colspan="5">
-					申请项目推进费用:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;元<br/>
+					申请项目推进费用:<input name="projectInfo.project_push_expenses" value="#(projectInfo.project_push_expenses)"/>元<br/>
 					<span style="color: red;">(若申请项目推进费用高于项目总费用的1%,请说明理由)</span>
 				</td>
 			</tr>

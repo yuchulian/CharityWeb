@@ -39,9 +39,13 @@ public class EmployInfoPage extends ControllerUtil {
 	
 	public void employInfoEdit() {
 		EmployInfo employInfo = new EmployInfo();
-		List<Dictionary> employEducation = null;
+		List<Dictionary> employEducationList = null;
+		List<Dictionary> employDegreeList= null;
+		List<Dictionary> employLanguageList= null;
 		try {
-			employEducation = dictionaryService.findDictionaryListByPId(PropKit.getInt("employEducationId"));
+			employEducationList = dictionaryService.findDictionaryListByPId(PropKit.getInt("employEducationId"));
+			employDegreeList = dictionaryService.findDictionaryListByPId(PropKit.getInt("employDegreeId"));
+			employLanguageList = dictionaryService.findDictionaryListByPId(PropKit.getInt("employLanguageId"));
 			if(StringUtils.isNotBlank(getPara("id"))) {
 				employInfo = employInfoService.findEmployInfoById(getParaToInt("id"));
 				if(null == employInfo)
@@ -50,7 +54,9 @@ public class EmployInfoPage extends ControllerUtil {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		setAttr("employEducation", employEducation);
+		setAttr("employEducationList", employEducationList);
+		setAttr("employDegreeList", employDegreeList);
+		setAttr("employLanguageList",employLanguageList);
 		setAttr("employInfo", employInfo);
 	}
 

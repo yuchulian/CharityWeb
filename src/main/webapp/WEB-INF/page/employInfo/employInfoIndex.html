@@ -85,6 +85,7 @@
 									console.log($this.text());
 									employInfo["employInfo."+$this.attr("id")] = $.trim($this.text());
 								});
+								employInfo["employInfo.employ_img"] = $.trim($("#employInfoImg").attr("_src"));
 								util.call("/employInfoData/employInfoSave", employInfo, function(returnMsg) {
 									util.refreshPage(dataMap);
 									util.closeModal(dataMap);
@@ -190,7 +191,7 @@
 			tableHTML.push('<tr>');
 			tableHTML.push('	<td>', (i + 1), '</td>');
 			tableHTML.push('	<td><a href="javascript:void(0);" onclick="$(\'#powerPidSearch\').val(', obj.id, ');util.execute(\'', search, '\');">', obj.employ_name, '</a></td>');
-			tableHTML.push('	<td>', obj.employ_sex?"男" : "女", '</td>');
+			tableHTML.push('	<td>', obj.employ_sex==1?"男" : "女", '</td>');
 			tableHTML.push('	<td>', obj.employ_phone , '</td>');
 			tableHTML.push('	<td>');
 			tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',employInfoUpdate,'\', {id : ',obj.id,', title: \'员工修改\'});">修改</a>');

@@ -6,7 +6,9 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
 import com.jfinal.core.Controller;
+import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.Page;
+import com.jlqr.common.FileUtil;
 import com.jlqr.common.ServiceUtil;
 import com.jlqr.common.model.EmployInfo;
 import com.jlqr.common.model.EmployView;
@@ -49,6 +51,9 @@ public class EmployInfoService extends ServiceUtil {
 	}
 	
 	public void employInfoSave(EmployInfo employInfo,Controller controller) throws Exception {
+		if(null != employInfo.getEmployImg() && employInfo.getEmployImg().indexOf("/temp/") > -1) {
+			employInfo.setEmployImg(FileUtil.cut(employInfo.getEmployImg(), PropKit.get("img")));
+		}
 		if(null == employInfo.getId()) {
 			employInfo.setId(getMaxColumn(EmployInfo.class, "id") + 1);
 			employInfo.save();
