@@ -1,0 +1,141 @@
+#@layout()
+#define main()
+
+<div class="row">
+	<div class="col-md-12">
+		<div class="panel panel-visible">
+		
+			<!-- <div class="panel-heading">
+				<ol class="breadcrumb" id="projectInfo_menu"> </ol>
+			</div> -->
+			<div class="panel-body pn">
+				<div id="datatable2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+					<div class="dt-panelmenu clearfix">
+						<input type="hidden" id="projectInfoSearch" value="0"/>
+						<button type="button" class="btn btn-primary btn-gradient dark" id="reimburseInfoAdd">报销单添加</button>
+					</div>
+					<table class="table table-striped table-hover dataTable no-footer" id="reimburseInfoTable">
+						<thead>
+							<tr>
+								<th>&nbsp;</th>
+								<th class="sorting_asc">报销单编号</th>
+								<th class="sorting_disabled">单价</th>
+								<th class="sorting">数量</th>
+								<th class="sorting">总价</th>
+								<th class="sorting_disabled">操作</th>
+							</tr>
+						</thead>
+						<tbody> </tbody>
+					</table>
+					<div class="dt-panelfooter clearfix">
+						<div class="dataTables_info" id="datatable2_info" role="status"
+							aria-live="polite">Showing 1 to 5 of 13 entries</div>
+						<div class="dataTables_paginate paging_simple_numbers"
+							id="reimburseInfo">
+							<ul class="pagination">
+								<li class="paginate_button active" aria-controls="datatable2"
+									tabindex="0"><a href="#">1</a></li>
+								<li class="paginate_button " aria-controls="datatable2" tabindex="0"><a
+									href="#">2</a></li>
+								<li class="paginate_button " aria-controls="datatable2" tabindex="0"><a
+									href="#">3</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	util.initPage("/reimburseInfoData/reimburseInfopaginate", {
+		paginate :{
+			paginateId:"#reimburseInfo",
+			pageNumber:1,
+			pageSize:10
+		},
+		sort : {
+			"id" : "asc"
+		},
+// 		search : {
+// 			column : {
+				
+// 			}
+// 		},
+		modal : {
+			"reimburseInfoUpdate" : {
+				bind : {
+					"#reimburseInfoAdd" : {
+						title : "添加报销单"
+					}
+				},
+				pageUrl : "/reimburseInfoPage/reimburseInfoEdit",
+				width:700,
+				title : "修改报销单",
+				button : {
+					"submit" : {
+						name : "确定",
+						className : "btn-primary",
+						click : function(dataMap) {
+							if ($('#reimburseInfoForm').validationEngine('validate')) {
+								var reimburseInfo = util.getModal(dataMap);
+								util.call("/reimburseInfoData/reimburseInfoSave", reimburseInfo, function(returnMsg) {
+									util.refreshPage(dataMap);
+									util.closeModal(dataMap);
+									util.alert(returnMsg["content"]);
+								});
+							}
+						}
+					}
+				}
+			},
+			"reimburseInfoDelete" : {
+				button : {
+					"submit" : {
+						name : "确定",
+						className : "btn-primary",
+						click : function(dataMap) {
+							util.call("/reimburseInfoData/reimburseInfoDelete", { "id" : dataMap["id"] + "" }, function(returnMsg) {
+								util.refreshPage(dataMap);
+								util.closeModal(dataMap);
+								util.alert(returnMsg["content"]);
+							});
+						}
+					}
+				}
+			},
+			"reimburseInfoDetail" : {
+				title : "报销单详情",
+				pageUrl : "/reimburseInfoPage/reimburseInfoDetail",
+				width:700
+			}
+		}
+	},
+	function(data) {
+		var tableHTML = [],
+		obj = {},
+		reimburseInfoList = data.list,
+		reimburseInfoDetail = data["reimburseInfoDetail"],
+		reimburseInfoUpdate = data["reimburseInfoUpdate"],
+		reimburseInfoDelete = data["reimburseInfoDelete"];
+		for (var i = 0; i < reimburseInfoList.length; i++) {
+			obj = reimburseInfoList[i];
+			tableHTML.push('<tr>');
+			tableHTML.push('<td></td>');
+			tableHTML.push('	<td>', (i + 1), '</td>');
+			tableHTML.push('	<td>', obj.reimburse_price, '</td>');
+			tableHTML.push('	<td>', obj.reimburse_count, '</td>');
+			tableHTML.push('	<td>', obj.reimburse_total, '</td>');
+			tableHTML.push('	<td>');
+			tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',reimburseInfoUpdate,'\', {id : ',obj.id,', title: \'修改报销单\'});">修改</a>');
+			tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',reimburseInfoDelete,'\', {id : ',obj.reimburse_model,', pageHtml: \'确定要删除型号为【',obj.reimburse_model,'】的报销单吗？\'});">删除</a>');
+			tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',reimburseInfoDetail,'\', {id : ',obj.id,', title: \'查看报销单\'});">查看</a>');
+			tableHTML.push('	</td>');
+			tableHTML.push('</tr>');
+		}
+		$("#reimburseInfoTable tbody").html(tableHTML.join(""));
+	});
+</script>
+#end

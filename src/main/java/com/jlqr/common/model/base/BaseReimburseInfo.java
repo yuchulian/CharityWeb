@@ -90,4 +90,31 @@ public abstract class BaseReimburseInfo<M extends BaseReimburseInfo<M>> extends 
 		return getStr("reimburse_number");
 	}
 
+	public M setReimburseTime(java.util.Date reimburseTime) {
+		set("reimburse_time", reimburseTime);
+		return (M)this;
+	}
+
+	public java.util.Date getReimburseTime() {
+		return get("reimburse_time");
+	}
+
+	public M setEmployId(java.lang.Integer employId) {
+		set("employ_id", employId);
+		return (M)this;
+	}
+
+	public java.lang.Integer getEmployId() {
+		return getInt("employ_id");
+	}
+
+	public M setReimburseState(java.lang.Integer reimburseState) {
+		set("reimburse_state", reimburseState);
+		return (M)this;
+	}
+
+	public java.lang.Integer getReimburseState() {
+		return getInt("reimburse_state");
+	}
+
 }
