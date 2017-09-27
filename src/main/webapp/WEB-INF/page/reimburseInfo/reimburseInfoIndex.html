@@ -80,7 +80,21 @@
 						className : "btn-primary",
 						click : function(dataMap) {
 							if ($('#reimburseInfoForm').validationEngine('validate')) {
-								var reimburseInfo = util.getModal(dataMap);
+								var reimburseInfo = util.getModal(dataMap);								
+								var reimburse_price = $("#reimburse_price").val();
+								var reimburse_count = $("#reimburse_count").val();
+								if(isNaN(reimburse_price) || reimburse_price <0){
+									 util.alert("单价必须为数字");
+									 $("#reimburse_price").val("");
+									 return false;
+								 }
+								var re = /^\d+$/;
+								if(!(re.exec(reimburse_count) != null)) {
+									 util.alert("数量必须为数字");
+									 $("#reimburse_count").val("");
+									 return false;
+								 } 
+								reimburseInfo["reimburseInfo.reimburse_total"] = $("#reimburse_total").val();
 								util.call("/reimburseInfoData/reimburseInfoSave", reimburseInfo, function(returnMsg) {
 									util.refreshPage(dataMap);
 									util.closeModal(dataMap);
@@ -130,7 +144,7 @@
 			tableHTML.push('	<td>', obj.reimburse_total, '</td>');
 			tableHTML.push('	<td>');
 			tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',reimburseInfoUpdate,'\', {id : ',obj.id,', title: \'修改报销单\'});">修改</a>');
-			tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',reimburseInfoDelete,'\', {id : ',obj.reimburse_model,', pageHtml: \'确定要删除型号为【',obj.reimburse_model,'】的报销单吗？\'});">删除</a>');
+			tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',reimburseInfoDelete,'\', {id : ',obj.id,', pageHtml: \'确定要删除型号为【',obj.reimburse_model,'】的报销单吗？\'});">删除</a>');
 			tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',reimburseInfoDetail,'\', {id : ',obj.id,', title: \'查看报销单\'});">查看</a>');
 			tableHTML.push('	</td>');
 			tableHTML.push('</tr>');

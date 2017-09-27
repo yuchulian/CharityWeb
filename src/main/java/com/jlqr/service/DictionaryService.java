@@ -5,13 +5,14 @@ import java.util.List;
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.activerecord.Record;
 import com.jlqr.common.ServiceUtil;
 import com.jlqr.common.model.Dictionary;
 
 public class DictionaryService extends ServiceUtil {
 	public Page<Dictionary> dictionaryPaginate(Controller controller) throws Exception {
 		return this.paginate(Dictionary.class, controller);
-	}
+	}	
 	public List<Dictionary> dictionaryList(Controller controller) throws Exception {
 		return this.list(Dictionary.class, controller);
 	}

@@ -40,19 +40,19 @@
 	<div class="form-group">
 		<label class="col-sm-2 control-label"><span class="red">*</span>单价</label>
 		<div class="col-sm-10">
-			<input type="text" class="form-control validate[required]" name="reimburseInfo.reimburse_price" value="#(reimburseInfo.reimburse_price)" placeholder="请输入单价"/>
+			<input type="text"  id="reimburse_price" class="form-control validate[required]" name="reimburseInfo.reimburse_price" value="#(reimburseInfo.reimburse_price)" placeholder="请输入单价"/>
 		</div>
 	</div>
 	<div class="form-group">
 		<label class="col-sm-2 control-label"><span class="red">*</span>数量</label>
 		<div class="col-sm-10">
-			<input type="text" class="form-control validate[required]" name="reimburseInfo.reimburse_count" value="#(reimburseInfo.reimburse_count)" placeholder="请输入单价"/>
+			<input type="text" id="reimburse_count" class="form-control validate[required]" name="reimburseInfo.reimburse_count" value="#(reimburseInfo.reimburse_count)" placeholder="请输入单价"/>
 		</div>
 	</div>
 	<div class="form-group">
 		<label class="col-sm-2 control-label"><span class="red">*</span>总价</label>
 		<div class="col-sm-10">
-			<input type="text" class="form-control validate[required]" name="reimburseInfo.reimburse_total" value="#(reimburseInfo.reimburse_total)" placeholder="请输入总价"/>
+			<input type="text" disabled="disabled"  class="form-control validate[required]" id="reimburse_total" name="reimburseInfo.reimburse_total" value="#(reimburseInfo.reimburse_total)"/>
 		</div>
 	</div>
 	<div class="form-group">
@@ -64,8 +64,16 @@
 	<div class="form-group">
 		<label class="col-sm-2 control-label"><span class="red">*</span>所属编号</label>
 		<div class="col-sm-10">
-			<input type="text" class="form-control validate[required]" name="reimburseInfo.reimburse_number" value="#(reimburseInfo.reimburse_number)" placeholder="请输入所属编号"/>
-		</div>
+			<select name="reimburseInfo.reimburse_number" class="form-control">
+				#for(projectNumber : projectNumberList) 
+					#if(projectNumber.project_number+""==reimburseInfo.reimburse_number+"")
+						<option value="#(projectNumber.project_number)" selected="selected">#(projectNumber.project_number)</option>
+					#else
+						<option value="#(projectNumber.project_number)">#(projectNumber.project_number)</option>
+					#end
+				#end
+		</select>
+		</div>	
 	</div>
 </form>
 <script type="text/javascript">
@@ -73,4 +81,20 @@
 		showOneMessage: true,
 		promptPosition: "topLeft"
 	});
+	$(function(){
+		setInterval(function(){
+			var reimburse_price = $("#reimburse_price").val();
+	 		var reimburse_count = $("#reimburse_count").val();
+	 		if((!isNaN(reimburse_price))&&(reimburse_price >=0)&&(checkNum(reimburse_count))){
+	 			var reimburse_total = parseFloat(reimburse_price)*parseInt(reimburse_count);
+	 	 		$("#reimburse_total").val(reimburse_total); 
+			 }else{
+				 $("#reimburse_total").val(""); 
+			 }
+		}, 500);
+	});
+ 	function checkNum(num) {
+         var re = /^\d+$/;   
+         return re.exec(num) != null;    
+	}  
 </script>

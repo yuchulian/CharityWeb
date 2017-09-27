@@ -7,10 +7,13 @@ import org.apache.commons.lang.StringUtils;
 import com.jfinal.core.Controller;
 import com.jfinal.kit.PropKit;
 import com.jlqr.common.model.Dictionary;
+import com.jlqr.common.model.LoginInfo;
+import com.jlqr.common.model.ProjectInfo;
 import com.jlqr.common.model.ReimburseInfo;
 import com.jlqr.common.model.ReimburseInfoView;
 import com.jlqr.interceptor.NewService;
 import com.jlqr.service.DictionaryService;
+import com.jlqr.service.ProjectInfoService;
 import com.jlqr.service.ReimburseInfoService;
 
 public class ReimburseInfoPage extends Controller{
@@ -18,6 +21,8 @@ public class ReimburseInfoPage extends Controller{
 	ReimburseInfoService reimburseInfoService;
 	@NewService("DictionaryService")
 	DictionaryService dictionaryService;
+	@NewService("ProjectInfoService")
+	ProjectInfoService projectInfoService;
 	public void index(){
 		render("reimburseInfoIndex.html");
 	}
@@ -25,6 +30,9 @@ public class ReimburseInfoPage extends Controller{
 		ReimburseInfoView reimburseInfo = new ReimburseInfoView();
 		List<Dictionary> reimburseBrandList = null;
 		List<Dictionary> reimburseTypeList = null;
+		List<ProjectInfo> projectNumberList = null;
+		LoginInfo loginInfo = getSessionAttr("loginInfo");
+		projectNumberList = projectInfoService.findProjectInfoByProjectCollector(loginInfo.getId());
 		try {
 			reimburseBrandList = dictionaryService.dictionaryByPid(PropKit.getInt("reimburse_brand"));
 			reimburseTypeList = dictionaryService.dictionaryByPid(PropKit.getInt("reimburse_type"));
@@ -38,6 +46,7 @@ public class ReimburseInfoPage extends Controller{
 		setAttr("reimburseBrandList", reimburseBrandList);
 		setAttr("reimburseTypeList", reimburseTypeList);
 		setAttr("reimburseInfo", reimburseInfo);
+		setAttr("projectNumberList", projectNumberList);
 	}
 	public void reimburseInfoDetail(){
 		ReimburseInfoView reimburseInfo = new ReimburseInfoView();
@@ -51,4 +60,12 @@ public class ReimburseInfoPage extends Controller{
 		}
 		setAttr("reimburseInfo", reimburseInfo);
 	}
+	
+	/**
+	 * 报销统计页面
+	 */
+	public void costCountIndex() {
+		render("costCountIndex.html");
+	}
+	
 }

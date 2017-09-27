@@ -58,4 +58,9 @@ public class ProjectInfoService extends ServiceUtil{
 		return ProjectInfoView.dao.findById(id);
 	}
 
+	public List<ProjectInfo> findProjectInfoByProjectCollector(Integer id) {
+		// TODO Auto-generated method stub
+		return ProjectInfo.dao.find("select * from project_info where project_collector=?",id);
+	}
+
 }

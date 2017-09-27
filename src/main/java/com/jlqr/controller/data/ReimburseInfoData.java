@@ -2,7 +2,6 @@ package com.jlqr.controller.data;
 
 import java.util.HashMap;
 
-import com.jfinal.core.Controller;
 import com.jlqr.common.ControllerUtil;
 import com.jlqr.common.model.ReimburseInfo;
 import com.jlqr.interceptor.NewService;
@@ -34,6 +33,7 @@ public class ReimburseInfoData extends ControllerUtil{
 	}
 	public void reimburseInfoDelete(){
 		int id = getParaToInt("id");
+		System.out.println(id);
 		try {
 			reimburseInfoService.reimburseInfoDeleteById(id);
 			returnMsg.put("returnState", "success");
@@ -44,4 +44,15 @@ public class ReimburseInfoData extends ControllerUtil{
 		}
 		renderJson(returnMsg);
 	}
+	
+	/**
+	 * 报销统计
+	 */
+	 public void costCount() {
+		 try {
+			 renderJson(reimburseInfoService.costCount());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	 }
 }

@@ -81,6 +81,12 @@
 						className : "btn-primary",
 						click : function(dataMap) {
 							if ($('#projectInfoForm').validationEngine('validate')) {
+								var project_budget = $.trim($("#project_budget").text());
+								if(isNaN(project_budget) || project_budget <0){
+									util.alert("项目预算必须为数字");
+									$("#project_budget").text(" ");
+									return false;
+								 }
 								var projectInfo = util.getModal(dataMap), $this = "";
 								$("#projectTable td[id]").each(function() {
 									$this = $(this);
