@@ -1,20 +1,33 @@
 #@layout()
 #define main()
-	<div class="row">
+<div class="row">
+	<div class="panel-body">
+		<div class="form-inline">
+			<div>
+				<label class="label-control">报销时间:</label>
+				<input class="form-control" id="startTime" type="text" name="startTime" style="width: 100px;" />
+				<label class="label-control">-</label>
+				<input class="form-control" id="endTime" type="text" name="endTime" style="width: 100px;" />
+				<input class="btn btn-primary " type="button" value="搜索" id="costCountSearch" />
+				<input class="btn btn-primary " type="button" value="重置" id="costCountReset" />
+			</div>
+		</div>
+	</div>		
 	<div class="col-md-12">
 		<div class="panel panel-visible">
 		
 			<!-- <div class="panel-heading">
 				<ol class="breadcrumb" id="projectInfo_menu"> </ol>
 			</div> -->
+			
 			<div class="panel-body pn">
 				<div id="datatable2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
-					<table class="table table-striped table-hover dataTable no-footer" id="costCountTable">
+					<table class="table  table-hover dataTable no-footer" id="costCountTable">
 						<thead>
 							<tr>
-								<th>&nbsp;</th>
-								<th class="sorting_asc">编号</th>
-								<th class="sorting_disabled">部门</th>
+								<th class="sorting_asc">部门</th>
+								<th class="sorting_disabled">员工姓名</th>
+								<th class="sorting_disabled">报销总金额</th>
 							</tr>
 						</thead>
 						<tbody> </tbody>
@@ -27,7 +40,18 @@
 </div>
 
 <script type="text/javascript">
-util.initPage("/reimburseInfoData/costCount", {}, function(data) {
+util.initDateRange('#startTime', '#endTime');
+util.initPage("/reimburseInfoData/costCount", {
+	search : {
+		bind : {
+			searchId : '#costCountSearch',
+			resetId : '#costCountReset'
+		},
+		column : {
+			'reimburse_time' : ['betweenDate' , '#startTime,#endTime']
+		}
+	}
+	}, function(data) {
 	var tableHTML = [],
 		obj = {},
 		costCountList = data.list,

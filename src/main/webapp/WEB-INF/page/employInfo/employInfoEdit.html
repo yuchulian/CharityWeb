@@ -110,11 +110,26 @@
 				</select>
 			</td>	
 			<th>专业</th>
-			<td colspan="4" contenteditable="true" id="employ_speciality">#(employInfo.employ_speciality)</td>
+			<td colspan="4">
+				<select id="employ_speciality" name="employInfo.employ_speciality">
+					#for(employSpeciality : employSpecialityList) 
+						#if(employSpeciality.id+""==employInfo.employ_speciality+"")
+							<option value="#(employSpeciality.id)" selected="selected">#(employSpeciality.dictionary_name)</option>
+						#else
+							<option value="#(employSpeciality.id)">#(employSpeciality.dictionary_name)</option>
+						#end
+					#end
+				</select>
+			</td>
 		</tr>
 		<tr>
-			<th>获得证书</th>
-			<td colspan="6" contenteditable="true" id="employ_diploma">#(employInfo.employ_diploma)</td>		
+			<th>专业证书</th>
+			<td colspan="6">
+				<div class="input-group" style="width: 100%;height: 100%">
+  					<input type="text" disabled="disabled" style="height: 100%;width: 100%" placeholder="请选择专业证书" name="employInfo.employ_diploma" value="#(employInfo.employ_diploma)">
+  					<span class="input-group-addon btn" id="select_employ_diploma">选择</span>
+				</div> 				
+			</td>		
 		</tr>
 		<tr>
 			<th>参加工作时间</th>
@@ -137,6 +152,22 @@
 	</table>
 </form>
 <script type="text/javascript">
+	var employDiplomaSelectModal =	util.modal({
+		title : "专业证书",
+		pageUrl : "/employInfoPage/employDiplomaSelect",
+		button : {
+			"submit" : {
+				name : "确定",
+				className : "btn-primary",
+				click :function(dataMap){
+					util.closeModal(dataMap);
+				}
+			}
+		}
+	});
+	$("#select_employ_diploma").click(function(){
+		util.execute(employDiplomaSelectModal,{});
+	});
 	$("#employInfoForm").validationEngine({
 		showOneMessage : true,
 		promptPosition : "topLeft"

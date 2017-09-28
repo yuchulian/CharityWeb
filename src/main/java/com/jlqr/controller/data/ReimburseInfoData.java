@@ -50,7 +50,7 @@ public class ReimburseInfoData extends ControllerUtil{
 	 */
 	 public void costCount() {
 		 try {
-			 renderJson(reimburseInfoService.costCount());
+			 renderJson(reimburseInfoService.costCount(this));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

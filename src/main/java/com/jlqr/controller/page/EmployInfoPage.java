@@ -1,5 +1,6 @@
 package com.jlqr.controller.page;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -42,10 +43,12 @@ public class EmployInfoPage extends ControllerUtil {
 		List<Dictionary> employEducationList = null;
 		List<Dictionary> employDegreeList= null;
 		List<Dictionary> employLanguageList= null;
+		List<Dictionary> employSpecialityList = null;
 		try {
 			employEducationList = dictionaryService.findDictionaryListByPId(PropKit.getInt("employEducationId"));
 			employDegreeList = dictionaryService.findDictionaryListByPId(PropKit.getInt("employDegreeId"));
 			employLanguageList = dictionaryService.findDictionaryListByPId(PropKit.getInt("employLanguageId"));
+			employSpecialityList = dictionaryService.findDictionaryListByPId(PropKit.getInt("employSpecialityId"));
 			if(StringUtils.isNotBlank(getPara("id"))) {
 				employInfo = employInfoService.findEmployInfoById(getParaToInt("id"));
 				if(null == employInfo)
@@ -57,6 +60,7 @@ public class EmployInfoPage extends ControllerUtil {
 		setAttr("employEducationList", employEducationList);
 		setAttr("employDegreeList", employDegreeList);
 		setAttr("employLanguageList",employLanguageList);
+		setAttr("employSpecialityList", employSpecialityList);
 		setAttr("employInfo", employInfo);
 	}
 
@@ -85,5 +89,17 @@ public class EmployInfoPage extends ControllerUtil {
 		setAttr("projectDepartment", JsonKit.toJson(SystemUtil.toDictionaryList(projectDepartment, loginInfo)));
 		setAttr("roleInfoList", JsonKit.toJson(SystemUtil.toRoleInfoList(roleInfoList, loginInfo)));
 	}
+	//选择专业证书
+	public void employDiplomaSelect(){
+		Integer employSpeciality = PropKit.getInt("employ_speciality");
+		List<HashMap> employDiplomaSelectList = null;
+		try {
+			employDiplomaSelectList = dictionaryService.employDiplomaSelect(this,employSpeciality);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		setAttr("employDiplomaSelectList", employDiplomaSelectList);
+	} 
 	
 }

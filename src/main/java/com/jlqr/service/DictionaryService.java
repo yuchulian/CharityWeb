@@ -1,6 +1,10 @@
 package com.jlqr.service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
 
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Db;
@@ -66,6 +70,78 @@ public class DictionaryService extends ServiceUtil {
 	public List<Dictionary> dictionaryByPid(Integer pid) throws Exception{
 		return Dictionary.dao.find("select * from dictionary where dictionary_pid =?",pid);
 	}
+
+	public List<HashMap> employDiplomaSelect(Controller controller,Integer employSpeciality) throws Exception {
+		List<HashMap> employDiplomaSelectList = new ArrayList<HashMap>();
+		List<Record> employDiplomaList = this.list(controller, "SELECT * FROM  dictionary where dictionary_id_path like ',57,%'", "GROUP BY dictionary_id_path");
+		String[] pathList = {}, pathnameList = {};
+		List<Integer> cidList = new ArrayList<Integer>();
+		int  pathLength = 0, pid = 0, cid = 0;
+		HashMap cidMap = new HashMap(), employDiplomaMap = new HashMap();
+		boolean hasCid = false, hasPid = false;
+		for (Record employDiploma : employDiplomaList) {
+			pathList = StringUtils.defaultString(employDiploma.getStr("dictionary_id_path"), "").split(",");
+			pathnameList = StringUtils.defaultString(employDiploma.getStr("dictionary_name_path"), "").split(",");
+			pathLength = pathList.length;
+			if(pathLength == pathnameList.length) {
+				for (int i=1; i<pathLength; i++) {
+					cid = Integer.parseInt(pathList[i]);
+					if(!cidMap.containsKey(cid)) {
+						if(i == 1)
+							pid = 0;
+						else
+							pid = Integer.parseInt(pathList[i-1]);
+					       	employDiplomaMap = new HashMap();
+					      	employDiplomaMap.put("pid", pid);
+					       	employDiplomaMap.put("id", cid);
+				        		employDiplomaMap.put("name", pathnameList[i]);
+						employDiplomaMap.put("children", new ArrayList<HashMap>());					
+						employDiplomaSelectList = mergeList(cidMap.containsKey(pid), false, employDiplomaSelectList, employDiplomaMap);						
+						cidMap.put(cid, null);
+						cidList.add(cid);
+					}
+				}
+			}
+		}
+		
+		for(int i=cidList.size()-1; i>-1; i--) {
+			employDiplomaSelectList = mergeList(false, employDiplomaSelectList, cidList.get(i));
+		}
+		
+		return employDiplomaSelectList;
+	}
 	
+	private List<HashMap> mergeList(boolean hasPid, boolean isFinish, List<HashMap> employDiplomaSelectList, HashMap employDiplomaMap) {
+		if(!isFinish) {
+			List<HashMap> _employDiplomaSelectList = null;
+			if(hasPid){
+				for (HashMap _newsChannelStatisticsMap : employDiplomaSelectList) {
+					_employDiplomaSelectList = (List<HashMap>)_newsChannelStatisticsMap.get("children");
+					if(Integer.parseInt(employDiplomaMap.get("pid").toString()) == Integer.parseInt(_newsChannelStatisticsMap.get("id").toString())) {
+						_employDiplomaSelectList.add(employDiplomaMap);
+						isFinish = true;
+					} else {
+						mergeList(hasPid, isFinish, _employDiplomaSelectList, employDiplomaMap);
+					}
+				}
+			} else {
+				employDiplomaSelectList.add(employDiplomaMap);
+			}
+		}
+		return employDiplomaSelectList;
+	}
+	
+	private List<HashMap> mergeList(boolean isFinish, List<HashMap> employDiplomaSelectList, int id) {
+		if(!isFinish) {
+			List<HashMap> _employDiplomaSelectList = null;
+			for (HashMap _newsChannelStatisticsMap : employDiplomaSelectList) {
+				_employDiplomaSelectList = (List<HashMap>)_newsChannelStatisticsMap.get("children");
+				if(id != Integer.parseInt(_newsChannelStatisticsMap.get("id").toString())) {
+					mergeList(isFinish, _employDiplomaSelectList, id);
+				}
+			}
+		}
+		return employDiplomaSelectList;
+	}
 	
 }
