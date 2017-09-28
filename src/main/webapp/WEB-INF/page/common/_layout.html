@@ -6,31 +6,16 @@
 <head>
 	<!-- Meta, title, CSS, favicons, etc. -->
 	<meta charset="utf-8">
-	<title>骅锋OA系统</title>
-	<meta name="keywords" content="Bootstrap 3 Admin Dashboard Template Theme" />
-	<meta name="description" content="AdminDesigns - Bootstrap 3 Admin Dashboard Theme">
-	<meta name="author" content="AdminDesigns">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>骅锋OA系统</title>
 	
-	<!-- FullCalendar Plugin CSS -->
-	<link rel="stylesheet" type="text/css" href="/css/fullcalendar.min.css">
 	
-	<!-- Theme CSS -->
 	<link rel="stylesheet" type="text/css" href="/css/theme.css">
 	
-	<!-- Admin Forms CSS -->
-	<link rel="stylesheet" type="text/css" href="/css/admin-forms.css">
-	
-	<!-- Datatables CSS -->
-	<link rel="stylesheet" type="text/css" href="/css/dataTables.bootstrap.css">
-	
-	<!-- validationEngine.jquery.css -->
 	<link rel="stylesheet" type="text/css" href="/css/validationEngine.jquery.css">
 	
-	<!-- zTreeStyle.css -->
 	<link rel="stylesheet" type="text/css" href="/css/zTreeStyle.css">
 	
-	<!-- index.css -->
 	<link rel="stylesheet" type="text/css" href="/css/index.css">
 	
 	<!-- bootstrap.min.css -->
@@ -44,8 +29,6 @@
 
 	<!-- jQuery -->
 	<script src="/js/jquery-2.1.0.min.js"></script>
-	<script src="/js/jquery-ui.min.js"></script>
-
 	
 	<!-- 插件引用 start -->
 	<script type="text/javascript" src="/js/bootstrap-datetimepicker.js"></script>
@@ -54,7 +37,6 @@
 	<script type="text/javascript" src="/js/jquery.validationEngine.js"></script>
 	<script type="text/javascript" src="/js/jquery.validationEngine-zh_CN.js"></script>
 	<script type="text/javascript" src="/js/jquery.ztree.all.min.js"></script>
-	<script type="text/javascript" src="/js/login.js"></script>
 	<script type="text/javascript" src="/js/util.js"></script>
 	<!-- 插件引用 end -->
 
@@ -64,48 +46,68 @@
 
 <body class="dashboard-page">
 
-	<!-------------------------------------------------------------+ 
-  <body> Helper Classes: 
----------------------------------------------------------------+ 
-  '.sb-l-o' - Sets Left Sidebar to "open"
-  '.sb-l-m' - Sets Left Sidebar to "minified"
-  '.sb-l-c' - Sets Left Sidebar to "closed"
+	<!-- 右下角浮动选项卡 -->
+	<div id="skin-toolbox" class="hidden">
+		<div class="panel">
+			<div class="panel-heading" unselectable="on"
+				style="user-select: none;">
+				<span class="panel-icon"> <i class="fa fa-gear text-primary"></i>
+				</span> <span class="panel-title"> Theme Options</span>
+			</div>
+			<div class="panel-body pn">
+				<ul class="nav nav-list nav-list-sm pl15 pt10" role="tablist">
+					<li class="active"><a href="#toolbox-header" role="tab" data-toggle="tab" aria-expanded="true">Navbar</a></li>
+					<li class=""><a href="#toolbox-sidebar" role="tab" data-toggle="tab" aria-expanded="false">Sidebar</a></li>
+					<li class=""><a href="#toolbox-settings" role="tab" data-toggle="tab" aria-expanded="false">Misc</a></li>
+				</ul>
+				<div class="tab-content p20 ptn pb15">
+					<div role="tabpanel" class="tab-pane active" id="toolbox-header">
+						<form id="toolbox-header-skin">
+							<h4 class="mv20">Header Skins</h4>
+							<div class="skin-toolbox-swatches">
+								<div class="checkbox-custom checkbox-disabled fill mb5">
+									<input type="radio" name="headerSkin" id="headerSkin8" checked="" value="">
+									<label for="headerSkin8">Light</label>
+								</div>
+							</div>
+						</form>
+					</div>
+					<div role="tabpanel" class="tab-pane" id="toolbox-sidebar">
+						<form id="toolbox-sidebar-skin">
+							<h4 class="mv20">Sidebar Skins</h4>
+							<div class="skin-toolbox-swatches">
+								<div class="checkbox-custom fill mb5">
+									<input type="radio" name="sidebarSkin" checked="" id="sidebarSkin3" value=""> <label for="sidebarSkin3">Dark</label>
+								</div>
+								<div class="checkbox-custom fill checkbox-disabled mb5">
+									<input type="radio" name="sidebarSkin" id="sidebarSkin1" value="sidebar-light"> <label for="sidebarSkin1">Light</label>
+								</div>
+								<div class="checkbox-custom fill checkbox-light mb5">
+									<input type="radio" name="sidebarSkin" id="sidebarSkin2" value="sidebar-light light"> <label for="sidebarSkin2">Lighter</label>
+								</div>
+							</div>
+						</form>
+					</div>
+					<div role="tabpanel" class="tab-pane" id="toolbox-settings">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
-  '.sb-r-o' - Sets Right Sidebar to "open"
-  '.sb-r-c' - Sets Right Sidebar to "closed"
----------------------------------------------------------------+
- Example: <body class="example-page sb-l-o sb-r-c">
- Results: Sidebar left Open, Sidebar right Closed
---------------------------------------------------------------->
 
-	<!-- Start: Main -->
+
+
 	<div id="main">
 
-		<!-----------------------------------------------------------------+ 
-       ".navbar" Helper Classes: 
-    -------------------------------------------------------------------+ 
-       * Positioning Classes: 
-        '.navbar-static-top' - Static top positioned navbar
-        '.navbar-static-top' - Fixed top positioned navbar
-
-       * Available Skin Classes:
-         .bg-dark    .bg-primary   .bg-success   
-         .bg-info    .bg-warning   .bg-danger
-         .bg-alert   .bg-system 
-    -------------------------------------------------------------------+
-      Example: <header class="navbar navbar-fixed-top bg-primary">
-      Results: Fixed top navbar with blue background 
-    ------------------------------------------------------------------->
-
-		<!-- Start: Header -->
 		<header class="navbar navbar-fixed-top navbar-shadow">
 			<div class="navbar-branding">
-				<b class="navbar-brand">骅锋OA系统</b>
+				<b class="navbar-brand">项目管理系统</b>
 				<span id="toggle_sidemenu_l" class="ad ad-lines"></span>
 			</div>
 			<ul class="nav navbar-nav navbar-left">
 				<li class="hidden-xs"><a
-					class="request-fullscreen toggle-active" href="#"> <span
+					class="request-fullscreen toggle-active" href="javascript:void(0);"> <span
 						class="ad ad-screen-full fs18"></span>
 				</a></li>
 			</ul>
@@ -115,193 +117,359 @@
 				</div>
 			</form>
 			<ul class="nav navbar-nav navbar-right">
-				<li class="dropdown menu-merge"><a href="#"
-					class="dropdown-toggle fw600 p15" data-toggle="dropdown"> <img
-						src="/img/1.jpg" alt="avatar" class="mw30 br64">
-						<span class="hidden-xs pl15"> #(session.employView.employ_name) </span> <span
-						class="caret caret-tp hidden-xs"></span>
-				</a>
+
+
+
+
+
+
+				<li class="dropdown menu-merge">
+					<div class="navbar-btn btn-group">
+						<button data-toggle="dropdown" class="btn btn-sm dropdown-toggle">
+							<span class="ad ad-radio-tower fs14 va-m"></span> <span
+								class="badge badge-danger">5</span>
+						</button>
+						<div
+							class="dropdown-menu dropdown-persist w375 animated animated-shorter fadeIn"
+							role="menu">
+							<div class="panel mbn">
+								<div class="panel-menu">
+									<div class="btn-group btn-group-justified btn-group-nav"
+										role="tablist">
+										<a href="#nav-tab1" data-toggle="tab" class="btn btn-default btn-sm active">待办事项</a>
+<!-- 										<a href="#nav-tab2" data-toggle="tab" class="btn btn-default btn-sm br-l-n br-r-n">办理中</a> -->
+<!-- 										<a href="#nav-tab3" data-toggle="tab" class="btn btn-default btn-sm">已办</a> -->
+									</div>
+								</div>
+								<div class="panel-body panel-scroller scroller-navbar pn">
+									<div class="tab-content br-n pn">
+										<div id="nav-tab1" class="tab-pane alerts-widget active" role="tabpanel">
+										
+											<ul class="media-list" role="menu">
+												<li class="media">
+													<a class="media-left" href="#">
+														<span class="glyphicon glyphicon-user text-info"></span>
+													</a>
+													<div class="media-body">
+														<h5 class="media-heading">
+															张三
+															<small class="text-muted">- 2017-09-28</small>
+														</h5>
+														新的一期项目报备…
+														<a class="text-system" href="#"> 办理 </a>
+													</div>
+												</li>
+											</ul>
+											
+										
+										</div>
+										<div id="nav-tab2" class="tab-pane chat-widget" role="tabpanel">
+											<div class="media">
+												<div class="media-left">
+													<a href="#">
+														<span class="glyphicon glyphicon-user text-info"></span>
+													</a>
+												</div>
+												<div class="media-body">
+													<span class="media-status online"></span>
+													<h5 class="media-heading">
+														Courtney Faught <small> - 12:30am</small>
+													</h5>
+													Cras sit amet nibh libero, in gravida nulla. Nulla vel
+													metus scelerisque ante sollicitudin.
+												</div>
+											</div>
+											<div class="media">
+												<div class="media-body">
+													<span class="media-status offline"></span>
+													<h5 class="media-heading">
+														Joe Gibbons <small> - 12:30am</small>
+													</h5>
+													Cras sit amet nibh libero, in gravida nulla. Nulla vel
+													metus scelerisque.
+												</div>
+												<div class="media-right">
+													<a href="#">
+														<span class="glyphicon glyphicon-user text-info"></span>
+													</a>
+												</div>
+											</div>
+											<div class="media">
+												<div class="media-left">
+													<a href="#">
+														<span class="glyphicon glyphicon-user text-info"></span>
+													</a>
+												</div>
+												<div class="media-body">
+													<span class="media-status online"></span>
+													<h5 class="media-heading">
+														Courtney Faught <small> - 12:30am</small>
+													</h5>
+													Cras sit amet nibh libero, in gravida nulla. Nulla vel
+													metuscommodo.
+												</div>
+											</div>
+											<div class="media">
+												<div class="media-body">
+													<span class="media-status offline"></span>
+													<h5 class="media-heading">
+														Joe Gibbons <small> - 12:30am</small>
+													</h5>
+													Cras sit amet nibh libero, in Nulla vel metus scelerisque
+													antecommodo.
+												</div>
+												<div class="media-right">
+													<a href="#">
+														<span class="glyphicon glyphicon-user text-info"></span>
+													</a>
+												</div>
+											</div>
+											<div class="media">
+												<div class="media-left">
+													<a href="#">
+														<span class="glyphicon glyphicon-user text-info"></span>
+													</a>
+												</div>
+												<div class="media-body">
+													<span class="media-status online"></span>
+													<h5 class="media-heading">
+														Courtney Faught <small> - 12:30am</small>
+													</h5>
+													Cras sit amet nibh libero, in gravida nulla. Nulla vel
+													metus scelerisque soltudino.
+												</div>
+											</div>
+											<div class="media">
+												<div class="media-body">
+													<span class="media-status offline"></span>
+													<h5 class="media-heading">
+														Joe Gibbons <small> - 12:30am</small>
+													</h5>
+													Cras sit amet nibh libero, in gravida nulla. Nulla vel
+													metus scelerisque ante sollicitudin commodo.
+												</div>
+												<div class="media-right">
+													<a href="#">
+														<span class="glyphicon glyphicon-user text-info"></span>
+													</a>
+												</div>
+											</div>
+										</div>
+										<div id="nav-tab3" class="tab-pane scroller-nm" role="tabpanel">
+											<ul class="media-list" role="menu">
+												<li class="media">
+													<a class="media-left" href="#">
+														<span class="glyphicon glyphicon-user text-info"></span>
+													</a>
+													<div class="media-body">
+														<h5 class="media-heading">
+															Article
+															<small class="text-muted">- 08/16/22</small>
+														</h5>
+														Last Updated 36 days ago by
+														<a class="text-system" href="#"> Max </a>
+													</div>
+												</li>
+												<li class="media"><a class="media-left" href="#">
+													<span class="glyphicon glyphicon-user text-info"></span>
+												</a>
+													<div class="media-body">
+														<h5 class="media-heading mv5">
+															Article <small> - 08/16/22</small>
+														</h5>
+														Last Updated 36 days ago by <a class="text-system"
+															href="#"> Max </a>
+													</div></li>
+												<li class="media"><a class="media-left" href="#">
+													<span class="glyphicon glyphicon-user text-info"></span>
+												</a>
+													<div class="media-body">
+														<h5 class="media-heading">
+															Article <small class="text-muted">- 08/16/22</small>
+														</h5>
+														Last Updated 36 days ago by <a class="text-system"
+															href="#"> Max </a>
+													</div></li>
+												<li class="media"><a class="media-left" href="#">
+													<span class="glyphicon glyphicon-user text-info"></span>
+												</a>
+													<div class="media-body">
+														<h5 class="media-heading mv5">
+															Article <small class="text-muted">- 08/16/22</small>
+														</h5>
+														Last Updated 36 days ago by <a class="text-system"
+															href="#"> Max </a>
+													</div></li>
+												<li class="media"><a class="media-left" href="#">
+													<span class="glyphicon glyphicon-user text-info"></span>
+												</a>
+													<div class="media-body">
+														<h5 class="media-heading">
+															Article <small class="text-muted">- 08/16/22</small>
+														</h5>
+														Last Updated 36 days ago by <a class="text-system"
+															href="#"> Max </a>
+													</div></li>
+												<li class="media"><a class="media-left" href="#">
+													<span class="glyphicon glyphicon-user text-info"></span>
+												</a>
+													<div class="media-body">
+														<h5 class="media-heading mv5">
+															Article <small> - 08/16/22</small>
+														</h5>
+														Last Updated 36 days ago by <a class="text-system"
+															href="#"> Max </a>
+													</div></li>
+												<li class="media"><a class="media-left" href="#">
+													<span class="glyphicon glyphicon-user text-info"></span>
+												</a>
+													<div class="media-body">
+														<h5 class="media-heading">
+															Article <small class="text-muted">- 08/16/22</small>
+														</h5>
+														Last Updated 36 days ago by <a class="text-system"
+															href="#"> Max </a>
+													</div></li>
+											</ul>
+											<table class="table table-striped hidden">
+												<thead>
+													<tr>
+														<th>First Name</th>
+														<th>Last Name</th>
+														<th>Username</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr>
+														<td>Mark</td>
+														<td>Otto</td>
+														<td>@mdo</td>
+													</tr>
+													<tr>
+														<td>Jacob</td>
+														<td>Thornton</td>
+														<td>@fat</td>
+													</tr>
+													<tr>
+														<td>Larry</td>
+														<td>the Bird</td>
+														<td>@twitter</td>
+													</tr>
+													<tr>
+														<td>Sussy</td>
+														<td>Watcher</td>
+														<td>@thehawk</td>
+													</tr>
+													<tr>
+														<td>Mark</td>
+														<td>Otto</td>
+														<td>@mdo</td>
+													</tr>
+													<tr>
+														<td>Sussy</td>
+														<td>Watcher</td>
+														<td>@thehawk</td>
+													</tr>
+													<tr>
+														<td>Jacob</td>
+														<td>Thornton</td>
+														<td>@fat</td>
+													</tr>
+													<tr>
+														<td>Larry</td>
+														<td>the Bird</td>
+														<td>@twitter</td>
+													</tr>
+													<tr>
+														<td>Sussy</td>
+														<td>Watcher</td>
+														<td>@thehawk</td>
+													</tr>
+													<tr>
+														<td>Mark</td>
+														<td>Otto</td>
+														<td>@mdo</td>
+													</tr>
+													<tr>
+														<td>Jacob</td>
+														<td>Thornton</td>
+														<td>@fat</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+								<!-- <div class="panel-footer text-center p7">
+									<a href="#" class="link-unstyled"> View All </a>
+								</div> -->
+							</div>
+						</div>
+					</div>
+				</li>
+
+
+
+
+
+
+
+
+
+
+
+				<li class="dropdown menu-merge">
+					<a href="javascript:void(0);" class="dropdown-toggle fw600 p15" data-toggle="dropdown">
+						<img src="/img/4.jpg" alt="avatar" class="mw30 br64">
+						<span class="hidden-xs pl15"> #(session.employView.employ_name) </span>
+						<span class="caret caret-tp hidden-xs"></span>
+					</a>
 					<ul class="dropdown-menu list-group dropdown-persist w250"
 						role="menu">
-						<!-- <li class="list-group-item"><a href="#"
+						<!-- <li class="list-group-item"><a href="javascript:void(0);"
 							class="animated animated-short fadeInUp"> <span
 								class="fa fa-envelope"></span> Messages <span
 								class="label label-warning">2</span>
 						</a></li>
-						<li class="list-group-item"><a href="#"
+						<li class="list-group-item"><a href="javascript:void(0);"
 							class="animated animated-short fadeInUp"> <span
 								class="fa fa-user"></span> Friends <span
 								class="label label-warning">6</span>
 						</a></li>
-						<li class="list-group-item"><a href="#"
+						<li class="list-group-item"><a href="javascript:void(0);"
 							class="animated animated-short fadeInUp"> <span
 								class="fa fa-bell"></span> Notifications
 						</a></li>
-						<li class="list-group-item"><a href="#"
+						<li class="list-group-item"><a href="javascript:void(0);"
 							class="animated animated-short fadeInUp"> <span
 								class="fa fa-gear"></span> Settings
 						</a></li> -->
 						<li class="dropdown-footer"><a href="/logOut" class=""> <span
 								class="fa fa-power-off pr5"></span> 退出登录
 						</a></li>
-					</ul></li>
+					</ul>
+				</li>
 			</ul>
 		</header>
-		<!-- End: Header -->
 
-		<!-----------------------------------------------------------------+ 
-       "#sidebar_left" Helper Classes: 
-    -------------------------------------------------------------------+ 
-       * Positioning Classes: 
-        '.affix' - Sets Sidebar Left to the fixed position 
 
-       * Available Skin Classes:
-         .sidebar-dark (default no class needed)
-         .sidebar-light  
-         .sidebar-light.light   
-    -------------------------------------------------------------------+
-       Example: <aside id="sidebar_left" class="affix sidebar-light">
-       Results: Fixed Left Sidebar with light/white background
-    ------------------------------------------------------------------->
-
-		<!-- Start: Sidebar -->
 		<aside id="sidebar_left" class="nano nano-light affix has-scrollbar sidebar-default sidebar-light">
 
-			<!-- Start: Sidebar Left Content -->
 			<div class="sidebar-left-content nano-content">
 
-				<!-- Start: Sidebar Menu -->
 				<ul class="nav sidebar-menu">
-					
-					#if(null != session)
-						#for(powerInfo : session.powerInfoList)
-							<li>
-								<a href="#(powerInfo.power_url)">
-									<span class="#(powerInfo.power_ico)"></span> <span class="sidebar-title">#(powerInfo.power_name)</span>
-									<span class="sidebar-title-tray hidden"> <span class="label label-xs bg-primary">New</span>
-								</a>
-							</li>
-						#end
-					#end
-
-					<li class="hidden"><a class="accordion-toggle" href="#"> <span
-							class="glyphicon glyphicon-bell"></span> <span
-							class="sidebar-title">UI Elements</span> <span class="caret"></span>
-					</a>
-						<ul class="nav sub-nav">
-							<li><a href="ui_alerts.html"> <span
-									class="fa fa-warning"></span> Alerts
-							</a></li>
-							<li><a href="ui_animations.html"> <span
-									class="fa fa-spinner"></span> Animations
-							</a></li>
-							<li><a href="ui_buttons.html"> <span
-									class="fa fa-plus-square-o"></span> Buttons
-							</a></li>
-							<li><a href="ui_typography.html"> <span
-									class="fa fa-text-width"></span> Typography
-							</a></li>
-							<li><a href="ui_portlets.html"> <span
-									class="fa fa-archive"></span> Portlets
-							</a></li>
-							<li><a href="ui_progress-bars.html"> <span
-									class="fa fa-bars"></span> Progress Bars
-							</a></li>
-							<li><a href="ui_tabs.html"> <span
-									class="fa fa-toggle-off"></span> Tabs
-							</a></li>
-							<li><a href="ui_icons.html"> <span
-									class="fa fa-hand-o-right"></span> Icons
-							</a></li>
-							<li><a href="ui_grid.html"> <span class="fa fa-th-large"></span>
-									Grid
-							</a></li>
-						</ul></li>
-					<li class="hidden"><a class="accordion-toggle" href="#"> <span
-							class="glyphicon glyphicon-duplicate"></span> <span
-							class="sidebar-title">Pages</span> <span class="caret"></span>
-					</a>
-						<ul class="nav sub-nav">
-							<li><a class="accordion-toggle" href="#"> <span
-									class="fa fa-gears"></span> Utility <span class="caret"></span>
-							</a>
-								<ul class="nav sub-nav">
-									<li><a href="landing-page/landing1/index.html"
-										target="_blank"> Landing Page </a></li>
-									<li><a href="pages_confirmation.html" target="_blank">
-											Confirmation <span class="label label-xs bg-primary">New</span>
-									</a></li>
-									<li><a href="pages_login.html" target="_blank"> Login
-									</a></li>
-									<li><a href="pages_login(alt).html" target="_blank">
-											Login Alt <span class="label label-xs bg-primary">New</span>
-									</a></li>
-									<li><a href="pages_register.html" target="_blank">
-											Register </a></li>
-									<li><a href="pages_register(alt).html" target="_blank">
-											Register Alt <span class="label label-xs bg-primary">New</span>
-									</a></li>
-									<li><a href="pages_screenlock.html" target="_blank">
-											Screenlock </a></li>
-									<li><a href="pages_screenlock(alt).html" target="_blank">
-											Screenlock Alt <span class="label label-xs bg-primary">New</span>
-									</a></li>
-									<li><a href="pages_forgotpw.html" target="_blank">
-											Forgot Password </a></li>
-									<li><a href="pages_forgotpw(alt).html" target="_blank">
-											Forgot Pass Alt <span class="label label-xs bg-primary">New</span>
-									</a></li>
-									<li><a href="pages_coming-soon.html" target="_blank">
-											Coming Soon </a></li>
-									<li><a href="pages_404.html"> 404 Error </a></li>
-									<li><a href="pages_500.html"> 500 Error </a></li>
-									<li><a href="pages_404(alt).html"> 404 Error Alt </a></li>
-									<li><a href="pages_500(alt).html"> 500 Error Alt </a></li>
-								</ul></li>
-							<li><a class="accordion-toggle" href="#"> <span
-									class="fa fa-desktop"></span> Basic <span class="caret"></span>
-							</a>
-								<ul class="nav sub-nav">
-									<li><a href="pages_search-results.html">Search Results
-											<span class="label label-xs bg-primary">New</span>
-									</a></li>
-									<li><a href="pages_profile.html"> Profile </a></li>
-									<li><a href="pages_timeline.html"> Timeline Split </a></li>
-									<li><a href="pages_timeline-single.html"> Timeline
-											Single </a></li>
-									<li><a href="pages_faq.html"> FAQ Page </a></li>
-									<li><a href="pages_calendar.html"> Calendar </a></li>
-									<li><a href="pages_messages.html"> Messages </a></li>
-									<li><a href="pages_messages(alt).html"> Messages Alt </a>
-									</li>
-									<li><a href="pages_gallery.html"> Gallery </a></li>
-								</ul></li>
-							<li><a class="accordion-toggle" href="#"> <span
-									class="fa fa-usd"></span> Misc <span class="caret"></span>
-							</a>
-								<ul class="nav sub-nav">
-									<li><a href="pages_invoice.html"> Printable Invoice </a></li>
-									<li><a href="pages_blank.html"> Blank </a></li>
-								</ul></li>
-						</ul></li>
-
+					#(session.menu)
 				</ul>
-				<!-- End: Sidebar Menu -->
 
-				<!-- Start: Sidebar Collapse Button -->
 				<div class="sidebar-toggle-mini">
 					<a href="#"> <span class="fa fa-sign-out"></span>
 					</a>
 				</div>
-				<!-- End: Sidebar Collapse Button -->
 
 			</div>
-			<!-- End: Sidebar Left Content -->
 
 		</aside>
-		<!-- End: Sidebar Left -->
 
-		<!-- Start: Content-Wrapper -->
 		<section id="content_wrapper">
 			<header id="topbar" class="alt hidden">
 				<div class="topbar-left">
@@ -317,43 +485,19 @@
 			</header>
 			
 			<section id="content" class="table-layout">
-			
 				<div class="tray tray-center">
 					#@main()
 				</div>
 			</section>
 		</section>
-		<!-- End: Content-Wrapper -->
 
 	</div>
-	<!-- End: Main -->
 	
-	<!-- BEGIN: PAGE SCRIPTS -->
-
-	<!-- HighCharts Plugin -->
-	<script src="/js/highcharts.js"></script>
-
-	<!-- JvectorMap Plugin + US Map (more maps in plugin/assets folder) -->
-	<script src="/js/jquery.jvectormap.min.js"></script>
-	<script src="/js/jquery-jvectormap-us-lcc-en.js"></script>
-
-	<!-- FullCalendar Plugin + moment Dependency -->
-	<script src="/js/moment.min.js"></script>
-	<script src="/js/fullcalendar.min.js"></script>
-	<!-- Theme Javascript -->
+	<script src="/js/bootstrap.min.js"></script>
+	<script src="/js/jquery-ui.min.js"></script>
 	<script src="/js/utility.js"></script>
-	<script src="/js/demo.js"></script>
-	<script src="/js/main.js"></script>
-
-	<!-- Widget Javascript -->
-	<script src="/js/widgets.js"></script>
-	<script type="text/javascript">
-		jQuery(document).ready(function() {
-			"use strict";
-			Core.init();
-		});
-	</script>
-	<!-- END: PAGE SCRIPTS -->
+	<script type="text/javascript" src="/js/login.js"></script>
+	
 </body>
 </html>
 

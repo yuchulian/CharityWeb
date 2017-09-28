@@ -4,8 +4,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.UUID;
+
+import javax.servlet.http.HttpSession;
 
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.ProcessEngines;
@@ -122,6 +125,20 @@ public class SystemUtil {
 			}
 		}
 		return recordList;
+	}
+	
+	/**
+	 * 清除session
+	 */
+	public static void clearSession(HttpSession session) {
+		if(null != session) {
+			Enumeration<String> attributeNames = session.getAttributeNames();
+			String attributeName = "";
+			while (attributeNames.hasMoreElements()) {
+				attributeName = attributeNames.nextElement().toString();
+				session.removeAttribute(attributeName);
+			}
+		}
 	}
 	
 }

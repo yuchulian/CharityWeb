@@ -11,6 +11,7 @@ Util.prototype = {
 		$siblings_finish : true,
 		browserType : "",
 		dateId : {},
+		fileSuffixRegular : /\.[a-zA-Z0-9]+$/g,
 		_pageNumberLimitTimeout : {},
 		callBack : "", fileType : "", $SCREENSHOT_IMG : {}, $SCREENSHOT_FILE : {},
 		uploadHTML : '<form id="_uploadForm" style="display: none;"> <input type="file" name="filePath" onchange="util.uploadFile(this);" id="_filePath"> </form>',
@@ -1207,8 +1208,11 @@ Util.prototype = {
 		return util.temp.fileType;
 	},
 	hasSession : function(returnMsg) {
-		if(JSON.stringify(returnMsg || {}).indexOf("<title>后台登录</title>") > -1) {
-			window.location.href = "/Admin";
+		if("string" != (typeof returnMsg)) {
+			returnMsg = JSON.stringify(returnMsg || {});
+		}
+		if(returnMsg.indexOf('action="/login"') > -1) {
+			window.location.href = "/";
 			return false;
 		}
 		return true;
@@ -1216,6 +1220,9 @@ Util.prototype = {
 	_scrollTop : function() {
 		$("body").scrollTop(0);
 		$(".modal").scrollTop(0);
+	},
+	getFileSuffix : function(filePath) {
+		return ((filePath || "").match(this.temp.fileSuffixRegular) || [""])[0];
 	}
 };
 util = new Util();

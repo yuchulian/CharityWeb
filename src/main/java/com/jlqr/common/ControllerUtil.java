@@ -2,6 +2,7 @@ package com.jlqr.common;
 
 import java.util.HashMap;
 
+import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 
 /**
@@ -9,6 +10,7 @@ import com.jfinal.core.Controller;
  * @author LiQiRan
  * @date 2017-9-1 12:01:04
  */
+@Before(SessionInterceptor.class)
 public abstract class ControllerUtil extends Controller {
 
 	/**
