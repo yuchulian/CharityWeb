@@ -113,7 +113,7 @@ public class IndexController extends Controller {
 						Record record = new Record();
 						for (PowerInfo powerInfo : powerInfoList) {
 							powerUrlList.add(powerInfo.getPowerUrl());
-							powerUrlList.add(powerInfo.getPowerUrl().replaceAll("Page", "Data"));
+							powerUrlList.add(StringUtils.defaultIfEmpty(powerInfo.getPowerUrl(), "").replaceAll("Page", "Data"));
 							
 							record = powerInfo.toRecord();
 							record.set("children", new ArrayList<Record>());
