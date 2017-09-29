@@ -61,6 +61,7 @@
 							if ($('#powerInfoForm').validationEngine('validate')) {
 								var powerInfo = util.getModal(dataMap);
 								powerInfo["powerInfo.power_pid"] = $("#powerPidSearch").val();
+								powerInfo["powerInfo.power_name"] = powerInfo["powerInfo.power_name"].replace(",", "，");
 								util.call("/powerInfoData/powerInfoSave", powerInfo, function(returnMsg) {
 									util.refreshPage(dataMap);
 									util.closeModal(dataMap);
@@ -99,8 +100,10 @@
 
 		var path = powerInfo["power_id_path"], pathname = powerInfo["power_name_path"], menuList = [];
 		menuList.push('<li class="crumb-link"><a href="javascript:void(0);" onclick="$(\'#powerPidSearch\').val(0);util.execute(\'', search, '\');">全部</a> </li>');
+		var pathList = [], pathnameList = [];
 		if (path && pathname) {
-			var pathList = path.split(","), pathnameList = pathname.split(",");
+			pathList = path.split(",");
+			pathnameList = pathname.split(",");
 			for (var i = 1; i < pathList.length - 1; i++) {
 				menuList.push('<li class="crumb-link"><a href="javascript:void(0);" onclick="$(\'#powerPidSearch\').val(', pathList[i], ');util.execute(\'', search, '\');">', pathnameList[i], '</a> </li>');
 			}
@@ -111,7 +114,11 @@
 			obj = powerInfoList[i];
 			tableHTML.push('<tr>');
 			tableHTML.push('	<td>', (i + 1), '</td>');
-			tableHTML.push('	<td><a href="javascript:void(0);" onclick="$(\'#powerPidSearch\').val(', obj.id, ');util.execute(\'', search, '\');">', obj.power_name, '</a></td>');
+			if(pathList.length < 4) {
+				tableHTML.push('	<td><a href="javascript:void(0);" onclick="$(\'#powerPidSearch\').val(', obj.id, ');util.execute(\'', search, '\');">', obj.power_name, '</a></td>');
+			} else {
+				tableHTML.push('	<td>', obj.power_name, '</td>');
+			}
 			tableHTML.push('	<td><span class="', obj.power_ico, '"></span></td>');
 			tableHTML.push('	<td>', obj.power_url, '</td>');
 			tableHTML.push('	<td>', obj.power_state ? "显示" : "隐藏", '</td>');

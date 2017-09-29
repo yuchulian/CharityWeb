@@ -60,6 +60,7 @@
 							if($('#dictionaryForm').validationEngine('validate')) {
 								var dictionary = util.getModal(dataMap);
 								dictionary["dictionary.dictionary_pid"] = $("#dictionaryPidSearch").val();
+								dictionary["dictionary.dictionary_name"] = dictionary["dictionary.dictionary_name"].replace(",", "，");
 								util.call("/dictionaryData/dictionarySave", dictionary, function(returnMsg) {
 									util.refreshPage(dataMap);
 									util.closeModal(dataMap);
