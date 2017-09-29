@@ -7,9 +7,8 @@ import org.apache.commons.lang.StringUtils;
 import com.jfinal.core.Controller;
 import com.jfinal.kit.PropKit;
 import com.jlqr.common.model.Dictionary;
-import com.jlqr.common.model.LoginInfo;
+import com.jlqr.common.model.EmployView;
 import com.jlqr.common.model.ProjectInfo;
-import com.jlqr.common.model.ReimburseInfo;
 import com.jlqr.common.model.ReimburseInfoView;
 import com.jlqr.interceptor.NewService;
 import com.jlqr.service.DictionaryService;
@@ -31,8 +30,8 @@ public class ReimburseInfoPage extends Controller{
 		List<Dictionary> reimburseBrandList = null;
 		List<Dictionary> reimburseTypeList = null;
 		List<ProjectInfo> projectNumberList = null;
-		LoginInfo loginInfo = getSessionAttr("loginInfo");
-		projectNumberList = projectInfoService.findProjectInfoByProjectCollector(loginInfo.getId());
+		EmployView employView = getSessionAttr("employView");
+		projectNumberList = projectInfoService.findProjectInfoByProjectCollector(employView.getId());
 		try {
 			reimburseBrandList = dictionaryService.dictionaryByPid(PropKit.getInt("reimburse_brand"));
 			reimburseTypeList = dictionaryService.dictionaryByPid(PropKit.getInt("reimburse_type"));
