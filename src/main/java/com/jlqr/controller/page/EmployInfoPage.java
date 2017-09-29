@@ -89,17 +89,9 @@ public class EmployInfoPage extends ControllerUtil {
 		setAttr("projectDepartment", JsonKit.toJson(SystemUtil.toDictionaryList(projectDepartment, loginInfo)));
 		setAttr("roleInfoList", JsonKit.toJson(SystemUtil.toRoleInfoList(roleInfoList, loginInfo)));
 	}
-	//选择专业证书
-	public void employDiplomaSelect(){
-		Integer employSpeciality = PropKit.getInt("employ_speciality");
-		List<HashMap> employDiplomaSelectList = null;
-		try {
-			employDiplomaSelectList = dictionaryService.employDiplomaSelect(this,employSpeciality);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		setAttr("employDiplomaSelectList", employDiplomaSelectList);
+	//选择专业证书页面
+	public void employDiplomaSelectIndex(){
+		
 	} 
 	
 }

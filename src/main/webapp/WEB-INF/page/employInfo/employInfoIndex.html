@@ -85,6 +85,7 @@
 									console.log($this.text());
 									employInfo["employInfo."+$this.attr("id")] = $.trim($this.text());
 								});
+								employInfo["employInfo.employ_diploma"] = $.trim($("#employ_diploma").val());
 								employInfo["employInfo.employ_img"] = $.trim($("#employInfoImg").attr("_src"));
 								util.call("/employInfoData/employInfoSave", employInfo, function(returnMsg) {
 									util.refreshPage(dataMap);

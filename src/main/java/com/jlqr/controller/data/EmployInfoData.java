@@ -5,10 +5,13 @@ import java.util.HashMap;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import com.jfinal.kit.PropKit;
 import com.jlqr.common.ControllerUtil;
+import com.jlqr.common.model.Dictionary;
 import com.jlqr.common.model.EmployInfo;
 import com.jlqr.common.model.LoginInfo;
 import com.jlqr.interceptor.NewService;
+import com.jlqr.service.DictionaryService;
 import com.jlqr.service.EmployInfoService;
 import com.jlqr.service.LoginInfoService;
 
@@ -19,6 +22,9 @@ public class EmployInfoData extends ControllerUtil {
 	
 	@NewService("LoginInfoService")
 	private LoginInfoService loginInfoService;
+	
+	@NewService("DictionaryService")
+	private DictionaryService dictionaryService;
 	
 	public void employInfoPaginate() {
 		try {
@@ -128,6 +134,15 @@ public class EmployInfoData extends ControllerUtil {
 			returnMsg.put("content", "删除失败");
 		}
 		renderJson(returnMsg);
+	}
+	public void employDiplomaSelect(){
+		
+		try {
+			renderJson(dictionaryService.dictionaryByIdPath(","+PropKit.getInt("employ_speciality")+","));
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
 	}
 	
 }
