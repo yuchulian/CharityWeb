@@ -16,13 +16,18 @@ import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 public class _MappingKit {
 
 	public static void mapping(ActiveRecordPlugin arp) {
+		arp.addMapping("attachment_info", "id", AttachmentInfo.class);
 		arp.addMapping("dictionary", "id", Dictionary.class);
+		arp.addMapping("education_info", "id", EducationInfo.class);
 		arp.addMapping("employ_info", "id", EmployInfo.class);
+		arp.addMapping("item_info", "id", ItemInfo.class);
 		arp.addMapping("login_info", "id", LoginInfo.class);
+		arp.addMapping("personnel_contract", "id", PersonnelContract.class);
 		arp.addMapping("power_info", "id", PowerInfo.class);
 		arp.addMapping("project_info", "id", ProjectInfo.class);
 		arp.addMapping("reimburse_info", "id", ReimburseInfo.class);
 		arp.addMapping("role_info", "id", RoleInfo.class);
+		arp.addMapping("work_info", "id", WorkInfo.class);
 	}
 }
 
