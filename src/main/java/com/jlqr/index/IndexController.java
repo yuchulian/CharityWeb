@@ -65,6 +65,7 @@ public class IndexController extends Controller {
 		boolean isFinish = false;//是否完成
 		List<PowerInfo> powerInfoList = null;
 		List<String> powerUrlList = new ArrayList<String>();
+		List<Integer> staffList = new ArrayList<Integer>();
 		powerUrlList.add("uploadData");
 		powerUrlList.add("downloadData");
 		
@@ -132,6 +133,15 @@ public class IndexController extends Controller {
 						}
 						mergeMenuList(recordList, menuList);
 						
+						/**
+						 * 获取我的下级员工
+						 */
+						List<EmployView> employViewList = employInfoService.findStaffList(employView);
+						staffList.add(employView.getId());
+						for (EmployView _employView : employViewList) {
+							staffList.add(_employView.getId());
+						}
+						
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -148,6 +158,7 @@ public class IndexController extends Controller {
 		setSessionAttr("powerInfoList", powerInfoList);
 		setSessionAttr("powerUrlList", powerUrlList);
 		setSessionAttr("menu", StringUtils.join(menuList, ""));
+		setSessionAttr("staff", StringUtils.join(staffList, ","));
 		removeSessionAttr("isClearSession");
 		redirect(redirectPage);
 //		renderJson(JsonKit.toJson(initPowerInfoList(powerInfoList)));

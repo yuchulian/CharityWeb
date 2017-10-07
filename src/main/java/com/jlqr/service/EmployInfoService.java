@@ -137,6 +137,47 @@ public class EmployInfoService extends ServiceUtil {
 		
 		return employViewList;
 	}
+	
+	/**
+	 * 根据角色等级和部门获取我的下级
+	 */
+	public List<EmployView> findStaffList(EmployView employView) {
+		List<EmployView> employViewList = new ArrayList<EmployView>();
+		List<String> roleIdCondition = new ArrayList<String>(), departmentIdCondition = new ArrayList<String>();
+		
+		String departmentId = employView.getDepartmentId();
+		if(StringUtils.isNotBlank(departmentId) && departmentId.length() > 2) {
+			String[] departmentIdList = departmentId.substring(1, departmentId.length() - 1).split("\\,");
+			for (String _departmentId : departmentIdList) {
+				departmentIdCondition.add("department_id like '%,"+_departmentId+",%'");
+			}
+		}
+		
+		String roleId = employView.getRoleId();
+		if(StringUtils.isNotBlank(roleId) && roleId.length() > 2) {
+			//获取当前登录人最高等级的角色
+			RoleInfo loginRoleInfo = RoleInfo.dao.findFirst("select * from role_info where id in ("+roleId.substring(1, roleId.length() - 1)+") order by role_grade desc");
+			
+			if(null != loginRoleInfo) {
+				//获取我的下级的角色
+				List<RoleInfo> leaderRoleInfoList = RoleInfo.dao.find("select * from role_info where role_grade = ?", loginRoleInfo.getRoleGrade() + 1);
+				if(null != leaderRoleInfoList) {
+					//获取我的下级员工
+					for (RoleInfo roleInfo : leaderRoleInfoList) {
+						roleIdCondition.add("role_id like '%,"+roleInfo.getId()+",%'");
+					}
+				}
+			}
+		}
+		
+		if(roleIdCondition.size() > 0 && departmentIdCondition.size() > 0) {
+			employViewList = EmployView.dao.find("select * from employ_view where ("+StringUtils.join(roleIdCondition, " or ")+") and ("+StringUtils.join(departmentIdCondition, " or ")+")");
+			if(null == employViewList)
+				employViewList = new ArrayList<EmployView>();
+		}
+		
+		return employViewList;
+	}
 
 	
 }
