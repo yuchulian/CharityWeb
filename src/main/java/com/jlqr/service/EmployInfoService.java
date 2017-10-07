@@ -160,7 +160,7 @@ public class EmployInfoService extends ServiceUtil {
 			
 			if(null != loginRoleInfo) {
 				//获取我的下级的角色
-				List<RoleInfo> leaderRoleInfoList = RoleInfo.dao.find("select * from role_info where role_grade = ?", loginRoleInfo.getRoleGrade() + 1);
+				List<RoleInfo> leaderRoleInfoList = RoleInfo.dao.find("select * from role_info where role_grade > ?", loginRoleInfo.getRoleGrade() + 1);
 				if(null != leaderRoleInfoList) {
 					//获取我的下级员工
 					for (RoleInfo roleInfo : leaderRoleInfoList) {
