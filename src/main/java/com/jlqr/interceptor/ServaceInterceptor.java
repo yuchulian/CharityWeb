@@ -5,6 +5,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 
+import org.activiti.engine.ProcessEngine;
+import org.activiti.engine.ProcessEngines;
+
 import com.jfinal.aop.Interceptor;
 import com.jfinal.aop.Invocation;
 import com.jfinal.core.Controller;
@@ -13,7 +16,12 @@ import com.jlqr.common.SystemUtil;
 
 public class ServaceInterceptor implements Interceptor {
 	private static HashMap<String, Object> map = new HashMap<>();
-
+	
+	/**
+	 * activiti流程引擎
+	 */
+	private static ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
+	
 	@Override
 	public void intercept(Invocation invocation) {
 		Class<? extends Controller> class1 = invocation.getController().getClass();
@@ -27,10 +35,10 @@ public class ServaceInterceptor implements Interceptor {
 
 				if (",DynamicBpmnService,FormService,HistoryService,IdentityService,ManagementService,RepositoryService,RuntimeService,TaskService,".indexOf("," + value + ",") > -1) {
 					try {
-						Class clazz = SystemUtil.processEngine.getClass();
+						Class clazz = processEngine.getClass();
 						Method method = clazz.getMethod("get" + value);
 						Object o;
-						o = method.invoke(SystemUtil.processEngine);
+						o = method.invoke(processEngine);
 						field.setAccessible(true);
 						field.set(invocation.getController(), o);
 					} catch (IllegalAccessException e) {

@@ -10,8 +10,6 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
 
-import org.activiti.engine.ProcessEngine;
-import org.activiti.engine.ProcessEngines;
 import org.apache.commons.lang.StringUtils;
 
 import com.jfinal.log.Log;
@@ -30,7 +28,7 @@ public class SystemUtil {
 	/**
 	 * activiti流程引擎
 	 */
-	public static ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
+//	public static ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
 
 	/**
 	 * 将Date()格式化成标准的时间
