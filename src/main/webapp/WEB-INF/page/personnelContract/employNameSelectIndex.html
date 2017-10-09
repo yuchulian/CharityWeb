@@ -1,0 +1,121 @@
+<div class="row">
+	<div class="col-md-12">
+		<div class="panel panel-visible">
+
+			<!-- <div class="panel-heading">
+				<ol class="breadcrumb" id="projectInfo_menu"> </ol>
+			</div> -->
+			<div class="panel-body pn">
+				<div id="datatable2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+					<div class="dt-panelmenu clearfix">	
+						<div>	
+							<label class="label-control">员工姓名:</label>
+							<input class="form-control" id="employNameSearch" type="text" style="width: 108px;" />
+							<label class="col-sm control-label">性别：</label>
+		         			<select class="form-control" id="employSexSearch" style="width: 108px;">
+		         				<option value="">全部</option>
+		         				<option value="1">男</option>
+								<option value="2">女</option>
+							</select>
+							<input class="btn btn-primary btn-gradient dark" type="button" value="搜索" id="employInfoSearch" />
+							<input class="btn btn-primary btn-gradient dark" type="button" value="重置" id="employInfoReset" />
+						</div>
+					</div>
+					<table class="table table-striped table-hover dataTable no-footer" id="employInfoTable">
+						<thead>
+							<tr>
+								<th class="sorting_disabled">&nbsp;</th>
+								<th class="sorting_disabled">&nbsp;</th>
+								<th class="sorting_asc">员工姓名</th>
+								<th class="sorting">员工性别</th>
+								<th class="sorting">员工工号</th>
+								<th class="sorting_disabled width200">操作</th>
+							</tr>
+						</thead>
+						<tbody> </tbody>
+					</table>
+					<div class="dt-panelfooter clearfix">
+						<div class="dataTables_info" id="datatable2_info" role="status"
+							aria-live="polite">Showing 1 to 5 of 13 entries</div>
+						<div class="dataTables_paginate paging_simple_numbers"
+							id="employInfopage">
+							<ul class="pagination">
+								<li class="paginate_button active" aria-controls="datatable2"
+									tabindex="0"><a href="#">1</a></li>
+								<li class="paginate_button " aria-controls="datatable2" tabindex="0"><a
+									href="#">2</a></li>
+								<li class="paginate_button " aria-controls="datatable2" tabindex="0"><a
+									href="#">3</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+</div>
+
+
+<script type="text/javascript">
+	util.initPage("/employInfoData/employInfoListForContract", {
+		paginate:{
+			paginateId:"#employInfopage",
+			pageNumber:1,
+			pageSize:10
+		},
+		sort : {
+			"id" : "asc"
+		},
+ 		search : {
+ 			bind: {
+ 				searchId : "#employInfoSearch",
+ 				resetId : "#employInfoReset"
+ 			},
+ 			column : {
+				"employ_name" : ["like","#employNameSearch"],
+				"employ_sex" : ["=","#employSexSearch"]
+ 			}
+		},		
+		modal : {
+			"employInfoShow" : {
+				title : "员工详情",
+				pageUrl : "/employInfoPage/employInfoDetail",
+				width:1050
+			}
+		}
+	},function(data) {
+		var tableHTML = [],
+		obj = {},
+		employInfoList = data.list,
+		employInfoShow = data["employInfoShow"],
+		employNameSelect = data["employNameSelect"];
+		for (var i = 0; i < employInfoList.length; i++) {
+			obj = employInfoList[i];
+			tableHTML.push('<tr>');
+			if(obj.id==$("#employ_id").attr("_value")){
+				tableHTML.push('<td><input type="checkbox" name="selectemploy" checked onclick="chooseemploy(this)" _id="',obj.id,'" _employname="',obj.employ_name,'" /></td>');
+			}else{
+				tableHTML.push('<td><input type="checkbox" name="selectemploy" onclick="chooseemploy(this)" _id="',obj.id,'" _employname="',obj.employ_name,'" /></td>');
+			}
+			tableHTML.push('	<td>', (i + 1), '</td>');
+			tableHTML.push('	<td>', obj.employ_name, '</td>');
+			tableHTML.push('	<td>', obj.employ_sex==1?"男":"女", '</td>');
+			tableHTML.push('	<td>', obj.employ_job_number, '</td>');
+			tableHTML.push('	<td>');
+			tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',employInfoShow,'\', {id : ',obj.id,'});">查看详情</a>');
+			tableHTML.push('	</td>');
+			tableHTML.push('</tr>');
+		}
+		$("#employInfoTable tbody").html(tableHTML.join(""));
+	});
+	function chooseemploy(chk){ 
+		var obj = $("input[type='checkbox']"); 
+		for (i=0; i<obj.length; i++){ 
+			if (obj[i]!=chk) obj[i].checked = false; 
+		else obj[i].checked = true; 
+		} 
+	} 
+
+
+</script>

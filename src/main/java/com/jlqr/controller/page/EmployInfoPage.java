@@ -11,6 +11,7 @@ import com.jlqr.common.ControllerUtil;
 import com.jlqr.common.SystemUtil;
 import com.jlqr.common.model.Dictionary;
 import com.jlqr.common.model.EmployInfo;
+import com.jlqr.common.model.EmployInfoView;
 import com.jlqr.common.model.EmployView;
 import com.jlqr.common.model.LoginInfo;
 import com.jlqr.common.model.RoleInfo;
@@ -37,7 +38,7 @@ public class EmployInfoPage extends ControllerUtil {
 	public void index() {
 		render("employInfoIndex.html");
 	}
-	
+	//员工修改页面,此页面跳转可以进行修改
 	public void employInfoEdit() {
 		EmployInfo employInfo = new EmployInfo();
 		List<Dictionary> employEducationList = null;
@@ -61,6 +62,17 @@ public class EmployInfoPage extends ControllerUtil {
 		setAttr("employDegreeList", employDegreeList);
 		setAttr("employLanguageList",employLanguageList);
 		setAttr("employSpecialityList", employSpecialityList);
+		setAttr("employInfo", employInfo);
+	}
+	//员工详情页面,此页面用于合同选择的时候进行查看员工的信息,不能够进行修改
+	public void employInfoDetail(){
+		EmployInfoView employInfo = new EmployInfoView();
+
+		try {
+			employInfo = employInfoService.findEmployInfoViewById(getParaToInt("id"));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		setAttr("employInfo", employInfo);
 	}
 

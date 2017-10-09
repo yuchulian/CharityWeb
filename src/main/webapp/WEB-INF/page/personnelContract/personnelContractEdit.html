@@ -1,0 +1,121 @@
+<form class="form-horizontal" id="personnelContractForm">
+	<input type="hidden" name="personnelContract.id" value="#(personnelContract.id)" />	
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span class="red">*</span>员工姓名</label>
+		<div class="col-sm-10" >
+			<div class="input-group" style="width: 100%;height: 100%">
+  				<input type="text" disabled="disabled"  class="form-control " id="employ_id" style="height: 100%;width: 100%" placeholder="请选择员工姓名" value="#(employInfo.employ_name)" _value="#(employInfo.id)">
+  				<span class="input-group-addon btn" id="select_employ">选择</span>
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span class="red">*</span>合同编号</label>
+		<div class="col-sm-10">
+			<input type="text" class="form-control" disabled="disabled" value="#(personnelContract.contract_number)" placeholder="自动生成编号"/>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span class="red">*</span>合同类型</label>
+		<div class="col-sm-10">
+			<select id="contract_type_id" class="form-control " name="personnelContract.contract_type">
+					#for(contractType : contractTypeList) 
+						#if(contractType.id+""==personnelContract.contract_type+"")
+							<option value="#(contractType.id)" selected="selected">#(contractType.dictionary_name)</option>
+						#else
+							<option value="#(contractType.id)">#(contractType.dictionary_name)</option>
+						#end
+					#end
+			</select>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span class="red">*</span>合同状态</label>
+		<div class="col-sm-10">
+			<select id="contract_type_id" class="form-control " name="personnelContract.contract_state">
+				<option value="1" #(personnelContract.contract_state==1?selected="selected":"")>试用期</option>
+				<option value="2" #(personnelContract.contract_state==2?selected="selected":"")>已转正</option>
+				<option value="3" #(personnelContract.contract_state==3?selected="selected":"")>已解除</option>
+			</select>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span class="red">*</span>合同有效期</label>
+			<div class="col-sm-4">
+				<input type="text"  class="form-control " id="contract_start" name="personnelContract.contract_start" value="#(personnelContract.contract_start)" placeholder="请选择合同签订日期"/>
+			</div>
+			<div class="col-sm-1">
+				<label class="label-control">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-</label>
+			</div>
+			<div class="col-sm-5">
+				<input type="text" class="form-control " id="contract_end" name="personnelContract.contract_end" value="#(personnelContract.contract_end)" placeholder="请选择合同到期日期"/>
+			</div>			
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span class="red">*</span>试用有效期</label>
+		<div class="col-sm-4">
+			<input type="text"  class="form-control" id="trial_start" name="personnelContract.trial_start" value="#(personnelContract.trial_start)" placeholder="请选择使用生效日期"/>
+		</div>
+		<div class="col-sm-1">
+			<label class="label-control">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-</label>
+		</div>
+		<div class="col-sm-5">
+			<input type="text"  class="form-control " id="trial_end" name="personnelContract.trial_end" value="#(personnelContract.trial_end)" placeholder="请选择试用到期日期"/>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span class="red">*</span>试用天数</label>
+		<div class="col-sm-10">
+			<input type="text" class="form-control"  name="personnelContract.trial_days" value="#(personnelContract.trial_days)" placeholder="合同试用天数" disabled="disabled"/>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span class="red">*</span>备注</label>
+		<div class="col-sm-10">
+			<textarea rows="5" class="form-control "  name="personnelContract.contract_remark">#(personnelContract.contract_remark)</textarea>
+		</div>
+	</div>
+</form>
+<script type="text/javascript">
+	util.initDateRange("#contract_start","#contract_end", "#(personnelContract.contract_start)", "#(personnelContract.contract_end)",true);
+	util.initDateRange("#trial_start","#trial_end", "#(personnelContract.trial_start)","#(personnelContract.trial_end)",true);
+	$("#personnelContractForm").validationEngine({
+		showOneMessage: true,
+		promptPosition: "topLeft"
+	});
+	
+	var employModal =	util.modal({
+		title : "员工姓名",
+		pageUrl : "/personnelContractPage/employNameSelectIndex",
+		width:800,
+		button : {
+			"submit" : {
+				name : "确定",
+				className : "btn-primary",
+				click :function(dataMap){
+					var employCheck = $("input[type='checkbox'][name='selectemploy']:checked");
+					console.info(employCheck);
+					if(employCheck.length==0){
+						util.alert("必须选择一个员工");
+						return;
+					}
+					$("#employ_id").val(employCheck.attr("_employname"));
+					$("#employ_id").attr("_value",employCheck.attr("_id"));
+ 					util.closeModal(dataMap);
+				}
+			}
+		}
+	});
+	$("#select_employ").click(function(){
+		util.execute(employModal,{});
+	});
+	$(".form_datetime").datetimepicker({
+		language : 'zh-CN',
+		minView : 'month',
+		format : 'yyyy-mm-dd',
+		autoclose : true,
+		startView : 2,
+		showMeridian : 1,
+		pickerPosition : "bottom-left"
+	});
+</script>
