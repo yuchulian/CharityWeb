@@ -15,9 +15,9 @@ import com.jlqr.common.model.ReimburseInfoView;
 
 public class ReimburseInfoService extends ServiceUtil{
 
-	public Page<ReimburseInfo> reimburseInfopaginate(Controller controller) throws Exception {
+	public Page<ReimburseInfoView> reimburseInfopaginate(Controller controller) throws Exception {
 		// TODO Auto-generated method stub
-		return this.paginate(ReimburseInfo.class, controller);
+		return this.paginate(ReimburseInfoView.class, controller);
 	}
 
 	public ReimburseInfoView findReimburseInfoViewById(Integer id) {

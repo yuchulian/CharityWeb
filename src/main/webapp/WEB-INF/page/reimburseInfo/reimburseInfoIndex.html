@@ -18,10 +18,9 @@
 						<thead>
 							<tr>
 								<th>&nbsp;</th>
-								<th class="sorting_asc">报销单编号</th>
-								<th class="sorting_disabled">单价</th>
-								<th class="sorting">数量</th>
-								<th class="sorting">总价</th>
+								<th class="sorting_asc">报销人</th>
+								<th class="sorting">品牌</th>
+								<th class="sorting">种类</th>
 								<th class="sorting">项目状态</th>
 								<th class="sorting_disabled">操作</th>
 							</tr>
@@ -161,10 +160,9 @@
 			obj = reimburseInfoList[i];
 			tableHTML.push('<tr>');
 			tableHTML.push('	<td>', (i + 1), '</td>');
-			tableHTML.push('	<td>',obj.reimburse_number,'</td>');
-			tableHTML.push('	<td>', obj.reimburse_price, '</td>');
-			tableHTML.push('	<td>', obj.reimburse_count, '</td>');
-			tableHTML.push('	<td>', obj.reimburse_total, '</td>');
+			tableHTML.push('	<td>',obj.reimburse_employ_name,'</td>');
+			tableHTML.push('	<td>', obj.reimburse_brand_name, '</td>');
+			tableHTML.push('	<td>', obj.reimburse_type_name, '</td>');
 			tableHTML.push('	<td>', login.reimburseState[obj.reimburse_state], '</td>');
 			tableHTML.push('	<td>');
 			if(1 == obj.reimburse_state) {
