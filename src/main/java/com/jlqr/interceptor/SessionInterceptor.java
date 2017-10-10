@@ -1,4 +1,4 @@
-package com.jlqr.common;
+package com.jlqr.interceptor;
 
 import java.util.List;
 
@@ -7,6 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import com.jfinal.aop.Interceptor;
 import com.jfinal.aop.Invocation;
 import com.jfinal.core.Controller;
+import com.jlqr.common.SystemUtil;
 import com.jlqr.common.model.EmployView;
 
 /**

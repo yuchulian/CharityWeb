@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
+import com.jlqr.interceptor.SessionInterceptor;
 
 /**
  * 公用的Controller
