@@ -1,5 +1,6 @@
 <style type="text/css">
 	#employInfo_id, #educationInfoTable, #workInfoTable, #itemInfoTable{ width: 1024px; word-wrap:break-word; word-break:break-all;}
+	#educationInfoTable td, #workInfoTable td, #itemInfoTable td{ background-color:#f9f9f9; }
 	#employInfo_id tr:nth-child(1) > *{ border: none; border-bottom: 1px solid #ccc; }
 	#employInfo_id th, #employInfo_id td{ border: 1px solid #ccc; text-align: center; height: 40px; line-height: auto; }
 	#employInfo_id img, #employInfo_id select, #employInfo_id input[type="text"]{width: 100%;height: 100%;border: none;background-color:#f9f9f9; }
@@ -280,16 +281,181 @@
 			educationInfoDelete = data["educationInfoDelete"];
 		for (var i = 0; i < educationInfoList.length; i++) {
 			obj = educationInfoList[i];
-			tableHTML.push('<tr>');
-			tableHTML.push('	<td>', obj.education_end , '</td>');
+			tableHTML.push('<tr style="border-bottom: 1px solid #ccc;">');
+			tableHTML.push('	<td>',obj.education_start,'到', obj.education_end , '</td>');
 			tableHTML.push('	<td>', obj.school_name , '</td>');
 			tableHTML.push('	<td>', obj.major , '</td>');
-			tableHTML.push('	<td style="float: right;">');
+			tableHTML.push('	<td style="text-align: right;">');
 			tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',educationInfoSave,'\', {id : ',obj.id,', title: \'教育经历修改\'});">修改</a>');
 			tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',educationInfoDelete,'\', {id : ',obj.id,', pageHtml: \'确定要删除【',obj.school_name,'】吗？\'});">删除</a>');
 			tableHTML.push('	</td>');
 			tableHTML.push('</tr>');
 		}
 		$("#educationInfoTable tbody").html(tableHTML.join(""));
+	});
+	
+	
+	
+
+	//工作经历
+	util.initPage("/employInfoData/workInfoList", {
+		sort : {
+			"id" : "asc"
+		},
+		search : {
+			column : {
+				"employ_id" : [ "=", "", "#(employInfo.id)" ]
+			}
+		},
+		modal : {
+			"workInfoSave" : {
+				bind : {
+					"#workInfoAdd" : {
+						title : "工作经历添加"
+					}
+				},
+				pageUrl : "/employInfoPage/workInfoEdit",
+				title : "工作经历修改",
+				width : 1100,
+				button : {
+					"submit" : {
+						name : "确定",
+						className : "btn-primary",
+						click : function(dataMap) {
+							if ($('#workInfoForm').validationEngine('validate')) {
+								var workInfo = util.getModal(dataMap);
+								workInfo["workInfo.employ_id"] = "#(employInfo.id)";
+								util.call("/employInfoData/workInfoSave", workInfo, function(returnMsg) {
+									util.refreshPage(dataMap);
+									util.closeModal(dataMap);
+									util.alert(returnMsg["returnMsg"]);
+								});
+							}
+						}
+					}
+				}
+			},
+			"workInfoDelete" : {
+				button : {
+					"submit" : {
+						name : "确定",
+						className : "btn-primary",
+						click : function(dataMap) {
+							util.call("/employInfoData/workInfoDelete", { "id" : dataMap["id"] + "" }, function(returnMsg) {
+								util.refreshPage(dataMap);
+								util.closeModal(dataMap);
+								util.alert(returnMsg["returnMsg"]);
+							});
+						}
+					}
+				}
+			}
+		}
+	},
+	function(data) {
+		var tableHTML = [],
+			obj = {},
+			workInfoList = data.list,
+			workInfoSave = data["workInfoSave"],
+			workInfoDelete = data["workInfoDelete"];
+		for (var i = 0; i < workInfoList.length; i++) {
+			obj = workInfoList[i];
+			tableHTML.push('<tr>');
+			tableHTML.push('	<td>', obj.work_start , '到',obj.work_end,'</td>');
+			tableHTML.push('	<td>', obj.company_name , '</td>');
+			tableHTML.push('	<td>', obj.position_name , '</td>');
+			tableHTML.push('	<td>', obj.wages , '元/月</td>');
+			tableHTML.push('	<td style="text-align: right;">');
+			tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',workInfoSave,'\', {id : ',obj.id,', title: \'工作经历修改\'});">修改</a>');
+			tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',workInfoDelete,'\', {id : ',obj.id,', pageHtml: \'确定要删除【',obj.company_name,'】吗？\'});">删除</a>');
+			tableHTML.push('	</td>');
+			tableHTML.push('</tr>');
+			tableHTML.push('<tr style="border-bottom: 1px solid #ccc;">');
+			tableHTML.push('	<td colspan="5">&nbsp; &nbsp; ',obj.work_content,'</td>');
+			tableHTML.push('</tr>');
+		}
+		$("#workInfoTable tbody").html(tableHTML.join(""));
+	});
+	
+
+	//项目经验
+	util.initPage("/employInfoData/itemInfoList", {
+		sort : {
+			"id" : "asc"
+		},
+		search : {
+			column : {
+				"employ_id" : [ "=", "", "#(employInfo.id)" ]
+			}
+		},
+		modal : {
+			"itemInfoSave" : {
+				bind : {
+					"#itemInfoAdd" : {
+						title : "项目经验添加"
+					}
+				},
+				pageUrl : "/employInfoPage/itemInfoEdit",
+				title : "项目经验修改",
+				width : 1100,
+				button : {
+					"submit" : {
+						name : "确定",
+						className : "btn-primary",
+						click : function(dataMap) {
+							if ($('#itemInfoForm').validationEngine('validate')) {
+								var itemInfo = util.getModal(dataMap);
+								itemInfo["itemInfo.employ_id"] = "#(employInfo.id)";
+								util.call("/employInfoData/itemInfoSave", itemInfo, function(returnMsg) {
+									util.refreshPage(dataMap);
+									util.closeModal(dataMap);
+									util.alert(returnMsg["returnMsg"]);
+								});
+							}
+						}
+					}
+				}
+			},
+			"itemInfoDelete" : {
+				button : {
+					"submit" : {
+						name : "确定",
+						className : "btn-primary",
+						click : function(dataMap) {
+							util.call("/employInfoData/itemInfoDelete", { "id" : dataMap["id"] + "" }, function(returnMsg) {
+								util.refreshPage(dataMap);
+								util.closeModal(dataMap);
+								util.alert(returnMsg["returnMsg"]);
+							});
+						}
+					}
+				}
+			}
+		}
+	},
+	function(data) {
+		var tableHTML = [],
+			obj = {},
+			itemInfoList = data.list,
+			itemInfoSave = data["itemInfoSave"],
+			itemInfoDelete = data["itemInfoDelete"];
+		for (var i = 0; i < itemInfoList.length; i++) {
+			obj = itemInfoList[i];
+			tableHTML.push('<tr>');
+			tableHTML.push('	<td>', obj.item_start , '到',obj.item_end,'</td>');
+			tableHTML.push('	<td>', obj.item_name , '</td>');
+			tableHTML.push('	<td style="text-align: right;">');
+			tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',itemInfoSave,'\', {id : ',obj.id,', title: \'项目经验修改\'});">修改</a>');
+			tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',itemInfoDelete,'\', {id : ',obj.id,', pageHtml: \'确定要删除【',obj.item_name,'】吗？\'});">删除</a>');
+			tableHTML.push('	</td>');
+			tableHTML.push('</tr>');
+			tableHTML.push('<tr>');
+			tableHTML.push('	<td colspan="3">&nbsp; &nbsp; ', obj.item_brief , '</td>');
+			tableHTML.push('</tr>');
+			tableHTML.push('<tr style="border-bottom: 1px solid #ccc;">');
+			tableHTML.push('	<td colspan="3">&nbsp; &nbsp; ', obj.item_duty , '</td>');
+			tableHTML.push('</tr>');
+		}
+		$("#itemInfoTable tbody").html(tableHTML.join(""));
 	});
 </script>

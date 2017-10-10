@@ -1,0 +1,56 @@
+<form class="form-horizontal" id="workInfoForm">
+	<input type="hidden" name="workInfo.id" value="#(workInfo.id)" />
+	
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span class="red">*</span>公司名称</label>
+		<div class="col-sm-10">
+			<input type="text" class="form-control validate[required]" name="workInfo.company_name" value="#(workInfo.company_name)" placeholder="请输入公司名称"/>
+		</div>
+	</div>
+	
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span class="red">*</span>职位名称</label>
+		<div class="col-sm-10">
+			<input type="text" class="form-control validate[required]" name="workInfo.position_name" value="#(workInfo.position_name)" placeholder="请输入职位名称"/>
+		</div>
+	</div>
+	
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span class="red">*</span>工资</label>
+		<div class="col-sm-2">
+			<input type="text" class="form-control validate[required]" name="workInfo.wages" value="#(workInfo.wages)" placeholder="请输入工资"/>
+		</div>
+		<div class="col-sm-2" style="height: 39px; line-height: 39px; padding: 0;">
+			元/月
+		</div>
+	</div>
+	
+	<div class="form-group">
+		<label class="col-sm-2 control-label">在职时间开始</label>
+		<div class="col-sm-10">
+			<input type="text" class="form-control" name="workInfo.work_start" placeholder="请选择日期" id="work_start"/>
+		</div>
+	</div>
+	
+	<div class="form-group">
+		<label class="col-sm-2 control-label">在职时间结束</label>
+		<div class="col-sm-10">
+			<input type="text" class="form-control" name="workInfo.work_end" placeholder="请选择日期" id="work_end"/>
+		</div>
+	</div>
+	
+	<div class="form-group">
+		<label class="col-sm-2 control-label">工作内容</label>
+		<div class="col-sm-10">
+			<textarea class="form-control" name="workInfo.work_content" placeholder="请输入工作内容">#(workInfo.work_content)</textarea>
+		</div>
+	</div>
+	
+</form>
+<script type="text/javascript">
+	$("#workInfoForm").validationEngine({
+		showOneMessage: true,
+		promptPosition: "topLeft"
+	});
+	util.initDateRange('#work_start', '#work_end', '#(workInfo.work_start)', '#(workInfo.work_end)');
+</script>
