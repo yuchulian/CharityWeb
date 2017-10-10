@@ -1,9 +1,11 @@
 <style type="text/css">
-	#employInfo_id{ width: 1024px; word-wrap:break-word; word-break:break-all;}
+	#employInfo_id, #educationInfoTable, #workInfoTable, #itemInfoTable{ width: 1024px; word-wrap:break-word; word-break:break-all;}
+	#educationInfoTable td, #workInfoTable td, #itemInfoTable td{ background-color:#f9f9f9; }
 	#employInfo_id tr:nth-child(1) > *{ border: none; border-bottom: 1px solid #ccc; }
 	#employInfo_id th, #employInfo_id td{ border: 1px solid #ccc; text-align: center; height: 40px; line-height: auto; }
 	#employInfo_id img, #employInfo_id select, #employInfo_id input[type="text"]{width: 100%;height: 100%;border: none;background-color:#f9f9f9; }
-	#employInfo_id td[]{ background-color: #f9f9f9; }
+	#employInfo_id td[contenteditable="true"]{ background-color: #f9f9f9; }
+	#employInfoForm .add_btn{ float: right; font-size: 12px; font-weight: normal; height: 33px; line-height: 33px; }
 </style>
 <!-- 此页面用于合同管理中的员工详情 -->
 <form id="employInfoForm" class="form-horizontal ">
@@ -122,6 +124,67 @@
 			<th>QQ</th>
 			<td colspan="3"  id ="employ_qq">#(employInfo.employ_qq)</td>
 		</tr>
+	</table>
+	<table align="center" id="educationInfoTable">
+		<caption>
+			<h1>
+				&nbsp; &nbsp; 教育经历
+			</h1>
+		</caption>
+		<tbody>
+			#for(education:educationInfoList)
+			<tr style="border-bottom: 1px solid #ccc;">
+				<td>#(education.education_start)到 #(education.education_end)</td>
+				<td>#(education.school_name)</td>
+				<td>#(education.major)</td>					
+			</tr>
+			#end			
+		</tbody>
+	</table>
+	
+	<table align="center" id="workInfoTable">
+		<caption>
+			<h1>
+				&nbsp; &nbsp; 工作经历
+			</h1>
+		</caption>
+		<tbody> 
+			#for(workInfo:workInfoList)
+				<tr>
+					<td>#(workInfo.work_start)到#(workInfo.work_end)</td>
+					<td>#(workInfo.company_name)</td>
+					<td>#(workInfo.position_name)</td>
+					<td>#(workInfo.wages)元/月</td>
+
+				</tr>
+				<tr style="border-bottom: 1px solid #ccc;">
+					<td colspan="5">&nbsp; &nbsp;#(workInfo.work_content)</td>
+				</tr>
+			#end
+		</tbody>
+	</table>
+	
+	<table align="center" id="itemInfoTable">
+		<caption>
+			<h1>
+				&nbsp; &nbsp; 项目经验
+			</h1>
+		</caption>
+		<tbody> 
+			#for(itemInfo:itemInfoList)
+				<tr>
+					<td>#(itemInfo.item_start) 到#(itemInfo.item_end)</td>
+					<td>#(itemInfo.item_name)</td>
+					
+				</tr>
+				<tr>
+					<td colspan="3">&nbsp; &nbsp;#(itemInfo.item_brief)</td>
+				</tr>
+				<tr style="border-bottom: 1px solid #ccc;">
+					<td colspan="3">&nbsp; &nbsp;#(itemInfo.item_duty)</td>
+				</tr>
+			#end
+		</tbody>
 	</table>
 </form>
 <script type="text/javascript">

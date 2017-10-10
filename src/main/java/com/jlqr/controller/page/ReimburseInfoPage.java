@@ -66,7 +66,7 @@ public class ReimburseInfoPage extends ControllerUtil{
 				if(null != activitiMap) {
 					Record task = (Record) activitiMap.get("task");
 					sequenceFlowList.add("通过");
-					if(StringUtils.equals("usertask1", task.get("taskDefinitionKey"))) {
+					if(StringUtils.equals("usertask1", task.getStr("taskDefinitionKey"))) {
 						EmployView employView = getSessionAttr("employView");
 						employViewList = employInfoService.findLeaderList(employView, reimburseInfo.getReimburseTotal());
 					} else {

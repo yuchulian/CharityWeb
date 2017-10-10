@@ -22,6 +22,7 @@ import com.jlqr.service.DictionaryService;
 import com.jlqr.service.EmployInfoService;
 import com.jlqr.service.LoginInfoService;
 import com.jlqr.service.RoleInfoService;
+import com.sun.xml.internal.fastinfoset.algorithm.IntEncodingAlgorithm;
 
 public class EmployInfoPage extends ControllerUtil {
 
@@ -69,13 +70,25 @@ public class EmployInfoPage extends ControllerUtil {
 	//员工详情页面,此页面用于合同选择的时候进行查看员工的信息,不能够进行修改
 	public void employInfoDetail(){
 		EmployInfoView employInfo = new EmployInfoView();
-
+		//教育经历
+		List<EducationInfo> educationInfoList = null;
+		//工作经历
+		List<WorkInfo> workInfoList = null;
+		//项目经历
+		List<ItemInfo> itemInfoList = null;
+		Integer employId = getParaToInt("id");
 		try {
-			employInfo = employInfoService.findEmployInfoViewById(getParaToInt("id"));
+			employInfo = employInfoService.findEmployInfoViewById(employId);
+			educationInfoList = employInfoService.educationInfoList(employId);
+			workInfoList = employInfoService.workInfoList(employId);
+			itemInfoList = employInfoService.itemInfoList(employId);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		setAttr("employInfo", employInfo);
+		setAttr("educationInfoList",educationInfoList);
+		setAttr("workInfoList", workInfoList);
+		setAttr("itemInfoList", itemInfoList);
 	}
 
 	//编辑员工账号信息
