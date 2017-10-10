@@ -12,6 +12,7 @@ import com.jlqr.common.FileUtil;
 import com.jlqr.common.ServiceUtil;
 import com.jlqr.common.model.EducationInfo;
 import com.jlqr.common.model.EmployInfo;
+import com.jlqr.common.model.EmployInfoView;
 import com.jlqr.common.model.EmployView;
 import com.jlqr.common.model.ItemInfo;
 import com.jlqr.common.model.LoginInfo;
@@ -178,6 +179,10 @@ public class EmployInfoService extends ServiceUtil {
 		
 		return employViewList;
 	
+	}
+	
+	public EmployInfoView findEmployInfoViewById(Integer id) {
+		return EmployInfoView.dao.findById(id);
 	}
 	
 	/**

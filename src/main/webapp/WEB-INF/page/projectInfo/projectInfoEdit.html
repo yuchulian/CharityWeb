@@ -23,8 +23,28 @@
 			</tr>
 			<tr>
 				<th>项目编号</th>
-				<td colspan="5">
+				<td colspan="3">
 					#(projectInfo.project_number)
+				</td>
+				<th>项目类型</th>
+				<td>					
+					#if(!projectInfo.project_state)	
+							<select name="projectInfo.project_state" >				
+							<option value="1">草稿</option>
+							<option value="2">报备</option>
+							<option value="3">立项</option>
+							</select>
+							#else
+								#if(projectInfo.project_state==1)
+								草稿
+								#elseif(projectInfo.project_state==2)
+								报备
+								#elseif(projectInfo.project_state==3)
+								立项
+								#else
+								未知
+							#end
+					#end					
 				</td>
 				<th>填表时间</th>
 				<td colspan="2">#(projectInfo.project_create_time)</td>

@@ -113,6 +113,16 @@ public class EmployInfoData extends ControllerUtil {
 		}
 		renderJson(returnMap);
 	}
+	//员工的信息查询
+	public void employInfoListForContract(){
+		try {
+			renderJson(employInfoService.employInfoPaginate(this));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
 	
 	public void employInfoSave() {
 		HashMap returnMsg = new HashMap();

@@ -1,0 +1,132 @@
+<style type="text/css">
+	#employInfo_id{ width: 1024px; word-wrap:break-word; word-break:break-all;}
+	#employInfo_id tr:nth-child(1) > *{ border: none; border-bottom: 1px solid #ccc; }
+	#employInfo_id th, #employInfo_id td{ border: 1px solid #ccc; text-align: center; height: 40px; line-height: auto; }
+	#employInfo_id img, #employInfo_id select, #employInfo_id input[type="text"]{width: 100%;height: 100%;border: none;background-color:#f9f9f9; }
+	#employInfo_id td[]{ background-color: #f9f9f9; }
+</style>
+<!-- 此页面用于合同管理中的员工详情 -->
+<form id="employInfoForm" class="form-horizontal ">
+	<input type="hidden"  name="employInfo.id" value="#(employInfo.id)"/>
+	<table id="employInfo_id" align="center">
+	<caption>
+		<h1>员工信息表</h1>
+	</caption>
+		<tr>
+			<td colspan="5"></td>
+			<th>工号</th>
+			<td  id="employ_job_number">#(employInfo.employ_job_number)</td>
+		</tr>
+		<tr>
+			<th style="width: 120px">姓名</th>
+			<td style="width: 170px"  id="employ_name">#(employInfo.employ_name)</td>
+			<th style="width: 120px" >性别</th>
+			<td style="width: 170px" >
+				#if(employInfo.employ_sex==1)
+					男
+					#else
+					女
+				#end
+			</td>
+			<th style="width: 120px">籍贯</th>
+			<td style="width: 170px"  id="employ_nativeplace">#(employInfo.employ_nativeplace)</td>
+			<th rowspan="5" style="height: 200px">
+				<img id ="employInfoImg"  fileType=".png|.jpg|.gif" src="/downloadData/img?filePath=#(employInfo.employ_img)" _src="#(employInfo.employ_img)"/>
+			</th>
+		</tr>
+		<tr>
+			<th>年龄</th>
+			<td  id="employ_age">#(employInfo.employ_age)</td>
+			<th>婚姻状态</th>
+			<td  colspan="3">
+				#if(employInfo.employ_marrage==1)
+					未婚
+					elseif(employInfo.employ_marrage==2)
+					已婚
+					else
+					离异					
+				#end
+			</td>		
+		</tr>
+		<tr>
+			<th>出生时间</th>
+			<td>
+  				<input  type="text" name="employInfo.employ_birthday" value="#(employInfo.employ_birthday)"/>
+			</td>			
+			<th>健康状态</th>
+			<td colspan="3"  id="employ_health">#(employInfo.employ_health)</td>	
+		</tr>
+		<tr>
+			<th>血型</th>
+			<td id="employ_blood_type" >
+				#(employInfo.employ_blood_type)
+			</td>
+			<th>身份证号码</th>
+			<td colspan="3"  id ="employ_identity_card">#(employInfo.employ_identity_card)</td>
+		</tr>
+		<tr>
+			<th>毕业院校</th>
+			<td colspan="2"  id="employ_graduation">#(employInfo.employ_graduation)</td>
+			<th>学历</th>
+			<td colspan="2">
+				#(employInfo.employ_education_name)
+			</td>
+		</tr>
+		<tr>
+			<th>户口所在地 </th>
+			<td colspan="2"  id="employ_domicile">#(employInfo.employ_domicile)</td>
+			<th>档案所在地</th>
+			<td colspan="3"  id="employ_dossier_place">#(employInfo.employ_dossier_place)</td>	
+		</tr>
+		<tr>
+			<th>学位</th>
+			<td>
+				#(employInfo.employ_degree_name)
+			</td>
+			<th>政治面貌</th>
+			<td  id ="employ_politics">#(employInfo.employ_politics)</td>
+			<th>外语水平</th>
+			<td colspan="2"  id ="employ_wsk">#(employInfo.employ_wsk)</td>
+		</tr>
+		<tr>
+			<th>语种</th>
+			<td>
+				#(employInfo.employ_language_name)
+			</td>	
+			<th>专业</th>
+			<td colspan="4">
+				#(employInfo.employ_speciality_name)
+			</td>
+		</tr>
+		<tr>
+			<th>专业证书</th>
+			<td colspan="6">
+				#(employInfo.employ_diploma)				
+			</td>		
+		</tr>
+		<tr>
+			<th>参加工作时间</th>
+			<td>
+				<input  type="text" name="employInfo.employ_job_time" value="#(employInfo.employ_job_time)"/>
+			</td>
+			<th>加入公司时间</th>
+			<td>
+				<input  type="text" name="employInfo.employ_join_time" value="#(employInfo.employ_join_time)"/>
+			</td>
+			<th>联系方式</th>
+			<td colspan="2"  id="employ_phone">#(employInfo.employ_phone)</td>
+		</tr>
+		<tr>
+			<th>电子邮箱</th>
+			<td colspan="2"  id="employ_email">#(employInfo.employ_email)</td>
+			<th>QQ</th>
+			<td colspan="3"  id ="employ_qq">#(employInfo.employ_qq)</td>
+		</tr>
+	</table>
+</form>
+<script type="text/javascript">
+	$("#employInfoForm").validationEngine({
+		showOneMessage : true,
+		promptPosition : "topLeft"
+	});
+</script>

@@ -28,6 +28,7 @@ public class _MappingKit {
 		arp.addMapping("reimburse_info", "id", ReimburseInfo.class);
 		arp.addMapping("role_info", "id", RoleInfo.class);
 		arp.addMapping("work_info", "id", WorkInfo.class);
+		arp.addMapping("personnel_contract","id",PersonnelContract.class);
 	}
 }
 

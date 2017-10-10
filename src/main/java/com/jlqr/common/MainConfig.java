@@ -14,6 +14,7 @@ import com.jfinal.plugin.druid.DruidPlugin;
 import com.jfinal.template.Engine;
 import com.jlqr.common.model.EmployInfoView;
 import com.jlqr.common.model.EmployView;
+import com.jlqr.common.model.PersonnelContractView;
 import com.jlqr.common.model.ProjectInfoView;
 import com.jlqr.common.model.ReimburseInfoView;
 import com.jlqr.common.model._MappingKit;
@@ -21,6 +22,7 @@ import com.jlqr.controller.data.ActivitiData;
 import com.jlqr.controller.data.DictionaryData;
 import com.jlqr.controller.data.DownloadData;
 import com.jlqr.controller.data.EmployInfoData;
+import com.jlqr.controller.data.PersonnelContractData;
 import com.jlqr.controller.data.PowerInfoData;
 import com.jlqr.controller.data.ProjectInfoData;
 import com.jlqr.controller.data.ReimburseInfoData;
@@ -29,6 +31,7 @@ import com.jlqr.controller.data.UploadData;
 import com.jlqr.controller.page.ActivitiPage;
 import com.jlqr.controller.page.DictionaryPage;
 import com.jlqr.controller.page.EmployInfoPage;
+import com.jlqr.controller.page.PersonnelContractPage;
 import com.jlqr.controller.page.PowerInfoPage;
 import com.jlqr.controller.page.ProjectInfoPage;
 import com.jlqr.controller.page.ReimburseInfoPage;
@@ -90,6 +93,8 @@ public class MainConfig extends JFinalConfig {
 		me.add("/projectInfoData", ProjectInfoData.class, "/projectInfo");
 		me.add("/reimburseInfoPage", ReimburseInfoPage.class,"/reimburseInfo");
 		me.add("/reimburseInfoData", ReimburseInfoData.class,"/reimburseInfo");
+		me.add("/personnelContractData",PersonnelContractData.class,"/personnelContract");
+		me.add("/personnelContractPage",PersonnelContractPage.class,"/personnelContract");
 
 		me.add("/uploadData", UploadData.class);
 		me.add("/downloadData", DownloadData.class);
@@ -122,6 +127,7 @@ public class MainConfig extends JFinalConfig {
 		arp.addMapping("project_info_view", "id", ProjectInfoView.class);
 		arp.addMapping("employ_info_view", EmployInfoView.class);
 		arp.addMapping("reimburse_info_view", ReimburseInfoView.class);
+		arp.addMapping("personnel_contract_view", PersonnelContractView.class);
 		me.add(arp);
 	}
 	
