@@ -1,16 +1,17 @@
 <style type="text/css">
-	#employInfo_id{ width: 1024px; word-wrap:break-word; word-break:break-all;}
+	#employInfo_id, #educationInfoTable, #workInfoTable, #itemInfoTable{ width: 1024px; word-wrap:break-word; word-break:break-all;}
 	#employInfo_id tr:nth-child(1) > *{ border: none; border-bottom: 1px solid #ccc; }
 	#employInfo_id th, #employInfo_id td{ border: 1px solid #ccc; text-align: center; height: 40px; line-height: auto; }
 	#employInfo_id img, #employInfo_id select, #employInfo_id input[type="text"]{width: 100%;height: 100%;border: none;background-color:#f9f9f9; }
 	#employInfo_id td[contenteditable="true"]{ background-color: #f9f9f9; }
+	#employInfoForm .add_btn{ float: right; font-size: 12px; font-weight: normal; height: 33px; line-height: 33px; }
 </style>
 <form id="employInfoForm" class="form-horizontal ">
 	<input type="hidden"  name="employInfo.id" value="#(employInfo.id)"/>
 	<table id="employInfo_id" align="center">
-	<caption>
-		<h1>员工信息表</h1>
-	</caption>
+		<caption>
+			<h1>员工信息</h1>
+		</caption>
 		<tr>
 			<td colspan="5"></td>
 			<th>工号</th>
@@ -150,6 +151,37 @@
 			<td colspan="3" contenteditable="true" id ="employ_qq">#(employInfo.employ_qq)</td>
 		</tr>
 	</table>
+	
+	<table align="center" id="educationInfoTable">
+		<caption>
+			<h1>
+				&nbsp; &nbsp; 教育经历
+				<a href="javascript:void(0);" class="add_btn" id="educationInfoAdd">添加</a>
+			</h1>
+		</caption>
+		<tbody> </tbody>
+	</table>
+	
+	<table align="center" id="workInfoTable">
+		<caption>
+			<h1>
+				&nbsp; &nbsp; 工作经历
+				<a href="javascript:void(0);" class="add_btn" id="workInfoAdd">添加</a>
+			</h1>
+		</caption>
+		<tbody> </tbody>
+	</table>
+	
+	<table align="center" id="itemInfoTable">
+		<caption>
+			<h1>
+				&nbsp; &nbsp; 项目经验
+				<a href="javascript:void(0);" class="add_btn" id="itemInfoAdd">添加</a>
+			</h1>
+		</caption>
+		<tbody> </tbody>
+	</table>
+	
 </form>
 <script type="text/javascript">
 	var employDiplomaSelectModal =	util.modal({
@@ -184,4 +216,80 @@
 	function employInfoSelectImg(returnMsg) {
 		$("#employInfoImg").attr("src", "/downloadData/img?filePath="+returnMsg.filePath).attr("_src", returnMsg.filePath);
 	}
+	
+	//教育经历
+	util.initPage("/employInfoData/educationInfoList", {
+		sort : {
+			"id" : "asc"
+		},
+		search : {
+			column : {
+				"employ_id" : [ "=", "", "#(employInfo.id)" ]
+			}
+		},
+		modal : {
+			"educationInfoSave" : {
+				bind : {
+					"#educationInfoAdd" : {
+						title : "教育经历添加"
+					}
+				},
+				pageUrl : "/employInfoPage/educationInfoEdit",
+				title : "教育经历修改",
+				width : 1100,
+				button : {
+					"submit" : {
+						name : "确定",
+						className : "btn-primary",
+						click : function(dataMap) {
+							if ($('#educationInfoForm').validationEngine('validate')) {
+								var educationInfo = util.getModal(dataMap);
+								educationInfo["educationInfo.employ_id"] = "#(employInfo.id)";
+								util.call("/employInfoData/educationInfoSave", educationInfo, function(returnMsg) {
+									util.refreshPage(dataMap);
+									util.closeModal(dataMap);
+									util.alert(returnMsg["returnMsg"]);
+								});
+							}
+						}
+					}
+				}
+			},
+			"educationInfoDelete" : {
+				button : {
+					"submit" : {
+						name : "确定",
+						className : "btn-primary",
+						click : function(dataMap) {
+							util.call("/employInfoData/educationInfoDelete", { "id" : dataMap["id"] + "" }, function(returnMsg) {
+								util.refreshPage(dataMap);
+								util.closeModal(dataMap);
+								util.alert(returnMsg["returnMsg"]);
+							});
+						}
+					}
+				}
+			}
+		}
+	},
+	function(data) {
+		var tableHTML = [],
+			obj = {},
+			educationInfoList = data.list,
+			educationInfoSave = data["educationInfoSave"],
+			educationInfoDelete = data["educationInfoDelete"];
+		for (var i = 0; i < educationInfoList.length; i++) {
+			obj = educationInfoList[i];
+			tableHTML.push('<tr>');
+			tableHTML.push('	<td>', obj.education_end , '</td>');
+			tableHTML.push('	<td>', obj.school_name , '</td>');
+			tableHTML.push('	<td>', obj.major , '</td>');
+			tableHTML.push('	<td style="float: right;">');
+			tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',educationInfoSave,'\', {id : ',obj.id,', title: \'教育经历修改\'});">修改</a>');
+			tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',educationInfoDelete,'\', {id : ',obj.id,', pageHtml: \'确定要删除【',obj.school_name,'】吗？\'});">删除</a>');
+			tableHTML.push('	</td>');
+			tableHTML.push('</tr>');
+		}
+		$("#educationInfoTable tbody").html(tableHTML.join(""));
+	});
 </script>

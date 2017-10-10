@@ -1,6 +1,5 @@
 package com.jlqr.controller.page;
 
-import java.util.HashMap;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -10,10 +9,13 @@ import com.jfinal.kit.PropKit;
 import com.jlqr.common.ControllerUtil;
 import com.jlqr.common.SystemUtil;
 import com.jlqr.common.model.Dictionary;
+import com.jlqr.common.model.EducationInfo;
 import com.jlqr.common.model.EmployInfo;
 import com.jlqr.common.model.EmployView;
+import com.jlqr.common.model.ItemInfo;
 import com.jlqr.common.model.LoginInfo;
 import com.jlqr.common.model.RoleInfo;
+import com.jlqr.common.model.WorkInfo;
 import com.jlqr.interceptor.NewService;
 import com.jlqr.service.DictionaryService;
 import com.jlqr.service.EmployInfoService;
@@ -92,6 +94,51 @@ public class EmployInfoPage extends ControllerUtil {
 	//选择专业证书页面
 	public void employDiplomaSelectIndex(){
 		
-	} 
+	}
+	
+	/**
+	 * 教育经历
+	 */
+	public void educationInfoEdit() {
+		EducationInfo educationInfo = new EducationInfo();
+		try {
+			if(StringUtils.isNotBlank(getPara("id"))) {
+				educationInfo = employInfoService.educationInfoById(getParaToInt("id"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		setAttr("educationInfo", educationInfo);
+	}
+	
+	/**
+	 * 工作经历
+	 */
+	public void workInfoEdit() {
+		WorkInfo workInfo = new WorkInfo();
+		try {
+			if(StringUtils.isNotBlank(getPara("id"))) {
+				workInfo = employInfoService.workInfoById(getParaToInt("id"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		setAttr("workInfo", workInfo);
+	}
+	
+	/**
+	 * 项目经验
+	 */
+	public void itemInfoEdit() {
+		ItemInfo itemInfo = new ItemInfo();
+		try {
+			if(StringUtils.isNotBlank(getPara("id"))) {
+				itemInfo = employInfoService.itemInfoById(getParaToInt("id"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		setAttr("itemInfo", itemInfo);
+	}
 	
 }

@@ -1,15 +1,18 @@
 package com.jlqr.controller.data;
 
 import java.util.HashMap;
+import java.util.List;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import com.jfinal.kit.PropKit;
 import com.jlqr.common.ControllerUtil;
-import com.jlqr.common.model.Dictionary;
+import com.jlqr.common.model.EducationInfo;
 import com.jlqr.common.model.EmployInfo;
+import com.jlqr.common.model.ItemInfo;
 import com.jlqr.common.model.LoginInfo;
+import com.jlqr.common.model.WorkInfo;
 import com.jlqr.interceptor.NewService;
 import com.jlqr.service.DictionaryService;
 import com.jlqr.service.EmployInfoService;
@@ -135,16 +138,144 @@ public class EmployInfoData extends ControllerUtil {
 		}
 		renderJson(returnMsg);
 	}
+	
 	public void employDiplomaSelect(){
-		
 		try {
 			renderJson(dictionaryService.dictionaryByIdPath(","+PropKit.getInt("employ_speciality")+","));
 		} catch (Exception e) {
-			// TODO: handle exception
 			e.printStackTrace();
 		}
 	}
 	
+	/**
+	 * 教育经历
+	 */
+	public void educationInfoSave() {
+		HashMap<String,Object> returnMap = getReturnMap();
+		try {
+			EducationInfo educationInfo = getModel(EducationInfo.class, "educationInfo");
+			employInfoService.educationInfoSave(educationInfo);
+			returnMap.put("returnState", "success");
+			returnMap.put("returnMsg", "保存成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		renderJson(returnMap);
+	}
+	
+	public void educationInfoDelete() {
+		HashMap<String,Object> returnMap = getReturnMap();
+		try {
+			Integer id = getParaToInt("id");
+			if(null != id) {
+				employInfoService.educationInfoDelete(id);
+				returnMap.put("returnState", "success");
+				returnMap.put("returnMsg", "删除成功");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		renderJson(returnMap);
+	}
+	
+	public void educationInfoList() {
+		List<EducationInfo> educationInfoList = null;
+		try {
+			String employId = employInfoService.getPara(this, "employ_id");
+			if(StringUtils.isNoneBlank(employId)) {
+				educationInfoList = employInfoService.educationInfoList(Integer.parseInt(employId));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		renderJson(educationInfoList);
+	}
+	
+	/**
+	 * 工作经历
+	 */
+	public void workInfoSave() {
+		HashMap<String,Object> returnMap = getReturnMap();
+		try {
+			WorkInfo workInfo = getModel(WorkInfo.class, "workInfo");
+			employInfoService.workInfoSave(workInfo);
+			returnMap.put("returnState", "success");
+			returnMap.put("returnMsg", "保存成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		renderJson(returnMap);
+	}
+	
+	public void workInfoDelete() {
+		HashMap<String,Object> returnMap = getReturnMap();
+		try {
+			Integer id = getParaToInt("id");
+			if(null != id) {
+				employInfoService.workInfoDelete(id);
+				returnMap.put("returnState", "success");
+				returnMap.put("returnMsg", "删除成功");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		renderJson(returnMap);
+	}
+	
+	public void workInfoList() {
+		List<WorkInfo> workInfoList = null;
+		try {
+			String employId = employInfoService.getPara(this, "employ_id");
+			if(StringUtils.isNoneBlank(employId)) {
+				workInfoList = employInfoService.workInfoList(Integer.parseInt(employId));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		renderJson(workInfoList);
+	}
+
+	/**
+	 * 项目经验
+	 */
+	public void itemInfoSave() {
+		HashMap<String,Object> returnMap = getReturnMap();
+		try {
+			ItemInfo itemInfo = getModel(ItemInfo.class, "itemInfo");
+			employInfoService.itemInfoSave(itemInfo);
+			returnMap.put("returnState", "success");
+			returnMap.put("returnMsg", "保存成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		renderJson(returnMap);
+	}
+	
+	public void itemInfoDelete() {
+		HashMap<String,Object> returnMap = getReturnMap();
+		try {
+			Integer id = getParaToInt("id");
+			if(null != id) {
+				employInfoService.itemInfoDelete(id);
+				returnMap.put("returnState", "success");
+				returnMap.put("returnMsg", "删除成功");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		renderJson(returnMap);
+	}
+	
+	public void itemInfoList() {
+		List<ItemInfo> itemInfoList = null;
+		try {
+			String employId = employInfoService.getPara(this, "employ_id");
+			if(StringUtils.isNoneBlank(employId)) {
+				itemInfoList = employInfoService.itemInfoList(Integer.parseInt(employId));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		renderJson(itemInfoList);
+	}
 }
-
-

@@ -20,7 +20,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.jlqr.common.ActivitiUtil;
 import com.jlqr.common.ControllerUtil;
-import com.jlqr.common.model.EmployView;
 import com.jlqr.interceptor.NewService;
 import com.jlqr.service.EmployInfoService;
 import com.jlqr.service.PowerInfoService;
@@ -84,65 +83,70 @@ public class ActivitiPage extends ControllerUtil {
 	 * 加载任务办理界面
 	 */
 	public void formKeyForm() {
-		HashMap<String,Object> activitiMap = getReturnMap();
-		String taskId = getPara("taskId");//processDefinitionId = getPara("processDefinitionId"), 
-//		String taskFormKey = formService.getTaskFormKey(processDefinitionId, taskId);
+		String taskFormKey = "";
 		
-		//获取businessKey
-		Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
-		String taskFormKey = task.getFormKey();
-		String processInstanceId = task.getProcessInstanceId();
-		ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
-		String businessKey = processInstance.getBusinessKey();
-		
-		//获取当前活动对象
-		String processDefinitionId = task.getProcessDefinitionId();
-		ProcessDefinitionEntity processDefinitionEntity = (ProcessDefinitionEntity) repositoryService.getProcessDefinition(processDefinitionId);
-		String activityId = processInstance.getActivityId();
-		ActivityImpl activityImpl = processDefinitionEntity.findActivity(activityId);
-		
-		//获取流程定义实体对象
-		List<PvmTransition> pvmTransitionList = activityImpl.getOutgoingTransitions();
-		
-		//获取sequenceFlow
-		List<String> sequenceFlowList = new ArrayList<String>();
-		String sequenceFlow = "";
-		for (PvmTransition pvmTransition : pvmTransitionList) {
-			sequenceFlow = (String) pvmTransition.getProperty("name");
-			if(StringUtils.isNotBlank(sequenceFlow)) {
-				sequenceFlowList.add(sequenceFlow);
-			} else {
-				sequenceFlowList.add("确定");
+		try {
+			HashMap<String,Object> activitiMap = getReturnMap();
+			String taskId = getPara("taskId");//processDefinitionId = getPara("processDefinitionId"), 
+//			String taskFormKey = formService.getTaskFormKey(processDefinitionId, taskId);
+			
+			//获取businessKey
+			Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+			taskFormKey = task.getFormKey();
+			String processInstanceId = task.getProcessInstanceId();
+			ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
+			String businessKey = processInstance.getBusinessKey();
+			
+			//获取当前活动对象
+			String processDefinitionId = task.getProcessDefinitionId();
+			ProcessDefinitionEntity processDefinitionEntity = (ProcessDefinitionEntity) repositoryService.getProcessDefinition(processDefinitionId);
+			String activityId = processInstance.getActivityId();
+			ActivityImpl activityImpl = processDefinitionEntity.findActivity(activityId);
+			
+			//获取流程定义实体对象
+			List<PvmTransition> pvmTransitionList = activityImpl.getOutgoingTransitions();
+			
+			//获取sequenceFlow
+			List<String> sequenceFlowList = new ArrayList<String>();
+			String sequenceFlow = "";
+			for (PvmTransition pvmTransition : pvmTransitionList) {
+				sequenceFlow = (String) pvmTransition.getProperty("name");
+				if(StringUtils.isNotBlank(sequenceFlow)) {
+					sequenceFlowList.add(sequenceFlow);
+				} else {
+					sequenceFlowList.add("确定");
+				}
 			}
-		}
-		
-		//获取批注列表
-		List<Comment> commentList = taskService.getProcessInstanceComments(processInstanceId);
-		
-		//获取当前登录人的领导
-//		LoginInfo loginInfo = getSessionAttr("loginInfo");
-//		RoleInfo roleInfo = getSessionAttr("roleInfo");
-		EmployView employView = getSessionAttr("employView");
-		List<EmployView> employViewList = employInfoService.findLeaderList(employView);
-		
-		activitiMap.put("returnState", "success");
-		activitiMap.put("returnMsg", "操作成功");
-		activitiMap.put("businessKey", businessKey);
-		activitiMap.put("taskId", taskId);
-		activitiMap.put("sequenceFlowList", sequenceFlowList);
-		activitiMap.put("commentList", ActivitiUtil.toCommentList(commentList));
-		activitiMap.put("employViewList", employViewList);
-		setSessionAttr("activitiMap", activitiMap);
-		
-		String[] businessKeyArray = businessKey.split("\\,");
-		if(businessKeyArray.length == 2) {
-			Pattern pattern = Pattern.compile("^.+\\?");
-			Matcher matcher = pattern.matcher(taskFormKey);
-			if(matcher.find()) {
-				taskFormKey += "&id="+businessKeyArray[1];
-			} else {
-				taskFormKey += "?id="+businessKeyArray[1];
+			
+			//获取批注列表
+			List<Comment> commentList = taskService.getProcessInstanceComments(processInstanceId);
+			
+			//获取当前登录人的领导
+//			EmployView employView = getSessionAttr("employView");
+//			List<EmployView> employViewList = employInfoService.findLeaderList(employView);
+			
+			activitiMap.put("returnState", "success");
+			activitiMap.put("returnMsg", "操作成功");
+			activitiMap.put("businessKey", businessKey);
+//			activitiMap.put("taskId", taskId);
+			activitiMap.put("task", ActivitiUtil.toTask(task));
+			activitiMap.put("sequenceFlowList", sequenceFlowList);
+			activitiMap.put("commentList", ActivitiUtil.toCommentList(commentList));
+//			activitiMap.put("employViewList", employViewList);
+			setSessionAttr("activitiMap", activitiMap);
+			
+			String[] businessKeyArray = businessKey.split("\\,");
+			if(businessKeyArray.length == 2) {
+				Pattern pattern = Pattern.compile("^.+\\?");
+				Matcher matcher = pattern.matcher(taskFormKey);
+				if(matcher.find()) {
+					taskFormKey += "&id="+businessKeyArray[1];
+				} else {
+					taskFormKey += "?id="+businessKeyArray[1];
+				}
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		redirect(taskFormKey);//页面重定向
 		

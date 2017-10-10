@@ -10,10 +10,13 @@ import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.Page;
 import com.jlqr.common.FileUtil;
 import com.jlqr.common.ServiceUtil;
+import com.jlqr.common.model.EducationInfo;
 import com.jlqr.common.model.EmployInfo;
 import com.jlqr.common.model.EmployView;
+import com.jlqr.common.model.ItemInfo;
 import com.jlqr.common.model.LoginInfo;
 import com.jlqr.common.model.RoleInfo;
+import com.jlqr.common.model.WorkInfo;
 
 public class EmployInfoService extends ServiceUtil {
 	
@@ -98,50 +101,35 @@ public class EmployInfoService extends ServiceUtil {
 	}
 	
 	/**
+	 * 根据部门、角色等级和报销金额获取适合审核费用报销的上级领导
+	 */
+	public List<EmployView> findLeaderList(EmployView employView, float reimburseTotal) throws Exception {
+		return findEmployViewList("findLeaderList", employView, reimburseTotal);
+	}
+	
+	/**
 	 * 根据角色等级和部门获取我的上级
 	 */
-	public List<EmployView> findLeaderList(EmployView employView) {
-		List<EmployView> employViewList = new ArrayList<EmployView>();
-		List<String> roleIdCondition = new ArrayList<String>(), departmentIdCondition = new ArrayList<String>();
-		
-		String departmentId = employView.getDepartmentId();
-		if(StringUtils.isNotBlank(departmentId) && departmentId.length() > 2) {
-			String[] departmentIdList = departmentId.substring(1, departmentId.length() - 1).split("\\,");
-			for (String _departmentId : departmentIdList) {
-				departmentIdCondition.add("department_id like '%,"+_departmentId+",%'");
-			}
-		}
-
-		String roleId = employView.getRoleId();
-		if(StringUtils.isNotBlank(roleId) && roleId.length() > 2) {
-			//获取当前登录人最高等级的角色
-			RoleInfo loginRoleInfo = RoleInfo.dao.findFirst("select * from role_info where id in ("+roleId.substring(1, roleId.length() - 1)+") order by role_grade desc");
-			
-			if(null != loginRoleInfo) {
-				//获取我的上一级的角色
-				List<RoleInfo> leaderRoleInfoList = RoleInfo.dao.find("select * from role_info where role_grade = ?", loginRoleInfo.getRoleGrade() - 1);
-				if(null != leaderRoleInfoList) {
-					//获取我的上一级领导
-					for (RoleInfo roleInfo : leaderRoleInfoList) {
-						roleIdCondition.add("role_id like '%,"+roleInfo.getId()+",%'");
-					}
-				}
-			}
-		}
-		
-		if(roleIdCondition.size() > 0 && departmentIdCondition.size() > 0) {
-			employViewList = EmployView.dao.find("select * from employ_view where ("+StringUtils.join(roleIdCondition, " or ")+") and ("+StringUtils.join(departmentIdCondition, " or ")+")");
-			if(null == employViewList)
-				employViewList = new ArrayList<EmployView>();
-		}
-		
-		return employViewList;
+	public List<EmployView> findLeaderList(EmployView employView) throws Exception {
+		return findEmployViewList("findLeaderList", employView, 0);
 	}
 	
 	/**
 	 * 根据角色等级和部门获取我的下级
 	 */
-	public List<EmployView> findStaffList(EmployView employView) {
+	public List<EmployView> findStaffList(EmployView employView) throws Exception {
+		return findEmployViewList("findStaffList", employView, 0);
+	}
+	
+	/**
+	 * 根据部门、角色等级和报销金额获取适合审核费用报销的上级领导或下级员工
+	 * @param employView
+	 * @param roleInfoListSql
+	 * @return
+	 * @throws Exception
+	 */
+	private List<EmployView> findEmployViewList(String method, EmployView employView, float reimburseTotal) throws Exception {
+
 		List<EmployView> employViewList = new ArrayList<EmployView>();
 		List<String> roleIdCondition = new ArrayList<String>(), departmentIdCondition = new ArrayList<String>();
 		
@@ -160,10 +148,22 @@ public class EmployInfoService extends ServiceUtil {
 			
 			if(null != loginRoleInfo) {
 				//获取我的下级的角色
-				List<RoleInfo> leaderRoleInfoList = RoleInfo.dao.find("select * from role_info where role_grade > ?", loginRoleInfo.getRoleGrade() + 1);
-				if(null != leaderRoleInfoList) {
+				List<RoleInfo> roleInfoList = null;
+				if(StringUtils.equals("findLeaderList", method)) {
+					if(reimburseTotal > 0) {
+						Integer roleGrade = 3;
+						if(reimburseTotal >= 1000)
+							roleGrade = 2;
+						roleInfoList = RoleInfo.dao.find("select * from role_info where role_grade = ?", roleGrade);
+					} else {
+						roleInfoList = RoleInfo.dao.find("select * from role_info where role_grade = ?", loginRoleInfo.getRoleGrade() - 1);
+					}
+				} else if(StringUtils.equals("findStaffList", method)) {
+					roleInfoList = RoleInfo.dao.find("select * from role_info where role_grade > ?", loginRoleInfo.getRoleGrade() + 1);
+				}
+				if(null != roleInfoList) {
 					//获取我的下级员工
-					for (RoleInfo roleInfo : leaderRoleInfoList) {
+					for (RoleInfo roleInfo : roleInfoList) {
 						roleIdCondition.add("role_id like '%,"+roleInfo.getId()+",%'");
 					}
 				}
@@ -177,7 +177,82 @@ public class EmployInfoService extends ServiceUtil {
 		}
 		
 		return employViewList;
+	
+	}
+	
+	/**
+	 * 教育经历
+	 */
+	public EducationInfo educationInfoById(Integer id) throws Exception {
+		return EducationInfo.dao.findById(id);
+	}
+	
+	public void educationInfoSave(EducationInfo educationInfo) throws Exception {
+		if(null == educationInfo.getId()) {
+			Integer id = getMaxColumn(EducationInfo.class, "id") + 1;
+			educationInfo.setId(id);
+			educationInfo.save();
+		} else {
+			educationInfo.update();
+		}
+	}
+	
+	public void educationInfoDelete(Integer id) throws Exception {
+		EducationInfo.dao.deleteById(id);
+	}
+	
+	public List<EducationInfo> educationInfoList(Integer employId) throws Exception {
+		return EducationInfo.dao.find("select * from education_info where employ_id = ?", employId);
+	}
+	
+	/**
+	 * 工作经历
+	 */
+	public WorkInfo workInfoById(Integer id) throws Exception {
+		return WorkInfo.dao.findById(id);
+	}
+	
+	public void workInfoSave(WorkInfo workInfo) throws Exception {
+		if(null == workInfo.getId()) {
+			Integer id = getMaxColumn(WorkInfo.class, "id") + 1;
+			workInfo.setId(id);
+			workInfo.save();
+		} else {
+			workInfo.update();
+		}
+	}
+	
+	public void workInfoDelete(Integer id) throws Exception {
+		WorkInfo.dao.deleteById(id);
+	}
+	
+	public List<WorkInfo> workInfoList(Integer employId) throws Exception {
+		return WorkInfo.dao.find("select * from work_info where employ_id = ?", employId);
 	}
 
+	/**
+	 * 项目经验
+	 */
+	public ItemInfo itemInfoById(Integer id) throws Exception {
+		return ItemInfo.dao.findById(id);
+	}
 	
+	public void itemInfoSave(ItemInfo itemInfo) throws Exception {
+		if(null == itemInfo.getId()) {
+			Integer id = getMaxColumn(ItemInfo.class, "id") + 1;
+			itemInfo.setId(id);
+			itemInfo.save();
+		} else {
+			itemInfo.update();
+		}
+	}
+	
+	public void itemInfoDelete(Integer id) throws Exception {
+		ItemInfo.dao.deleteById(id);
+	}
+	
+	public List<ItemInfo> itemInfoList(Integer employId) throws Exception {
+		return ItemInfo.dao.find("select * from item_info where employ_id = ?", employId);
+	}
+
 }

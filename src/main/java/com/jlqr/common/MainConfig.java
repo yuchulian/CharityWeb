@@ -141,6 +141,6 @@ public class MainConfig extends JFinalConfig {
 	 * 配置处理器
 	 */
 	public void configHandler(Handlers me) {
-		
+		me.add(new ClearActivitiMapHandler());
 	}
 }

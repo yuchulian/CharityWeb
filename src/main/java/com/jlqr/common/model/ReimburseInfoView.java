@@ -5,4 +5,9 @@ import com.jfinal.plugin.activerecord.Model;
 @SuppressWarnings("serial")
 public class ReimburseInfoView extends Model<ReimburseInfoView>{
 	public static final ReimburseInfoView dao = new ReimburseInfoView();
+	
+	public float getReimburseTotal() {
+		return getFloat("reimburse_total");
+	}
+	
 }

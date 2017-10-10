@@ -50,7 +50,12 @@ public class ActivitiData extends ControllerUtil {
 	 * 部署对象列表
 	 */
 	public void deploymentList() {
-		List<Deployment> deploymentList = repositoryService.createDeploymentQuery().orderByDeploymenTime().desc().list();
+		List<Deployment> deploymentList = null;
+		try {
+			deploymentList = repositoryService.createDeploymentQuery().orderByDeploymenTime().desc().list();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		renderJson(ActivitiUtil.toDeploymentList(deploymentList));
 	}
 	
@@ -59,14 +64,18 @@ public class ActivitiData extends ControllerUtil {
 	 */
 	public void deploymentSave() {
 		HashMap<String, Object> returnMap = getReturnMap();
-		String fileName = StringUtils.trim(getPara("fileName")), filePath = StringUtils.trim(getPara("filePath"));
-		File file = new File(PropKit.get("downloadPath")+filePath);
 		try {
-			ZipInputStream zipInputStream = new ZipInputStream(new FileInputStream(file));
-			repositoryService.createDeployment().name(fileName).addZipInputStream(zipInputStream).deploy();
-			returnMap.put("returnState", "success");
-			returnMap.put("returnMsg", "部署成功");
-		} catch (FileNotFoundException e) {
+			String fileName = StringUtils.trim(getPara("fileName")), filePath = StringUtils.trim(getPara("filePath"));
+			File file = new File(PropKit.get("downloadPath")+filePath);
+			try {
+				ZipInputStream zipInputStream = new ZipInputStream(new FileInputStream(file));
+				repositoryService.createDeployment().name(fileName).addZipInputStream(zipInputStream).deploy();
+				returnMap.put("returnState", "success");
+				returnMap.put("returnMsg", "部署成功");
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		renderJson(returnMap);
@@ -76,8 +85,13 @@ public class ActivitiData extends ControllerUtil {
 	 * 查看流程定义图片
 	 */
 	public void rocessDefinitionByDeploymentId() {
-		String deploymentId = getPara("deploymentId");
-		ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().deploymentId(deploymentId).singleResult();
+		ProcessDefinition processDefinition = null;
+		try {
+			String deploymentId = getPara("deploymentId");
+			processDefinition = repositoryService.createProcessDefinitionQuery().deploymentId(deploymentId).singleResult();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		renderJson(processDefinition);
 	}
 	
@@ -99,10 +113,14 @@ public class ActivitiData extends ControllerUtil {
 	 */
 	public void deploymentDelete() {
 		HashMap<String, Object> returnMap = getReturnMap();
-		String deploymentId = getPara("deploymentId");
-		repositoryService.deleteDeployment(deploymentId, true);
-		returnMap.put("returnState", "success");
-		returnMap.put("returnMsg", "删除成功");
+		try {
+			String deploymentId = getPara("deploymentId");
+			repositoryService.deleteDeployment(deploymentId, true);
+			returnMap.put("returnState", "success");
+			returnMap.put("returnMsg", "删除成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		renderJson(returnMap);
 	}
 	
@@ -113,8 +131,13 @@ public class ActivitiData extends ControllerUtil {
 	 * 查询根据当前登录人获取任务
 	 */
 	public void taskList() {
-		EmployView employView = getSessionAttr("employView");
-		List<Task> taskList = taskService.createTaskQuery().taskAssignee(employView.getId().toString()).orderByTaskCreateTime().desc().list();
+		List<Task> taskList = null;
+		try {
+			EmployView employView = getSessionAttr("employView");
+			taskList = taskService.createTaskQuery().taskAssignee(employView.getId().toString()).orderByTaskCreateTime().desc().list();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		renderJson(ActivitiUtil.toTaskList(taskList));
 	}
 	
@@ -123,14 +146,18 @@ public class ActivitiData extends ControllerUtil {
 	 */
 	public void startProcess() {
 		HashMap<String, Object> returnMap = getReturnMap();
-		String processDefinitionId = getPara("processDefinitionId"), id = getPara("id");
-		EmployView employView = getSessionAttr("employView");
-		
-		Map<String, Object> variables = new HashMap<String, Object>();
-		variables.put("loginId", employView.getId());
-		runtimeService.startProcessInstanceByKey(processDefinitionId, processDefinitionId+","+id, variables);
-		returnMap.put("returnState", "success");
-		returnMap.put("returnMsg", "启动成功");
+		try {
+			String processDefinitionId = getPara("processDefinitionId"), id = getPara("id");
+			EmployView employView = getSessionAttr("employView");
+			
+			Map<String, Object> variables = new HashMap<String, Object>();
+			variables.put("loginId", employView.getId());
+			runtimeService.startProcessInstanceByKey(processDefinitionId, processDefinitionId+","+id, variables);
+			returnMap.put("returnState", "success");
+			returnMap.put("returnMsg", "启动成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		renderJson(returnMap);
 	}
 	
@@ -139,28 +166,30 @@ public class ActivitiData extends ControllerUtil {
 	 */
 	public void taskComplete() {
 		HashMap<String, Object> returnMap = getReturnMap();
-		String taskId = getPara("taskId"), id = getPara("id"), message = getPara("message"), sequenceFlow = getPara("sequenceFlow"), assignee = getPara("assignee"), tableInfo = getPara("tableInfo");
-		EmployView employView = getSessionAttr("employView");
-		
-		Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
-		String processInstanceId = task.getProcessInstanceId();
-		
-		//添加批注
-		if(StringUtils.isNotBlank(message)) {
-			Authentication.setAuthenticatedUserId(employView.getEmployName());
-			taskService.addComment(taskId, processInstanceId, message);
-		}
-		
-		//assignee为空，说明被驳回
-		if(StringUtils.isBlank(assignee)) {
+		try {
+			String taskId = getPara("taskId"), id = getPara("id"), message = getPara("message"), sequenceFlow = getPara("sequenceFlow"), assignee = getPara("assignee"), tableInfo = getPara("tableInfo");
+			EmployView employView = getSessionAttr("employView");
 			
-		}
-
-		if(StringUtils.isNotBlank(assignee)) {
+			Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+			String processInstanceId = task.getProcessInstanceId();
+			
+			//添加批注
+			if(StringUtils.isNotBlank(message)) {
+				Authentication.setAuthenticatedUserId(employView.getEmployName());
+				taskService.addComment(taskId, processInstanceId, message);
+			}
+			
+			//assignee为空，说明被驳回
+	//		if(StringUtils.isBlank(assignee)) {
+	//			
+	//		}
+	
 			//完成任务
 			Map<String, Object> variables = new HashMap<String, Object>();
 			if(!StringUtils.equals("确定", sequenceFlow)) {
-				variables.put("loginId", assignee);
+				if(StringUtils.isNotBlank(assignee)) {
+					variables.put("loginId", assignee);
+				}
 				variables.put("sequenceFlow", sequenceFlow);
 			}
 			taskService.complete(taskId, variables);
@@ -173,12 +202,14 @@ public class ActivitiData extends ControllerUtil {
 				String[] processDefinitionIdList = processDefinitionId.split("\\:");
 				String[] tableInfoList = tableInfo.split("\\,");
 				if(processDefinitionIdList.length > 1 && tableInfoList.length > 1) {
-					Db.update("update "+processDefinitionIdList[0]+" set "+tableInfoList[0]+" = "+tableInfoList[1]);
+					Db.update("update "+processDefinitionIdList[0]+" set "+tableInfoList[0]+" = '"+tableInfoList[1]+"' where id = "+id);
 				}
 			}
 			
 			returnMap.put("returnState", "success");
 			returnMap.put("returnMsg", "任务办理成功");
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		renderJson(returnMap);
 	}
@@ -187,14 +218,19 @@ public class ActivitiData extends ControllerUtil {
 	 * 获取历史批注列表
 	 */
 	public void commentList() {
-		String processDefinitionId = getPara("processDefinitionId"), id = getPara("id");
-		
-		//获取历史流程实例
-		HistoricProcessInstance historicProcessInstance = historyService.createHistoricProcessInstanceQuery().processInstanceBusinessKey(processDefinitionId+","+id).singleResult();
-		String processInstanceId = historicProcessInstance.getId();
-		
-		List<Comment> commentList = taskService.getProcessInstanceComments(processInstanceId);
-		renderJson(commentList);
+		List<Comment> commentList = null;
+		try {
+			String processDefinitionId = getPara("processDefinitionId"), id = getPara("id");
+			
+			//获取历史流程实例
+			HistoricProcessInstance historicProcessInstance = historyService.createHistoricProcessInstanceQuery().processInstanceBusinessKey(processDefinitionId+","+id).singleResult();
+			String processInstanceId = historicProcessInstance.getId();
+			
+			commentList = taskService.getProcessInstanceComments(processInstanceId);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		renderJson(ActivitiUtil.toCommentList(commentList));
 	}
 
 	/**
@@ -202,29 +238,33 @@ public class ActivitiData extends ControllerUtil {
 	 */
 	public void taskActivity() {
 		HashMap<String, Object> returnMap = getReturnMap();
-		String taskId = getPara("taskId");
-		Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
-		String processDefinitionId = task.getProcessDefinitionId();
-		
-		ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().processDefinitionId(processDefinitionId).singleResult();
-		String deploymentId = processDefinition.getDeploymentId();
-		String diagramResourceName = processDefinition.getDiagramResourceName();
-		
-		//根据以上信息，获取流程图。略……
-		
-		//获取当前任务的坐标
-		ProcessDefinitionEntity processDefinitionEntity = (ProcessDefinitionEntity) repositoryService.getProcessDefinition(processDefinitionId);
-		String processInstanceId = task.getProcessInstanceId();
-		ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
-		String activityId = processInstance.getActivityId();
-		ActivityImpl activityImpl = processDefinitionEntity.findActivity(activityId);
-		returnMap.put("x", activityImpl.getX());
-		returnMap.put("y", activityImpl.getY());
-		returnMap.put("width", activityImpl.getWidth());
-		returnMap.put("height", activityImpl.getHeight());
-		
-		returnMap.put("returnState", "success");
-		returnMap.put("returnMsg", "获取成功");
+		try {
+			String taskId = getPara("taskId");
+			Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+			String processDefinitionId = task.getProcessDefinitionId();
+			
+			ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().processDefinitionId(processDefinitionId).singleResult();
+			String deploymentId = processDefinition.getDeploymentId();
+			String diagramResourceName = processDefinition.getDiagramResourceName();
+			
+			//根据以上信息，获取流程图。略……
+			
+			//获取当前任务的坐标
+			ProcessDefinitionEntity processDefinitionEntity = (ProcessDefinitionEntity) repositoryService.getProcessDefinition(processDefinitionId);
+			String processInstanceId = task.getProcessInstanceId();
+			ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
+			String activityId = processInstance.getActivityId();
+			ActivityImpl activityImpl = processDefinitionEntity.findActivity(activityId);
+			returnMap.put("x", activityImpl.getX());
+			returnMap.put("y", activityImpl.getY());
+			returnMap.put("width", activityImpl.getWidth());
+			returnMap.put("height", activityImpl.getHeight());
+			
+			returnMap.put("returnState", "success");
+			returnMap.put("returnMsg", "获取成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		renderJson(returnMap);
 	}
 	

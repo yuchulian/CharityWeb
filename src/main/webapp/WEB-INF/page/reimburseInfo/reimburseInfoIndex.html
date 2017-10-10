@@ -125,6 +125,27 @@
 				title : "报销单详情",
 				pageUrl : "/reimburseInfoPage/reimburseInfoDetail",
 				width:700
+			},
+			"startProcess" : {
+				button : {
+					"submit" : {
+						name : "确定",
+						className : "btn-primary",
+						click : function(dataMap) {
+							var reimburseInfo = {
+								"reimburseInfo.id" : dataMap["id"],
+								"reimburseInfo.reimburse_state" : 2
+							};
+							util.call("/reimburseInfoData/reimburseInfoSave", reimburseInfo, function(returnMsg) {
+								util.call("/activitiData/startProcess", { "processDefinitionId" : "reimburse_info", "id" : dataMap["id"] }, function(returnMsg) {
+									util.refreshPage(dataMap);
+									util.closeModal(dataMap);
+									util.alert(returnMsg["content"]);
+								});
+							});
+						}
+					}
+				}
 			}
 		}
 	},
@@ -134,24 +155,23 @@
 		reimburseInfoList = data.list,
 		reimburseInfoDetail = data["reimburseInfoDetail"],
 		reimburseInfoUpdate = data["reimburseInfoUpdate"],
+		startProcess = data["startProcess"],
 		reimburseInfoDelete = data["reimburseInfoDelete"];
 		for (var i = 0; i < reimburseInfoList.length; i++) {
 			obj = reimburseInfoList[i];
 			tableHTML.push('<tr>');
-			tableHTML.push('<td></td>');
 			tableHTML.push('	<td>', (i + 1), '</td>');
+			tableHTML.push('	<td>',obj.reimburse_number,'</td>');
 			tableHTML.push('	<td>', obj.reimburse_price, '</td>');
 			tableHTML.push('	<td>', obj.reimburse_count, '</td>');
 			tableHTML.push('	<td>', obj.reimburse_total, '</td>');
-			if(obj.reimburse_state==1) 
-				tableHTML.push('	<td>待审批</td>');
-			else if(obj.reimburse_state==2) 
-				tableHTML.push('	<td>通过</td>');
-			else
-					tableHTML.push('	<td>不通过</td>');
+			tableHTML.push('	<td>', login.reimburseState[obj.reimburse_state], '</td>');
 			tableHTML.push('	<td>');
-			tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',reimburseInfoUpdate,'\', {id : ',obj.id,', title: \'修改报销单\'});">修改</a>');
-			tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',reimburseInfoDelete,'\', {id : ',obj.id,', pageHtml: \'确定要删除型号为【',obj.reimburse_model,'】的报销单吗？\'});">删除</a>');
+			if(1 == obj.reimburse_state) {
+				tableHTML.push('	<a href="javascript:void(0);" onclick="util.execute(\'',reimburseInfoUpdate,'\', {id : ',obj.id,', title: \'修改报销单\'});">修改</a>');
+				tableHTML.push('	<a href="javascript:void(0);" onclick="util.execute(\'',reimburseInfoDelete,'\', {id : ',obj.id,', pageHtml: \'确定要删除型号为【',obj.reimburse_model,'】的报销单吗？\'});">删除</a>');
+				tableHTML.push('	<a href="javascript:void(0);" onclick="util.execute(\'',startProcess,'\', {id : ',obj.id,', pageHtml: \'确定要启动【',obj.project_number,'】吗？\'});">启动任务</a>');
+			}
 			tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',reimburseInfoDetail,'\', {id : ',obj.id,', title: \'查看报销单\'});">查看</a>');
 			tableHTML.push('	</td>');
 			tableHTML.push('</tr>');

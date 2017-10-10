@@ -53,6 +53,33 @@ public abstract class ActivitiUtil {
 	}
 	
 	/**
+	 * 将task转换成键值对的形式
+	 * @param task
+	 * @return 
+	 */
+	public static Record toTask(Task task) {
+		Record record = new Record();
+		record.set("assignee", task.getAssignee());
+		record.set("category", task.getCategory());
+		record.set("createTime", SystemUtil.formatTime(task.getCreateTime()));
+		record.set("delegationState", task.getDelegationState());
+		record.set("description", task.getDescription());
+		record.set("dueDate", SystemUtil.formatTime(task.getDueDate()));
+		record.set("executionId", task.getExecutionId());
+		record.set("formKey", task.getFormKey());
+		record.set("id", task.getId());
+		record.set("name", task.getName());
+		record.set("owner", task.getOwner());
+		record.set("parentTaskId", task.getParentTaskId());
+		record.set("priority", task.getPriority());
+		record.set("processDefinitionId", task.getProcessDefinitionId());
+		record.set("processInstanceId", task.getProcessInstanceId());
+		record.set("taskDefinitionKey", task.getTaskDefinitionKey());
+		record.set("tenantId", task.getTenantId());
+		return record;
+	}
+	
+	/**
 	 * 转换部署流程集合格式
 	 * @param deploymentList
 	 * @return

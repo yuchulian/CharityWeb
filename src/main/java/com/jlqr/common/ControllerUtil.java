@@ -23,5 +23,19 @@ public abstract class ControllerUtil extends Controller {
 		returnMap.put("returnMsg", "操作失败");
 		return returnMap;
 	}
+
+	/**
+	 * 如果t为null，将返回t的空对象
+	 * @param t
+	 * @return
+	 */
+	/*public <T> T newObject(T t) {
+		try {
+			t = null == t ? (T)(new Object()) : t;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return t;
+	}*/
 	
 }

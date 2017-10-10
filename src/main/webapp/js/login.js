@@ -331,6 +331,12 @@ Login.prototype = {
 		2: "报备",
 		3: "立项"
 	},
+	reimburseState: {
+		1: "草稿",
+		2: "待审批",
+		3: "通过",
+		4: "不通过",
+	},
 	initWebRefresh : function() {
 		$("#webRefresh").attr("onclick", "");
 		//绑定我的信息
