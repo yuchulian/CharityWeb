@@ -40,6 +40,7 @@
 	<script type="text/javascript" src="/js/jquery.validationEngine-zh_CN.js"></script>
 	<script type="text/javascript" src="/js/jquery.ztree.all.min.js"></script>
 	<script type="text/javascript" src="/js/util.js"></script>
+	<script type="text/javascript" src="/js/login.js"></script>
 	<!-- 插件引用 end -->
 
 	<!-- END: PAGE SCRIPTS -->
@@ -128,11 +129,10 @@
 				<li class="dropdown menu-merge">
 					<div class="navbar-btn btn-group">
 						<button data-toggle="dropdown" class="btn btn-sm dropdown-toggle">
-							<span class="ad ad-radio-tower fs14 va-m"></span> <span
-								class="badge badge-danger">5</span>
+							<span class="ad ad-radio-tower fs14 va-m"></span>
+							<span class="badge badge-danger" id="toDoCount">5</span>
 						</button>
-						<div
-							class="dropdown-menu dropdown-persist w375 animated animated-shorter fadeIn"
+						<div class="dropdown-menu dropdown-persist w375 animated animated-shorter fadeIn"
 							role="menu">
 							<div class="panel mbn">
 								<div class="panel-menu">
@@ -147,22 +147,9 @@
 									<div class="tab-content br-n pn">
 										<div id="nav-tab1" class="tab-pane alerts-widget active" role="tabpanel">
 										
-											<ul class="media-list" role="menu">
-												<li class="media">
-													<a class="media-left" href="#">
-														<span class="glyphicon glyphicon-user text-info"></span>
-													</a>
-													<div class="media-body">
-														<h5 class="media-heading">
-															张三
-															<small class="text-muted">- 2017-09-28</small>
-														</h5>
-														新的一期项目报备…
-														<a class="text-system" href="#"> 办理 </a>
-													</div>
-												</li>
-											</ul>
-											
+											<table class="table table-striped table-hover dataTable no-footer" id="taskUl">
+												<tbody> </tbody>
+											</table>
 										
 										</div>
 										<div id="nav-tab2" class="tab-pane chat-widget" role="tabpanel">
@@ -498,7 +485,6 @@
 	<script src="/js/bootstrap.min.js"></script>
 	<script src="/js/jquery-ui.min.js"></script>
 	<script src="/js/utility.js"></script>
-	<script type="text/javascript" src="/js/login.js"></script>
 	
 </body>
 </html>

@@ -1,6 +1,7 @@
 $(function() {
 	util.temp.browserType = util.browserType();
 	util.initUpload();
+	login.taskList();
 	
 	var $body = $("body");
 	
@@ -438,6 +439,43 @@ Login.prototype = {
 				});
 				$("#sidebar_left > div:first").scrollTop(li_parents.index()*37);
 				return false;
+			}
+		});
+	},
+	taskFormKey : this.taskFormKey || util.modal({
+		title: "任务办理",
+		width: 1500,
+		pageUrl : "/activitiPage/formKeyForm"
+	}),
+	taskList : function() {
+		util.call("/activitiData/taskList", {}, function(returnData) {
+			console.info(returnData[0]);
+			var ulHTML = [], tableHTML = [], obj = {}, hasTaskTable = $("#taskTable").length;
+			for(var i=0; i<returnData.length; i++) {
+				obj = returnData[i];
+				ulHTML.push('<tr>');
+				ulHTML.push('	<td>',(i+1),'</td>');
+//				ulHTML.push('	<td>',obj.name,'【',util.formatDate(new Date(obj.createTime)),'】</td>');
+				ulHTML.push('	<td>',obj.name,'【',(obj.createTime || "").substring(0, 10),'】</td>');
+				ulHTML.push('	<td><a href="javascript:void(0);" onclick="util.execute(\'',login.taskFormKey,'\', {taskId : ',obj.id,', processDefinitionId : \'', obj.processDefinitionId ,'\'});">任务办理</a></td>');
+				ulHTML.push('</tr>');
+				
+				if(hasTaskTable) {
+					tableHTML.push('<tr>');
+					tableHTML.push('	<td>',(i+1),'</td>');
+					tableHTML.push('	<td>',obj.id,'</td>');
+					tableHTML.push('	<td><a href="javascript:void(0);" onclick="">',obj.name,'</a></td>');
+					tableHTML.push('	<td>',obj.createTime,'</td>');
+					tableHTML.push('	<td>');
+					tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',login.taskFormKey,'\', {taskId : ',obj.id,', processDefinitionId : \'', obj.processDefinitionId ,'\'});">任务办理</a>');
+					tableHTML.push('	</td>');
+					tableHTML.push('</tr>');
+				}
+			}
+			$("#toDoCount").html(returnData.length?returnData.length:"");
+			$("#taskUl").html(ulHTML.join(""));
+			if(hasTaskTable) {
+				$("#taskTable tbody").html(tableHTML.join(""));
 			}
 		});
 	}

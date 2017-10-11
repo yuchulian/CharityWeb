@@ -88,6 +88,7 @@
 								<th class="sorting">合同编号</th>
 								<th class="sorting">合同类型</th>
 								<th class="sorting">合同状态</th>
+								<th>合同有效期</th>
 								<th class="sorting_disabled width200">操作</th>
 							</tr>
 						</thead>
@@ -225,6 +226,7 @@
 			tableHTML.push('	<td>', obj.contract_number, '</td>');
 			tableHTML.push('	<td>', obj.personnel_contract_type, '</td>');
 			tableHTML.push('	<td>', obj.contract_state==1?"试用期":obj.contract_state==2?"已转正":"已解除", '</td>');
+			tableHTML.push('	<td>', obj.contract_start, '到', obj.contract_end ,'</td>');
 			tableHTML.push('	<td>');
 			tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',personnelContractUpdate,'\', {id : ',obj.id,', title: \'修改合同\'});">修改</a>');
 			tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',personnelContractDelete,'\', {id : ',obj.id,', pageHtml: \'确定要删除合同编号为【',obj.contract_number,'】的合同吗？\'});">删除</a>');

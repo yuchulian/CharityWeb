@@ -30,14 +30,10 @@
 </div>
 
 <script type="text/javascript">
-	/* util.call("/activitiData/startProcess", {
-		"processDefinitionId": "project_info",
-		"id": "1"
-	}, function(returnData) {
-		console.info(returnData);
-	}); */
 
-	var formKeyForm = util.modal({
+	login.taskList();
+
+	/* var formKeyForm = util.modal({
 		title: "任务办理",
 		width: 1500,
 		pageUrl : "/activitiPage/formKeyForm"
@@ -62,29 +58,6 @@
 			}
 			$("#taskTable tbody").html(tableHTML.join(""));
 		});
-	}
-	
-	/* util.modal({
-		title: "部署流程定义",
-		bind: {
-			"#taskAdd": {}
-		},
-		pageUrl : "/activitiPage/taskForm",
-		button: {
-			"taskSave": {
-				name: "保存",
-				className : "btn-primary",
-				click : function(dataMap) {
-					util.call("/activitiData/", {
-						"id" : "1",
-						"processDefinitionId": "project_info"
-					}, function(returnMap) {
-						console.info(returnMap);
-					});
-					util.closeModal(dataMap);
-				}
-			}
-		}
-	}); */
+	} */
 </script>
 #end
