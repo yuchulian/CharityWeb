@@ -259,5 +259,4 @@ public class EmployInfoService extends ServiceUtil {
 	public List<ItemInfo> itemInfoList(Integer employId) throws Exception {
 		return ItemInfo.dao.find("select * from item_info where employ_id = ?", employId);
 	}
-
 }
