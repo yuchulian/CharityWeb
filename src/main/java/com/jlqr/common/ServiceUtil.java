@@ -234,6 +234,12 @@ public abstract class ServiceUtil {
 				sqlExceptSelect.append(key+" like '"+value+"%' ");
 			} else if("in".equals(operator)) {
 				sqlExceptSelect.append(key+" in("+value+") ");
+			} else if("between".equals(operator)) {
+				String[] valueArray = value.split(",");
+				if(valueArray.length == 2 && StringUtils.isNotEmpty(valueArray[0]) && StringUtils.isNotEmpty(valueArray[1])) {
+					sqlExceptSelect.append(key+" between '"+valueArray[0]+"' and '"+valueArray[1]+"' ");
+				} else
+					return "";
 			} else if("betweenDate".equals(operator)) {
 				String[] valueArray = value.split(",");
 				if(valueArray.length == 2 && StringUtils.isNotEmpty(valueArray[0]) && StringUtils.isNotEmpty(valueArray[1])) {
