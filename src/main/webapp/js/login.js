@@ -2,6 +2,7 @@ $(function() {
 	util.temp.browserType = util.browserType();
 	util.initUpload();
 	login.taskList();
+	login.resetPwd();
 	
 	var $body = $("body");
 	
@@ -340,7 +341,7 @@ Login.prototype = {
 		3: "通过",
 		4: "不通过",
 	},
-	initWebRefresh : function() {
+	/*initWebRefresh : function() {
 		$("#webRefresh").attr("onclick", "");
 		//绑定我的信息
 		util.modal({
@@ -362,9 +363,9 @@ Login.prototype = {
 				}
 			}
 		});
-	},
+	},*/
 	/*初始化我的信息*/
-	initMyUserInfo : function() {
+	/*initMyUserInfo : function() {
 		$("#myUserInfo").attr("onclick", "");
 		//绑定我的信息
 		util.modal({
@@ -386,7 +387,7 @@ Login.prototype = {
 				}
 			}
 		});
-	},
+	},*/
 	initExitWarn : function() {
 		$("#exit_warn").attr("onclick", "");
 		//绑定我的信息
@@ -480,6 +481,16 @@ Login.prototype = {
 				$("#taskTable tbody").html(tableHTML.join(""));
 			}
 		});
+	},
+	/**
+	 * 密码重置
+	 * 绑定id：#resetPwd
+	 * 原始密码
+	 * 重置密码
+	 * 密码确认
+	 */
+	resetPwd : function() {
+		
 	}
 };
 login = new Login();
