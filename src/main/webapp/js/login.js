@@ -143,6 +143,8 @@ $(function() {
 		util.selectFile(event.target);
 	}).delegate(".selectImg", "click", function(event) {
 		util.selectImg(event.target);
+	}).delegate(".selectIcon", "click", function(event) {
+		util.selectIcon(event.target);
 	}).delegate(".docs-buttons [data-method]", "click", function(event) {
 		var $this = $(this);
 		var data = $this.data();
