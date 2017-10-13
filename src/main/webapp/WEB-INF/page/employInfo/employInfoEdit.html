@@ -28,9 +28,10 @@
 			</td>
 			<th style="width: 120px">籍贯</th>
 			<td style="width: 170px" contenteditable="true" id="employ_nativeplace">#(employInfo.employ_nativeplace)</td>
-			<th rowspan="5" style="height: 200px">
-<!-- 				<img id ="employInfoImg" class="selectFile" callBack="employInfoSelectImg" fileType=".png|.jpg|.gif" src="/downloadData/img?filePath=#(employInfo.employ_img)" _src="#(employInfo.employ_img)"/> -->
-				<img id ="employInfoImg" class="selectImg" callBack="employInfoSelectImg" fileType=".png|.jpg|.gif" src="/downloadData/img?filePath=#(employInfo.employ_img)" _src="#(employInfo.employ_img)"/>
+			<th rowspan="5">
+				<div style="width: 100%; height: 100%;">
+					<img id ="employInfoImg" class="selectImg" callBack="employInfoSelectImg" fileType=".png|.jpg|.gif" aspectRatio="5/7" src="/downloadData/img?filePath=#(employInfo.employ_img)" _src="#(employInfo.employ_img)"/>
+				</div>
 			</th>
 		</tr>
 		<tr>

@@ -3,7 +3,7 @@ package com.jlqr.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 
 import com.jfinal.core.Controller;
 import com.jfinal.kit.PropKit;
@@ -13,7 +13,7 @@ import com.jlqr.common.ServiceUtil;
 import com.jlqr.common.model.EducationInfo;
 import com.jlqr.common.model.EmployInfo;
 import com.jlqr.common.model.EmployInfoView;
-import com.jlqr.common.model.EmployView;
+import com.jlqr.common.model.LoginInfoView;
 import com.jlqr.common.model.ItemInfo;
 import com.jlqr.common.model.LoginInfo;
 import com.jlqr.common.model.RoleInfo;
@@ -21,12 +21,12 @@ import com.jlqr.common.model.WorkInfo;
 
 public class EmployInfoService extends ServiceUtil {
 	
-	public Page<EmployView> employInfoPaginate(Controller controller) throws Exception {
-		return this.paginate(EmployView.class, controller);
+	public Page<LoginInfoView> employInfoPaginate(Controller controller) throws Exception {
+		return this.paginate(LoginInfoView.class, controller);
 	}
 	
-	public EmployView findEmployViewById(Integer id) {
-		return EmployView.dao.findById(id);
+	public LoginInfoView findEmployViewById(Integer id) {
+		return LoginInfoView.dao.findById(id);
 	}
 	
 	public List<EmployInfo> employInfoList(Controller controller) throws Exception {
@@ -55,7 +55,7 @@ public class EmployInfoService extends ServiceUtil {
 	}
 	
 	public void employInfoSave(EmployInfo employInfo,Controller controller) throws Exception {
-		if(null != employInfo.getEmployImg() && employInfo.getEmployImg().indexOf("/temp/") > -1) {
+		if(StringUtils.defaultString( employInfo.getEmployImg(), "").indexOf("/temp/") > -1) {
 			employInfo.setEmployImg(FileUtil.cut(employInfo.getEmployImg(), PropKit.get("img")));
 		}
 		if(null == employInfo.getId()) {
@@ -104,37 +104,37 @@ public class EmployInfoService extends ServiceUtil {
 	/**
 	 * 根据部门、角色等级和报销金额获取适合审核费用报销的上级领导
 	 */
-	public List<EmployView> findLeaderList(EmployView employView, float reimburseTotal) throws Exception {
-		return findEmployViewList("findLeaderList", employView, reimburseTotal);
+	public List<LoginInfoView> findLeaderList(LoginInfoView loginInfoView, float reimburseTotal) throws Exception {
+		return findEmployViewList("findLeaderList", loginInfoView, reimburseTotal);
 	}
 	
 	/**
 	 * 根据角色等级和部门获取我的上级
 	 */
-	public List<EmployView> findLeaderList(EmployView employView) throws Exception {
-		return findEmployViewList("findLeaderList", employView, 0);
+	public List<LoginInfoView> findLeaderList(LoginInfoView loginInfoView) throws Exception {
+		return findEmployViewList("findLeaderList", loginInfoView, 0);
 	}
 	
 	/**
 	 * 根据角色等级和部门获取我的下级
 	 */
-	public List<EmployView> findStaffList(EmployView employView) throws Exception {
-		return findEmployViewList("findStaffList", employView, 0);
+	public List<LoginInfoView> findStaffList(LoginInfoView loginInfoView) throws Exception {
+		return findEmployViewList("findStaffList", loginInfoView, 0);
 	}
 	
 	/**
 	 * 根据部门、角色等级和报销金额获取适合审核费用报销的上级领导或下级员工
-	 * @param employView
+	 * @param loginInfoView
 	 * @param roleInfoListSql
 	 * @return
 	 * @throws Exception
 	 */
-	private List<EmployView> findEmployViewList(String method, EmployView employView, float reimburseTotal) throws Exception {
+	private List<LoginInfoView> findEmployViewList(String method, LoginInfoView loginInfoView, float reimburseTotal) throws Exception {
 
-		List<EmployView> employViewList = new ArrayList<EmployView>();
+		List<LoginInfoView> loginInfoViewList = new ArrayList<LoginInfoView>();
 		List<String> roleIdCondition = new ArrayList<String>(), departmentIdCondition = new ArrayList<String>();
 		
-		String departmentId = employView.getDepartmentId();
+		String departmentId = loginInfoView.getDepartmentId();
 		if(StringUtils.isNotBlank(departmentId) && departmentId.length() > 2) {
 			String[] departmentIdList = departmentId.substring(1, departmentId.length() - 1).split("\\,");
 			for (String _departmentId : departmentIdList) {
@@ -142,7 +142,7 @@ public class EmployInfoService extends ServiceUtil {
 			}
 		}
 		
-		String roleId = employView.getRoleId();
+		String roleId = loginInfoView.getRoleId();
 		if(StringUtils.isNotBlank(roleId) && roleId.length() > 2) {
 			//获取当前登录人最高等级的角色
 			RoleInfo loginRoleInfo = RoleInfo.dao.findFirst("select * from role_info where id in ("+roleId.substring(1, roleId.length() - 1)+") order by role_grade desc");
@@ -172,12 +172,12 @@ public class EmployInfoService extends ServiceUtil {
 		}
 		
 		if(roleIdCondition.size() > 0 && departmentIdCondition.size() > 0) {
-			employViewList = EmployView.dao.find("select * from employ_view where ("+StringUtils.join(roleIdCondition, " or ")+") and ("+StringUtils.join(departmentIdCondition, " or ")+")");
-			if(null == employViewList)
-				employViewList = new ArrayList<EmployView>();
+			loginInfoViewList = LoginInfoView.dao.find("select * from employ_view where ("+StringUtils.join(roleIdCondition, " or ")+") and ("+StringUtils.join(departmentIdCondition, " or ")+")");
+			if(null == loginInfoViewList)
+				loginInfoViewList = new ArrayList<LoginInfoView>();
 		}
 		
-		return employViewList;
+		return loginInfoViewList;
 	
 	}
 	

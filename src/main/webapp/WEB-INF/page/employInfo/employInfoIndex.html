@@ -82,7 +82,6 @@
 								var employInfo = util.getModal(dataMap),$this="";
 								$("#employInfo_id td[id]").each(function() {
 									$this = $(this);
-									console.log($this.text());
 									employInfo["employInfo."+$this.attr("id")] = $.trim($this.text());
 								});
 								employInfo["employInfo.employ_diploma"] = $.trim($("#employ_diploma").val());

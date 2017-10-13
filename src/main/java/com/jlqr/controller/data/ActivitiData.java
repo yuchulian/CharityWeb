@@ -22,13 +22,13 @@ import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Comment;
 import org.activiti.engine.task.Task;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 
 import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.Db;
 import com.jlqr.common.ActivitiUtil;
 import com.jlqr.common.ControllerUtil;
-import com.jlqr.common.model.EmployView;
+import com.jlqr.common.model.LoginInfoView;
 import com.jlqr.interceptor.NewService;
 
 public class ActivitiData extends ControllerUtil {
@@ -133,8 +133,8 @@ public class ActivitiData extends ControllerUtil {
 	public void taskList() {
 		List<Task> taskList = null;
 		try {
-			EmployView employView = getSessionAttr("employView");
-			taskList = taskService.createTaskQuery().taskAssignee(employView.getId().toString()).orderByTaskCreateTime().desc().list();
+			LoginInfoView loginInfoView = getSessionAttr("loginInfoView");
+			taskList = taskService.createTaskQuery().taskAssignee(loginInfoView.getId().toString()).orderByTaskCreateTime().desc().list();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -148,10 +148,10 @@ public class ActivitiData extends ControllerUtil {
 		HashMap<String, Object> returnMap = getReturnMap();
 		try {
 			String processDefinitionId = getPara("processDefinitionId"), id = getPara("id");
-			EmployView employView = getSessionAttr("employView");
+			LoginInfoView loginInfoView = getSessionAttr("loginInfoView");
 			
 			Map<String, Object> variables = new HashMap<String, Object>();
-			variables.put("loginId", employView.getId());
+			variables.put("loginId", loginInfoView.getId());
 			runtimeService.startProcessInstanceByKey(processDefinitionId, processDefinitionId+","+id, variables);
 			returnMap.put("returnState", "success");
 			returnMap.put("returnMsg", "启动成功");
@@ -168,14 +168,14 @@ public class ActivitiData extends ControllerUtil {
 		HashMap<String, Object> returnMap = getReturnMap();
 		try {
 			String taskId = getPara("taskId"), id = getPara("id"), message = getPara("message"), sequenceFlow = getPara("sequenceFlow"), assignee = getPara("assignee"), tableInfo = getPara("tableInfo");
-			EmployView employView = getSessionAttr("employView");
+			LoginInfoView loginInfoView = getSessionAttr("loginInfoView");
 			
 			Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
 			String processInstanceId = task.getProcessInstanceId();
 			
 			//添加批注
 			if(StringUtils.isNotBlank(message)) {
-				Authentication.setAuthenticatedUserId(employView.getEmployName());
+				Authentication.setAuthenticatedUserId(loginInfoView.getEmployName());
 				taskService.addComment(taskId, processInstanceId, message);
 			}
 			

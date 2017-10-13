@@ -1,0 +1,61 @@
+<form class="form-horizontal" id="loginInfoForm">
+	<div class="row">
+		<div class="col-sm-7">
+			<div class="form-group">
+				<label class="col-sm-3 control-label"><span class="red">*</span>登录账号</label>
+				<div class="col-sm-9">
+					<input type="text" class="form-control validate[required, minSize[2], maxSize[10]]" name="loginInfo.login_name"  placeholder="请输入登录账号" value="#(session.loginInfoView.login_name)"/>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">修改密码</label>
+				<div class="col-sm-9">
+					<div class="bs-component" style="margin-top: 8px;">
+						<div class="switch switch-primary switch-inline">
+							<input id="resetPwd" type="checkbox" onchange="resetPwdFun(this);"/>
+							<label for="resetPwd"></label>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label"><span class="red">*</span>原始密码</label>
+				<div class="col-sm-9">
+					<input type="password" class="form-control validate[required, minSize[6], maxSize[18], custom[password]]" name="oldPassword"  placeholder="请输入原始密码" disabled="disabled"/>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label"><span class="red">*</span>重置密码</label>
+				<div class="col-sm-9">
+					<input type="password" class="form-control validate[required, minSize[6], maxSize[18], custom[password]]" name="newPassword"  placeholder="请输入重置密码" id="newPassword" disabled="disabled"/>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label"><span class="red">*</span>密码确认</label>
+				<div class="col-sm-9">
+					<input type="password" class=" form-control validate[required, custom[password, equals[newPassword]]]" name="confirmPassword"  placeholder="请进行密码确认" disabled="disabled"/>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-5">
+			<img id ="loginImg" class="selectImg" callBack="loginInfoSelectImg" fileType=".png|.jpg|.gif" aspectRatio="1" src="/downloadData/img?filePath=#(session.loginInfoView.login_img)" _src="#(session.loginInfoView.login_img)" style="height: 200px; width: 200px; margin-top: 36px;"/>
+		</div>
+		
+	</div>
+</form>
+<script type="text/javascript">
+	$("#loginInfoForm").validationEngine({
+		showOneMessage: true,
+		promptPosition: "topLeft"
+	});
+	function loginInfoSelectImg(returnMsg) {
+		$("#loginImg").attr("src", "/downloadData/img?filePath="+returnMsg.filePath).attr("_src", returnMsg.filePath);
+	}
+	function resetPwdFun(self) {
+		var isResetPwd = $(self).is(":checked");
+		if(isResetPwd)
+			$("#loginInfoForm input[type='password']").removeAttr("disabled");
+		else
+			$("#loginInfoForm input[type='password']").attr("disabled", "disabled");
+	}
+</script>

@@ -42,7 +42,6 @@
 	taskList();
 	function taskList() {
 		util.call("/activitiData/taskList", {}, function(returnData) {
-			console.info(returnData);
 			var tableHTML = [], obj = {};
 			for(var i=0; i<returnData.length; i++) {
 				obj = returnData[i];

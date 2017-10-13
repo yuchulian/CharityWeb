@@ -16,17 +16,17 @@
 									<label class="control-label">合同有效期:</label>
 								</div>
 								<div class="col-md">
-									<input class="form-control width100" id="contract_startTime" type="text" />
+									<input class="form-control w100" id="contract_startTime" type="text" />
 								</div>
 								<div class="col-md line_height39">-</div>
 								<div class="col-md">
-									<input class="form-control width100" id="contract_endTime" type="text" />
+									<input class="form-control w100" id="contract_endTime" type="text" />
 								</div>
 								<div class="col-md">
 									<label class="control-label">合同类型：</label>
 								</div>
 								<div class="col-md">
-				         			<select class="form-control" id="contractTypeSearch" style="width: 100px;">
+				         			<select class="form-control w100" id="contractTypeSearch">
 				         				<option value="">全部</option>
 				         				#for(contractType:contractTypeList)
 				         				<option value="#(contractType.id)">#(contractType.dictionary_name)</option>
@@ -37,7 +37,7 @@
 									<label class="control-label">合同编号:</label>
 								</div>
 								<div class="col-md">
-									<input class="form-control" id="contractNumberSearch" type="text" style="width: 108px;" />
+									<input class="form-control w100" id="contractNumberSearch" type="text"/>
 								</div>
 							</div>
 						</div>
@@ -47,17 +47,17 @@
 									<label class="control-label">试用有效期:</label>
 								</div>
 								<div class="col-md">
-									<input class="form-control width100" id="trial_startTime" type="text" name="startTime" />
+									<input class="form-control w100" id="trial_startTime" type="text" name="startTime" />
 								</div>
 								<div class="col-md line_height39">-</div>
 								<div class="col-md">
-									<input class="form-control width100" id="trial_endTime" type="text" name="endTime" />
+									<input class="form-control w100" id="trial_endTime" type="text" name="endTime" />
 								</div>
 								<div class="col-md">
 									<label class="control-label">合同状态：</label>
 								</div>
 								<div class="col-md">
-				         			<select class="form-control" id="contractStateSearch" style="width: 100px;">
+				         			<select class="form-control w100" id="contractStateSearch">
 				         				<option value="">全部</option>
 										<option value="1">试用期</option>
 										<option value="2">已转正</option>
@@ -68,7 +68,7 @@
 									<label class="control-label">员工姓名:</label>
 								</div>
 								<div class="col-md">
-									<input class="form-control" id="contractEmployNameSearch" type="text" style="width: 108px;" />
+									<input class="form-control w100" id="contractEmployNameSearch" type="text" />
 								</div>
 								<div class="col-md">
 									<input class="btn btn-primary btn-gradient dark" type="button" value="搜索" id="personnelContractSearch" />

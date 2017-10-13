@@ -11,7 +11,7 @@ import com.jfinal.plugin.activerecord.Record;
 import com.jlqr.common.ControllerUtil;
 import com.jlqr.common.model.Dictionary;
 import com.jlqr.common.model.EmployInfo;
-import com.jlqr.common.model.EmployView;
+import com.jlqr.common.model.LoginInfoView;
 import com.jlqr.common.model.ProjectInfo;
 import com.jlqr.common.model.ReimburseInfoView;
 import com.jlqr.interceptor.NewService;
@@ -37,8 +37,8 @@ public class ReimburseInfoPage extends ControllerUtil{
 		List<Dictionary> reimburseBrandList = null;
 		List<Dictionary> reimburseTypeList = null;
 		List<ProjectInfo> projectNumberList = null;
-		EmployView employView = getSessionAttr("employView");
-		projectNumberList = projectInfoService.findProjectInfoByProjectCollector(employView.getId());
+		LoginInfoView loginInfoView = getSessionAttr("loginInfoView");
+		projectNumberList = projectInfoService.findProjectInfoByProjectCollector(loginInfoView.getId());
 		try {
 			reimburseBrandList = dictionaryService.dictionaryByPid(PropKit.getInt("reimburse_brand"));
 			reimburseTypeList = dictionaryService.dictionaryByPid(PropKit.getInt("reimburse_type"));
@@ -58,7 +58,7 @@ public class ReimburseInfoPage extends ControllerUtil{
 	public void reimburseInfoDetail(){
 		ReimburseInfoView reimburseInfo = new ReimburseInfoView();
 		List<String> sequenceFlowList = new ArrayList<String>();
-		List<EmployView> employViewList = null;
+		List<LoginInfoView> loginInfoViewList = null;
 		try {
 			if(StringUtils.isNotBlank(getPara("id"))){
 				reimburseInfo =	reimburseInfoService.findReimburseInfoViewById(getParaToInt("id"));
@@ -68,8 +68,8 @@ public class ReimburseInfoPage extends ControllerUtil{
 					Record task = (Record) activitiMap.get("task");
 					sequenceFlowList.add("通过");
 					if(StringUtils.equals("usertask1", task.getStr("taskDefinitionKey"))) {
-						EmployView employView = getSessionAttr("employView");
-						employViewList = employInfoService.findLeaderList(employView, reimburseInfo.getReimburseTotal());
+						LoginInfoView loginInfoView = getSessionAttr("loginInfoView");
+						loginInfoViewList = employInfoService.findLeaderList(loginInfoView, reimburseInfo.getReimburseTotal());
 					} else {
 						sequenceFlowList.add("不通过");
 					}
@@ -81,7 +81,7 @@ public class ReimburseInfoPage extends ControllerUtil{
 		}
 		setAttr("reimburseInfo", reimburseInfo);
 		setAttr("sequenceFlowList", sequenceFlowList);
-		setAttr("employViewList", employViewList);
+		setAttr("loginInfoViewList", loginInfoViewList);
 	}
 	
 	/**

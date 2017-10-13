@@ -4,14 +4,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Record;
 import com.jlqr.common.SystemUtil;
-import com.jlqr.common.model.EmployView;
 import com.jlqr.common.model.LoginInfo;
+import com.jlqr.common.model.LoginInfoView;
 import com.jlqr.common.model.PowerInfo;
 import com.jlqr.common.model.RoleInfo;
 import com.jlqr.interceptor.NewService;
@@ -27,13 +26,6 @@ import com.jlqr.service.RoleInfoService;
  */
 public class IndexController extends Controller {
 
-	protected static HashMap<String, Object> getReturnMap() {
-		HashMap<String, Object> returnMap = new HashMap<String, Object>();
-		returnMap.put("returnState", "error");
-		returnMap.put("returnMsg", "操作失败");
-		return returnMap;
-	}
-	
 //	@NewService("RoleInfoService")
 //	private RoleInfoService roleService;
 	
@@ -51,8 +43,8 @@ public class IndexController extends Controller {
 	 * 初始化系统界面
 	 */
 	public void index() {
-		EmployView employView = getSessionAttr("employView");
-		if(null == employView) {
+		LoginInfoView loginInfoView = getSessionAttr("loginInfoView");
+		if(null == loginInfoView) {
 			if(null == getSessionAttr("isClearSession")) {
 				setSessionAttr("isClearSession", true);
 			} else if((boolean) getSessionAttr("isClearSession")) {
@@ -70,7 +62,7 @@ public class IndexController extends Controller {
 	public void login() {
 		String redirectPage = "/", returnMsg = "";
 		String loginName = StringUtils.trim(getPara("loginName")), loginPwd = StringUtils.trim(getPara("loginPwd")), rememberPwd = StringUtils.trim(getPara("rememberPwd"));
-		EmployView employView = null;//员工信息
+		LoginInfoView loginInfoView = null;//员工信息
 		List<String> menuList = new ArrayList<String>();//菜单集合
 		boolean isFinish = false;//是否完成
 		List<PowerInfo> powerInfoList = null;
@@ -78,92 +70,93 @@ public class IndexController extends Controller {
 		List<Integer> staffList = new ArrayList<Integer>();
 		powerUrlList.add("uploadData");
 		powerUrlList.add("downloadData");
-		
-		if(StringUtils.isBlank(loginName)) {
-			returnMsg = "账号必填";
-		} else if (StringUtils.isBlank(loginPwd)) {
-			returnMsg = "密码必填";
-		} else {
-			LoginInfo loginInfo = LoginInfo.dao.findFirst("select * from login_info where login_name = ? and login_pwd = ?", loginName, DigestUtils.md5Hex(loginPwd));
-			if(null != loginInfo) {
-				redirectPage = "/home";
-				employView = employInfoService.findEmployViewById(loginInfo.getId());
 
-				try {
-					String loginRole = employView.getRoleId();
-					if(StringUtils.isNotBlank(loginRole) && loginRole.length() > 2) {
-						List<String> powerIdList = new ArrayList<String>();
-						
-						String powerPath = "";
-						Integer roleGrade = 6;
-						List<RoleInfo> roleInfoList = roleInfoService.roleInfoListInId(loginRole.substring(1, loginRole.length()-1));
-						for (RoleInfo roleInfo : roleInfoList) {
-							if(roleGrade > roleInfo.getRoleGrade()) {
-								roleGrade = roleInfo.getRoleGrade();
-							}
-							powerPath += roleInfo.getPowerPath();
-						}
-						
-						if(roleGrade == 1) {
-							powerInfoList = powerInfoService.powerInfoList(this);
-						} else {
-							String[] _powerIdList = powerPath.split("\\,");
-							HashMap<String, String> powerIdMap = new HashMap<String, String>();
-							for (String _powerId : _powerIdList) {
-								if(StringUtils.isNotBlank(_powerId) && !powerIdMap.containsKey(_powerId)) {
-									powerIdList.add(_powerId);
-									powerIdMap.put(_powerId, _powerId);
-								}
-							}
-							
-							powerInfoList = powerInfoService.findPowerInfoListInId(StringUtils.join(powerIdList, ","));
-						}
-
-						HashMap<Integer, Object> powerPidMap = new HashMap<Integer, Object>();//权限键值对
-						List<Record> recordList = new ArrayList<Record>();
-						Record record = new Record();
-						for (PowerInfo powerInfo : powerInfoList) {
-							if(StringUtils.isNotBlank(powerInfo.getPowerUrl())) {
-								powerUrlList.add(powerInfo.getPowerUrl());
-								if(powerInfo.getPowerUrl().indexOf("Page") > -1) {
-									powerUrlList.add(powerInfo.getPowerUrl().replaceAll("Page", "Data"));
-								}
-							}
-							
-							record = powerInfo.toRecord();
-							record.set("children", new ArrayList<Record>());
-							record.set("grade", powerInfo.getPowerIdPath().split("\\,").length - 1);
-							if(0 == powerInfo.getPowerPid()) {
-								powerPidMap.put(powerInfo.getId(), null);
-								recordList.add(record);
-							} else if(powerPidMap.containsKey(powerInfo.getPowerPid())) {
-								powerPidMap.put(powerInfo.getId(), null);
-								mergeRecordList(isFinish, recordList, record);
-							}
-						}
-						mergeMenuList(recordList, menuList);
-						
-						/**
-						 * 获取我的下级员工
-						 */
-						List<EmployView> employViewList = employInfoService.findStaffList(employView);
-						staffList.add(employView.getId());
-						for (EmployView _employView : employViewList) {
-							staffList.add(_employView.getId());
-						}
-						
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				
-				
+		try {
+			if(StringUtils.isBlank(loginName)) {
+				returnMsg = "账号必填";
+			} else if (StringUtils.isBlank(loginPwd)) {
+				returnMsg = "密码必填";
 			} else {
-				returnMsg = "用户名或密码错误";
+	//			LoginInfo loginInfo = LoginInfo.dao.findFirst("select * from login_info where login_name = ? and login_pwd = ?", loginName, DigestUtils.md5Hex(loginPwd));
+				LoginInfo loginInfo = loginInfoService.loginInfoByNameAndPwd(loginName, loginPwd);
+				if(null != loginInfo) {
+					redirectPage = "/home";
+					loginInfoView = employInfoService.findEmployViewById(loginInfo.getId());
+	
+						String loginRole = loginInfoView.getRoleId();
+						if(StringUtils.isNotBlank(loginRole) && loginRole.length() > 2) {
+							List<String> powerIdList = new ArrayList<String>();
+							
+							String powerPath = "";
+							Integer roleGrade = 6;
+							List<RoleInfo> roleInfoList = roleInfoService.roleInfoListInId(loginRole.substring(1, loginRole.length()-1));
+							for (RoleInfo roleInfo : roleInfoList) {
+								if(roleGrade > roleInfo.getRoleGrade()) {
+									roleGrade = roleInfo.getRoleGrade();
+								}
+								powerPath += roleInfo.getPowerPath();
+							}
+							
+							if(roleGrade == 1) {
+								powerInfoList = powerInfoService.powerInfoList(this);
+							} else {
+								String[] _powerIdList = powerPath.split("\\,");
+								HashMap<String, String> powerIdMap = new HashMap<String, String>();
+								for (String _powerId : _powerIdList) {
+									if(StringUtils.isNotBlank(_powerId) && !powerIdMap.containsKey(_powerId)) {
+										powerIdList.add(_powerId);
+										powerIdMap.put(_powerId, _powerId);
+									}
+								}
+								
+								powerInfoList = powerInfoService.findPowerInfoListInId(StringUtils.join(powerIdList, ","));
+							}
+	
+							HashMap<Integer, Object> powerPidMap = new HashMap<Integer, Object>();//权限键值对
+							List<Record> recordList = new ArrayList<Record>();
+							Record record = new Record();
+							for (PowerInfo powerInfo : powerInfoList) {
+								if(StringUtils.isNotBlank(powerInfo.getPowerUrl())) {
+									powerUrlList.add(powerInfo.getPowerUrl());
+									if(powerInfo.getPowerUrl().indexOf("Page") > -1) {
+										powerUrlList.add(powerInfo.getPowerUrl().replaceAll("Page", "Data"));
+									}
+								}
+								
+								record = powerInfo.toRecord();
+								record.set("children", new ArrayList<Record>());
+								record.set("grade", powerInfo.getPowerIdPath().split("\\,").length - 1);
+								if(0 == powerInfo.getPowerPid()) {
+									powerPidMap.put(powerInfo.getId(), null);
+									recordList.add(record);
+								} else if(powerPidMap.containsKey(powerInfo.getPowerPid())) {
+									powerPidMap.put(powerInfo.getId(), null);
+									mergeRecordList(isFinish, recordList, record);
+								}
+							}
+							mergeMenuList(recordList, menuList);
+							
+							/**
+							 * 获取我的下级员工
+							 */
+							List<LoginInfoView> loginInfoViewList = employInfoService.findStaffList(loginInfoView);
+							staffList.add(loginInfoView.getId());
+							for (LoginInfoView _loginInfoView : loginInfoViewList) {
+								staffList.add(_loginInfoView.getId());
+							}
+							
+						}
+					
+					
+				} else {
+					returnMsg = "用户名或密码错误";
+				}
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		
-		setSessionAttr("employView", employView);
+		setSessionAttr("loginInfoView", loginInfoView);
 		setSessionAttr("returnMsg", returnMsg);
 		setSessionAttr("powerInfoList", powerInfoList);
 		setSessionAttr("powerUrlList", powerUrlList);
@@ -262,41 +255,6 @@ public class IndexController extends Controller {
 	 */
 	public void selectIcon() {
 		
-	}
-	
-	//重置密码
-	public void resetPwdPage(){
-		EmployView employView = getSessionAttr("employView");
-		setAttr("employView", employView);
-	}
-	//重置密码的保存
-	public void resetPwdUpdate(){
-		HashMap<String,Object> returnMap = getReturnMap();
-		Integer id = getParaToInt("employReset.id");
-		String confirmPassword = getPara("employReset.confirmPassword");
-		String oldPassword = getPara("employReset.oldPassword");
-		String newPassword = getPara("employReset.newPassword");
-		LoginInfo loginInfo = new LoginInfo();
-		if(confirmPassword.equals(newPassword)){
-			try {
-				if(loginInfoService.findLoginInfoByIdAndPassword(id,oldPassword)!=null){
-					loginInfo.setId(id);
-					loginInfo.setLoginPwd(DigestUtils.md5Hex(newPassword));
-					loginInfoService.resetPwdUpdate(loginInfo);
-					returnMap.put("returnMsg","重置成功");
-					returnMap.put("returnState", "success");
-					}else{
-						returnMap.put("returnMsg","原始密码错误,重置失败");
-						returnMap.put("returnState", "error");
-					}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}else{
-			returnMap.put("returnMsg","重置密码与确认密码不一致");
-			returnMap.put("returnState", "error");
-		}
-		renderJson(returnMap);
 	}
 }
 

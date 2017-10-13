@@ -415,11 +415,11 @@
 
 				<li class="dropdown menu-merge">
 					<a href="javascript:void(0);" class="dropdown-toggle fw600 p15" data-toggle="dropdown">
-						<img src="/img/4.jpg" alt="avatar" class="mw30 br64">
-						<span class="hidden-xs pl15"> #(session.employView.employ_name) </span>
+						<img src="/downloadData/img?filePath=#(session.loginInfoView.login_img)" alt="avatar" class="mw30 br64" style="width: 30px; height: 30px;"/>
+						<span class="hidden-xs pl15"> #(session.loginInfoView.employ_name) </span>
 						<span class="caret caret-tp hidden-xs"></span>
 					</a>
-					<ul class="dropdown-menu list-group dropdown-persist w250"
+					<ul class="dropdown-menu list-group dropdown-persist w100"
 						role="menu">
 						<!-- <li class="list-group-item"><a href="javascript:void(0);"
 							class="animated animated-short fadeInUp"> <span
@@ -439,12 +439,21 @@
 							class="animated animated-short fadeInUp"> <span
 								class="fa fa-gear"></span> Settings
 						</a></li> -->
-						<li class="dropdown-footer"><a href="javascript:void(0);" class="" id="resetPwd"> <span
-								class="fa fa-power-off pr5"></span> 密码重置
-						</a></li>
-						<li class="dropdown-footer"><a href="/logOut" class=""> <span
-								class="fa fa-power-off pr5"></span> 退出登录
-						</a></li>
+						<li class="dropdown-footer">
+							<a href="javascript:void(0);" class="text-left" id="loginInfoManager">
+								<span class="fa fa-gear pr5"></span> 账号设置
+							</a>
+						</li>
+						<li class="dropdown-footer">
+							<a href="javascript:void(0);" class="text-left" id="employInfoManager">
+								<span class="glyphicon glyphicon-user pr5"></span> 个人信息
+							</a>
+						</li>
+						<li class="dropdown-footer">
+							<a href="javascript:void(0);" class="text-left" id="exit_warn">
+								<span class="fa fa-power-off pr5"></span> 退出登录
+							</a>
+						</li>
 					</ul>
 				</li>
 			</ul>

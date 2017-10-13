@@ -8,13 +8,13 @@
 <div class="form-horizontal">		
 	<table align="center" id="projectTable">
 		<tr>
-			<td class="width100"></td>
-			<td class="width100"></td>
-			<td class="width100"></td>
-			<td class="width100"></td>
-			<td class="width100"></td>
-			<td class="width100"></td>
-			<th class="width100">更新时间:</th>
+			<td class="w100"></td>
+			<td class="w100"></td>
+			<td class="w100"></td>
+			<td class="w100"></td>
+			<td class="w100"></td>
+			<td class="w100"></td>
+			<th class="w100">更新时间:</th>
 			<td colspan="2">#(projectInfo.project_update_time)</td>
 		</tr>
 		<tr>
@@ -60,7 +60,7 @@
 			<th>资金落实情况</th>
 			<th>单位接口人</th>
 			<th>主管、部门负责人</th>
-			<th class="width100">主管领导</th>
+			<th class="w100">主管领导</th>
 			<th>备注</th>
 		</tr>
 		<tr>
@@ -127,8 +127,8 @@
 		<label class="col-sm-2 control-label"><span class="red">*</span>我的上级</label>
 		<div class="col-sm-9">
 			<select class="form-control" id="assignee">
-				#for(employView : employViewList)
-					<option value="#(employView.id)">#(employView.employ_name)</option>
+				#for(loginInfoView : loginInfoViewList)
+					<option value="#(loginInfoView.id)">#(loginInfoView.employ_name)</option>
 				#end
 			</select>
 		</div>

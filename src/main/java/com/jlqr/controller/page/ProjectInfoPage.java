@@ -8,7 +8,7 @@ import org.apache.commons.lang.StringUtils;
 import com.jfinal.kit.PropKit;
 import com.jlqr.common.ControllerUtil;
 import com.jlqr.common.model.Dictionary;
-import com.jlqr.common.model.EmployView;
+import com.jlqr.common.model.LoginInfoView;
 import com.jlqr.common.model.ProjectInfoView;
 import com.jlqr.interceptor.NewService;
 import com.jlqr.service.DictionaryService;
@@ -27,7 +27,7 @@ public class ProjectInfoPage extends ControllerUtil {
 	private EmployInfoService employInfoService;
 	
 	public void index() {
-		EmployView employView = getSessionAttr("employView");
+		LoginInfoView loginInfoView = getSessionAttr("loginInfoView");
 		render("projectInfoIndex.html");
 	}
 	
@@ -54,7 +54,7 @@ public class ProjectInfoPage extends ControllerUtil {
 	
 	public void projectInfoDetail(){
 		ProjectInfoView projectInfoView = null;
-		List<EmployView> employViewList = null;
+		List<LoginInfoView> loginInfoViewList = null;
 		try {
 			if(StringUtils.isNotBlank(getPara("id"))) {
 				projectInfoView = projectInfoService.projectInfoViewById(getParaToInt("id"));
@@ -62,15 +62,15 @@ public class ProjectInfoPage extends ControllerUtil {
 				//获取当前登录人的领导
 				HashMap<String, Object> activitiMap = getSessionAttr("activitiMap");
 				if(null != activitiMap) {
-					EmployView employView = getSessionAttr("employView");
-					employViewList = employInfoService.findLeaderList(employView);
+					LoginInfoView loginInfoView = getSessionAttr("loginInfoView");
+					loginInfoViewList = employInfoService.findLeaderList(loginInfoView);
 				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		setAttr("projectInfo", projectInfoView);
-		setAttr("employViewList", employViewList);
+		setAttr("loginInfoViewList", loginInfoViewList);
 	}
 	
 }

@@ -77,13 +77,13 @@
 		</div>
 	</div>
 
-	#if(employViewList != null)
+	#if(loginInfoViewList != null)
 	<div class="form-group">
 		<label class="col-sm-2 control-label"><span class="red">*</span>我的上级</label>
 		<div class="col-sm-9">
 			<select class="form-control" id="assignee">
-				#for(employView : employViewList)
-					<option value="#(employView.id)">#(employView.employ_name)</option>
+				#for(loginInfoView : loginInfoViewList)
+					<option value="#(loginInfoView.id)">#(loginInfoView.employ_name)</option>
 				#end
 			</select>
 		</div>

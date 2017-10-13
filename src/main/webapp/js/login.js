@@ -2,7 +2,9 @@ $(function() {
 	util.temp.browserType = util.browserType();
 	util.initUpload();
 	login.taskList();
-	login.resetPwd();
+	login.loginInfoEdit();
+	login.employInfoEdit();
+	login.initExitWarn();
 	
 	var $body = $("body");
 	
@@ -348,55 +350,8 @@ Login.prototype = {
 		3: "通过",
 		4: "不通过",
 	},
-	/*initWebRefresh : function() {
-		$("#webRefresh").attr("onclick", "");
-		//绑定我的信息
-		util.modal({
-			bind: {
-				"#webRefresh": {
-					pageHtml: "确定要刷新吗？"
-				}
-			},
-			button : {
-				"submit" : {
-					name : "确定",
-					className : "btn-primary",
-					click : function(dataMap) {
-						util.call("/Admin/News/webRefresh", {}, function(data) {
-							util.closeModal(dataMap);
-							util.alert(data["content"]);
-						});
-					}
-				}
-			}
-		});
-	},*/
-	/*初始化我的信息*/
-	/*initMyUserInfo : function() {
-		$("#myUserInfo").attr("onclick", "");
-		//绑定我的信息
-		util.modal({
-			pageUrl : "/Admin/Admin/adminEdit",
-			title : "我的信息",
-			bind: {
-				"#myUserInfo": {
-					"id" : login.userId
-				}
-			},
-			button : {
-				"submit" : {
-					name : "确定",
-					className : "btn-primary",
-					click : function(dataMap) {
-						 $('#adminForm').submit();
-						 util.hideLoading();
-					}
-				}
-			}
-		});
-	},*/
 	initExitWarn : function() {
-		$("#exit_warn").attr("onclick", "");
+		$("#exit_warn").removeAttr("onclick");
 		//绑定我的信息
 		util.modal({
 			pageHtml : "确定要退出系统吗？",
@@ -408,7 +363,7 @@ Login.prototype = {
 					name : "确定",
 					className : "btn-primary",
 					click : function(dataMap) {
-						window.location.href = "/Admin/Admin/exit";
+						location.href = "/logOut";
 					}
 				}
 			}
@@ -459,7 +414,6 @@ Login.prototype = {
 	}),
 	taskList : function() {
 		util.call("/activitiData/taskList", {}, function(returnData) {
-			console.info(returnData[0]);
 			var ulHTML = [], tableHTML = [], obj = {}, hasTaskTable = $("#taskTable").length;
 			for(var i=0; i<returnData.length; i++) {
 				obj = returnData[i];
@@ -489,39 +443,64 @@ Login.prototype = {
 			}
 		});
 	},
-	/**
-	 * 密码重置
-	 * 绑定id：#resetPwd
-	 * 原始密码
-	 * 重置密码
-	 * 密码确认
-	 */
-	resetPwd : function() {
+	loginInfoEdit : function() {
+		$("#loginInfoManager").removeAttr("onclick");
 		util.modal({
 			bind : {
-				"#resetPwd": {
-					title : "密码重置"
-				} 
+				"#loginInfoManager": { }
 			},
-			title : "密码重置",
-			pageUrl : "/resetPwdPage",
-			width: 600,
+			title : "账号设置",
+			pageUrl : "/employInfoPage/loginInfoEdit",
 			button : {
 				"submit" : {
 					name : "确定",
 					className : "btn-primary",
-					click : function(dataMap){						
-						if($("#resetpwdForm").validationEngine('validate')){
-							var employReset = util.getModal(dataMap);
-							if(employReset["employReset.newPassword"]!=employReset["employReset.confirmPassword"]){
-								util.alert("重置密码和密码确认必须一致");
-							}else{
-								util.call("/resetPwdUpdate", employReset,function(returnMap){
-									util.closeModal(dataMap);									
-									util.alert(returnMap["returnMsg"]);
-								});
-							}
+					click : function(dataMap){
+						if($("#loginInfoForm").validationEngine('validate')){
+							var loginInfo = util.getModal(dataMap);
+							loginInfo["loginInfo.login_img"] = $.trim($("#loginImg").attr("_src") || "");
+							util.call("/employInfoData/loginInfoSave", loginInfo,function(returnMap){
+								util.closeModal(dataMap);
+								util.alert(returnMap["returnMsg"]);
+								if(returnMap["returnMsg"] == "保存成功") {
+									setTimeout(function() {
+										location.reload();
+									}, 1000);
+								}
+							});
 						}
+					}
+				}
+			}
+		});
+	},
+	employInfoEdit : function() {
+		$("#employInfoManager").removeAttr("onclick");
+		util.modal({
+			bind : {
+				"#employInfoManager" : {
+					oneself : true
+				}
+			},
+			pageUrl : "/employInfoPage/employInfoEdit",
+			title : "个人信息",
+			width : 1100,
+			button : {
+				"submit" : {
+					name : "确定",
+					className : "btn-primary",
+					click : function(dataMap) {
+						var employInfo = util.getModal(dataMap),$this="";
+						$("#employInfo_id td[id]").each(function() {
+							$this = $(this);
+							employInfo["employInfo."+$this.attr("id")] = $.trim($this.text());
+						});
+						employInfo["employInfo.employ_diploma"] = $.trim($("#employ_diploma").val());
+						employInfo["employInfo.employ_img"] = $.trim($("#employInfoImg").attr("_src"));
+						util.call("/employInfoData/employInfoSave", employInfo, function(returnMsg) {
+							util.closeModal(dataMap);
+							util.alert(returnMsg["returnMsg"]);
+						});
 					}
 				}
 			}

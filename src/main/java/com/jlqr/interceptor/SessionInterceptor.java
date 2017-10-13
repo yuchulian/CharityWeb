@@ -2,13 +2,13 @@ package com.jlqr.interceptor;
 
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 
 import com.jfinal.aop.Interceptor;
 import com.jfinal.aop.Invocation;
 import com.jfinal.core.Controller;
 import com.jlqr.common.SystemUtil;
-import com.jlqr.common.model.EmployView;
+import com.jlqr.common.model.LoginInfoView;
 
 /**
  * 判断session是否过期
@@ -20,9 +20,9 @@ public class SessionInterceptor implements Interceptor {
 		String actionKey = inv.getActionKey();
 		Controller controller = inv.getController();
 		String requestMethod = controller.getRequest().getMethod();
-		EmployView employView = controller.getSessionAttr("employView");
+		LoginInfoView loginInfoView = controller.getSessionAttr("loginInfoView");
 		List<String> powerUrlList = controller.getSessionAttr("powerUrlList");
-		if(null != employView || null != powerUrlList) {
+		if(null != loginInfoView || null != powerUrlList) {
 			if(StringUtils.equals("POST", requestMethod)) {
 				inv.invoke();
 				return;

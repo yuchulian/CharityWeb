@@ -109,7 +109,6 @@
 				className : "btn-primary",
 				click :function(dataMap){
 					var employCheck = $("input[type='checkbox'][name='selectemploy']:checked");
-					console.info(employCheck);
 					if(employCheck.length==0){
 						util.alert("必须选择一个员工");
 						return;
@@ -123,14 +122,5 @@
 	});
 	$("#select_employ").click(function(){
 		util.execute(employModal,{});
-	});
-	$(".form_datetime").datetimepicker({
-		language : 'zh-CN',
-		minView : 'month',
-		format : 'yyyy-mm-dd',
-		autoclose : true,
-		startView : 2,
-		showMeridian : 1,
-		pickerPosition : "bottom-left"
 	});
 </script>

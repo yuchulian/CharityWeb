@@ -4,12 +4,13 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 
 import com.jfinal.kit.PropKit;
 import com.jlqr.common.ControllerUtil;
 import com.jlqr.common.model.EducationInfo;
 import com.jlqr.common.model.EmployInfo;
+import com.jlqr.common.model.LoginInfoView;
 import com.jlqr.common.model.ItemInfo;
 import com.jlqr.common.model.LoginInfo;
 import com.jlqr.common.model.WorkInfo;
@@ -84,7 +85,7 @@ public class EmployInfoData extends ControllerUtil {
 		if(null != loginInfo.getId())
 			id = null;
 		try {
-			loginInfoService.LoginInfoSave(loginInfo, id);
+			loginInfoService.loginInfoSave(loginInfo, id);
 			
 			returnMap.put("returnState", "success");
 			returnMap.put("returnMsg", "保存成功");
@@ -192,7 +193,7 @@ public class EmployInfoData extends ControllerUtil {
 		List<EducationInfo> educationInfoList = null;
 		try {
 			String employId = employInfoService.getPara(this, "employ_id");
-			if(StringUtils.isNoneBlank(employId)) {
+			if(StringUtils.isNotBlank(employId)) {
 				educationInfoList = employInfoService.educationInfoList(Integer.parseInt(employId));
 			}
 		} catch (Exception e) {
@@ -236,7 +237,7 @@ public class EmployInfoData extends ControllerUtil {
 		List<WorkInfo> workInfoList = null;
 		try {
 			String employId = employInfoService.getPara(this, "employ_id");
-			if(StringUtils.isNoneBlank(employId)) {
+			if(StringUtils.isNotBlank(employId)) {
 				workInfoList = employInfoService.workInfoList(Integer.parseInt(employId));
 			}
 		} catch (Exception e) {
@@ -280,7 +281,7 @@ public class EmployInfoData extends ControllerUtil {
 		List<ItemInfo> itemInfoList = null;
 		try {
 			String employId = employInfoService.getPara(this, "employ_id");
-			if(StringUtils.isNoneBlank(employId)) {
+			if(StringUtils.isNotBlank(employId)) {
 				itemInfoList = employInfoService.itemInfoList(Integer.parseInt(employId));
 			}
 		} catch (Exception e) {
@@ -288,4 +289,34 @@ public class EmployInfoData extends ControllerUtil {
 		}
 		renderJson(itemInfoList);
 	}
+
+	//账号设置
+	public void loginInfoSave(){
+		HashMap<String,Object> returnMap = getReturnMap();
+		try {
+			LoginInfoView loginInfoView = getSessionAttr("loginInfoView");
+			Integer loginId = loginInfoView.getId();
+			LoginInfo _loginInfo = loginInfoService.findLoginInfoById(loginId);
+			LoginInfo loginInfo = getModel(LoginInfo.class, "loginInfo");
+			String oldPassword = getPara("oldPassword"), newPassword = getPara("newPassword");
+			loginInfo.setId(loginId);
+			if(StringUtils.isNotBlank(oldPassword) && StringUtils.isNotBlank(newPassword)) {
+				if(StringUtils.equals(_loginInfo.getLoginPwd(), DigestUtils.md5Hex(oldPassword))) {
+					loginInfo.setLoginPwd(DigestUtils.md5Hex(newPassword));
+				} else {
+					returnMap.put("returnMsg", "原始密码错误");
+				}
+			}
+			loginInfoService.loginInfoSave(loginInfo, null);
+			setSessionAttr("loginInfoView", employInfoService.findEmployViewById(loginId));
+			if(StringUtils.equals((String)returnMap.get("returnMsg"), "操作失败")) {
+				returnMap.put("returnMsg", "保存成功");
+			}
+			returnMap.put("returnState", "success");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		renderJson(returnMap);
+	}
+	
 }

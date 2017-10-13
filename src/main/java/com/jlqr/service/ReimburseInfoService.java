@@ -9,7 +9,7 @@ import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 import com.jlqr.common.ServiceUtil;
-import com.jlqr.common.model.EmployView;
+import com.jlqr.common.model.LoginInfoView;
 import com.jlqr.common.model.ReimburseInfo;
 import com.jlqr.common.model.ReimburseInfoView;
 
@@ -30,8 +30,8 @@ public class ReimburseInfoService extends ServiceUtil{
 		if(StringUtils.isBlank(reimburseInfo.getStr("id"))){
 			int id = getMaxColumn(ReimburseInfo.class, "id")+1;
 			reimburseInfo.setId(id);
-			EmployView employView = controller.getSessionAttr("employView");
-			reimburseInfo.setEmployId(employView.getId());
+			LoginInfoView loginInfoView = controller.getSessionAttr("loginInfoView");
+			reimburseInfo.setEmployId(loginInfoView.getId());
 			reimburseInfo.setReimburseTime(new Date());
 			reimburseInfo.setReimburseState(1);
 			reimburseInfo.save();

@@ -3,7 +3,7 @@ package com.jlqr.controller.data;
 import java.util.HashMap;
 
 import com.jlqr.common.ControllerUtil;
-import com.jlqr.common.model.EmployView;
+import com.jlqr.common.model.LoginInfoView;
 import com.jlqr.common.model.ProjectInfo;
 import com.jlqr.interceptor.NewService;
 import com.jlqr.service.ProjectInfoService;
@@ -24,8 +24,8 @@ public class ProjectInfoData extends ControllerUtil {
 		ProjectInfo projectInfo = getModel(ProjectInfo.class,"projectInfo");
 		HashMap<String,Object> returnMap = getReturnMap();
 		try {
-			EmployView employView = getSessionAttr("employView");
-			projectInfoService.projectInfoSave(projectInfo, employView);
+			LoginInfoView loginInfoView = getSessionAttr("loginInfoView");
+			projectInfoService.projectInfoSave(projectInfo, loginInfoView);
 			returnMap.put("returnState", "success");
 			returnMap.put("returnMsg", "保存成功");
 		} catch (Exception e) {

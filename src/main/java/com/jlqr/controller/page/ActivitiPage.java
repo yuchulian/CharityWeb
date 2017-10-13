@@ -16,7 +16,7 @@ import org.activiti.engine.impl.pvm.process.ActivityImpl;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Comment;
 import org.activiti.engine.task.Task;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 
 import com.jlqr.common.ActivitiUtil;
 import com.jlqr.common.ControllerUtil;
@@ -122,8 +122,8 @@ public class ActivitiPage extends ControllerUtil {
 			List<Comment> commentList = taskService.getProcessInstanceComments(processInstanceId);
 			
 			//获取当前登录人的领导
-//			EmployView employView = getSessionAttr("employView");
-//			List<EmployView> employViewList = employInfoService.findLeaderList(employView);
+//			LoginInfoView loginInfoView = getSessionAttr("loginInfoView");
+//			List<LoginInfoView> loginInfoViewList = employInfoService.findLeaderList(loginInfoView);
 			
 			activitiMap.put("returnState", "success");
 			activitiMap.put("returnMsg", "操作成功");
@@ -132,7 +132,7 @@ public class ActivitiPage extends ControllerUtil {
 			activitiMap.put("task", ActivitiUtil.toTask(task));
 			activitiMap.put("sequenceFlowList", sequenceFlowList);
 			activitiMap.put("commentList", ActivitiUtil.toCommentList(commentList));
-//			activitiMap.put("employViewList", employViewList);
+//			activitiMap.put("loginInfoViewList", loginInfoViewList);
 			setSessionAttr("activitiMap", activitiMap);
 			
 			String[] businessKeyArray = businessKey.split("\\,");

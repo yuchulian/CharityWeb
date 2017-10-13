@@ -8,7 +8,7 @@ import org.apache.commons.lang.StringUtils;
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Page;
 import com.jlqr.common.ServiceUtil;
-import com.jlqr.common.model.EmployView;
+import com.jlqr.common.model.LoginInfoView;
 import com.jlqr.common.model.LoginInfo;
 import com.jlqr.common.model.PowerInfo;
 import com.jlqr.common.model.RoleInfo;
@@ -84,8 +84,8 @@ public class RoleInfoService extends ServiceUtil {
 	/**
 	 * 根据当前登录人角色最低等级，获取下一级角色集合
 	 */
-	public List<RoleInfo> roleInfoByGradePlus(EmployView employView) throws Exception {
-		String roleId = employView.getRoleId();
+	public List<RoleInfo> roleInfoByGradePlus(LoginInfoView loginInfoView) throws Exception {
+		String roleId = loginInfoView.getRoleId();
 		if(StringUtils.isNotBlank(roleId) && roleId.length() > 2) {
 			//获取当前登录人最高等级的角色
 			RoleInfo loginRoleInfo = RoleInfo.dao.findFirst("select * from role_info where id in("+roleId.substring(1, roleId.length() - 1)+") order by role_grade asc");

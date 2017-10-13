@@ -12,7 +12,7 @@ import com.jlqr.common.model.Dictionary;
 import com.jlqr.common.model.EducationInfo;
 import com.jlqr.common.model.EmployInfo;
 import com.jlqr.common.model.EmployInfoView;
-import com.jlqr.common.model.EmployView;
+import com.jlqr.common.model.LoginInfoView;
 import com.jlqr.common.model.ItemInfo;
 import com.jlqr.common.model.LoginInfo;
 import com.jlqr.common.model.RoleInfo;
@@ -22,7 +22,6 @@ import com.jlqr.service.DictionaryService;
 import com.jlqr.service.EmployInfoService;
 import com.jlqr.service.LoginInfoService;
 import com.jlqr.service.RoleInfoService;
-import com.sun.xml.internal.fastinfoset.algorithm.IntEncodingAlgorithm;
 
 public class EmployInfoPage extends ControllerUtil {
 
@@ -53,11 +52,18 @@ public class EmployInfoPage extends ControllerUtil {
 			employDegreeList = dictionaryService.findDictionaryListByPId(PropKit.getInt("employDegreeId"));
 			employLanguageList = dictionaryService.findDictionaryListByPId(PropKit.getInt("employLanguageId"));
 			employSpecialityList = dictionaryService.findDictionaryListByPId(PropKit.getInt("employSpecialityId"));
+			
+			Integer id = 0;
 			if(StringUtils.isNotBlank(getPara("id"))) {
-				employInfo = employInfoService.findEmployInfoById(getParaToInt("id"));
-				if(null == employInfo)
-					employInfo = new EmployInfo();
+				id = getParaToInt("id");
+			} else if(StringUtils.isNotBlank(getPara("oneself")) && getParaToBoolean("oneself")) {
+				LoginInfoView loginInfoView = getSessionAttr("loginInfoView");
+				id = loginInfoView.getId();
 			}
+			
+			employInfo = employInfoService.findEmployInfoById(id);
+			if(null == employInfo)
+				employInfo = new EmployInfo();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -106,8 +112,8 @@ public class EmployInfoPage extends ControllerUtil {
 			
 			projectDepartment = dictionaryService.findDictionaryListByPId(PropKit.getInt("projectDepartment"));
 			
-			EmployView employView = getSessionAttr("employView");
-			roleInfoList = roleInfoService.roleInfoByGradePlus(employView);
+			LoginInfoView loginInfoView = getSessionAttr("loginInfoView");
+			roleInfoList = roleInfoService.roleInfoByGradePlus(loginInfoView);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -164,6 +170,12 @@ public class EmployInfoPage extends ControllerUtil {
 			e.printStackTrace();
 		}
 		setAttr("itemInfo", itemInfo);
+	}
+
+	
+	//账号设置界面
+	public void loginInfoEdit(){
+		
 	}
 	
 }

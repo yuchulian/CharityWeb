@@ -92,7 +92,6 @@
 									$this = $(this);
 									projectInfo["projectInfo."+$this.attr("id")] = $.trim($this.text());
 								});
-								console.info(projectInfo);
 								util.call("/projectInfoData/projectInfoSave", projectInfo, function(returnMsg) {
 									util.refreshPage(dataMap);
 									util.closeModal(dataMap);
@@ -155,7 +154,6 @@
 		startProcess = data["startProcess"],
 		projectInfoUpdate = data["projectInfoUpdate"],
 		projectInfoDelete = data["projectInfoDelete"];
-		console.info(projectInfoList);
 		for (var i = 0; i < projectInfoList.length; i++) {
 			obj = projectInfoList[i];
 			tableHTML.push('<tr>');

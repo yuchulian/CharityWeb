@@ -3,7 +3,7 @@ package com.jlqr.controller.data;
 import java.util.HashMap;
 
 import com.jlqr.common.ControllerUtil;
-import com.jlqr.common.model.EmployView;
+import com.jlqr.common.model.LoginInfoView;
 import com.jlqr.common.model.PersonnelContract;
 import com.jlqr.common.model.ProjectInfo;
 import com.jlqr.interceptor.NewService;

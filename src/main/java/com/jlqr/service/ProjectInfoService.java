@@ -10,7 +10,7 @@ import com.jfinal.plugin.activerecord.Page;
 import com.jlqr.common.ChineseCharToEnUtil;
 import com.jlqr.common.ServiceUtil;
 import com.jlqr.common.model.Dictionary;
-import com.jlqr.common.model.EmployView;
+import com.jlqr.common.model.LoginInfoView;
 import com.jlqr.common.model.ProjectInfo;
 import com.jlqr.common.model.ProjectInfoView;
 
@@ -20,7 +20,7 @@ public class ProjectInfoService extends ServiceUtil{
 		return this.paginate(ProjectInfoView.class,controller);
 	}
 
-	public void projectInfoSave(ProjectInfo projectInfo, EmployView employView) throws Exception {
+	public void projectInfoSave(ProjectInfo projectInfo, LoginInfoView loginInfoView) throws Exception {
 		//进行设置更新的时间
 		String projectNumber = null;
 		projectInfo.setProjectUpdateTime(new Date());
@@ -34,11 +34,11 @@ public class ProjectInfoService extends ServiceUtil{
 			sb.append(PropKit.get("cityFristChar"));
 			sb.append(dateString);
 			sb.append(id);
-			sb.append(ChineseCharToEnUtil.getAllFirstLetter(employView.getEmployName()).toUpperCase());
+			sb.append(ChineseCharToEnUtil.getAllFirstLetter(loginInfoView.getEmployName()).toUpperCase());
 			projectNumber = sb.toString();
 			projectInfo.setProjectNumber(projectNumber);
 			projectInfo.setProjectCreateTime(new Date());
-			projectInfo.setProjectCollector(employView.getId());
+			projectInfo.setProjectCollector(loginInfoView.getId());
 			projectInfo.save();
 		}else{
 			projectInfo.update();

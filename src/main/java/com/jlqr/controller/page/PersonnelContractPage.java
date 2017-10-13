@@ -8,7 +8,7 @@ import com.jfinal.kit.PropKit;
 import com.jlqr.common.ControllerUtil;
 import com.jlqr.common.model.Dictionary;
 import com.jlqr.common.model.EmployInfo;
-import com.jlqr.common.model.EmployView;
+import com.jlqr.common.model.LoginInfoView;
 import com.jlqr.common.model.PersonnelContract;
 import com.jlqr.common.model.PersonnelContractView;
 import com.jlqr.interceptor.NewService;

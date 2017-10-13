@@ -12,13 +12,13 @@
 		
 		<table id="projectTable" align="center">
 			<tr>
-				<td class="width100"></td>
-				<td class="width100"></td>
-				<td class="width100"></td>
-				<td class="width100"></td>
-				<td class="width100"></td>
-				<td class="width100"></td>
-				<th class="width100">更新时间:</th>
+				<td class="w100"></td>
+				<td class="w100"></td>
+				<td class="w100"></td>
+				<td class="w100"></td>
+				<td class="w100"></td>
+				<td class="w100"></td>
+				<th class="w100">更新时间:</th>
 				<td colspan="2">#(projectInfo.project_update_time)</td>
 			</tr>
 			<tr>
@@ -88,7 +88,7 @@
 				<th>资金落实情况</th>
 				<th>单位接口人</th>
 				<th>主管、部门负责人</th>
-				<th class="width100">主管领导</th>
+				<th class="w100">主管领导</th>
 				<th>备注</th>
 			</tr>
 			<tr>
@@ -139,14 +139,5 @@
 	$("#projectInfoForm").validationEngine({
 		showOneMessage : true,
 		promptPosition : "topLeft"
-	});
-	$(".form_datetime").datetimepicker({
-		language : 'zh-CN',
-		minView : 'month',
-		format : 'yyyy-mm-dd HH:mm:ss',
-		autoclose : true,
-		startView : 2,
-		showMeridian : 1,
-		pickerPosition : "bottom-left"
 	});
 </script>

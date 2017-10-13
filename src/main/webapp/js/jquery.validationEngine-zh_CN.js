@@ -78,7 +78,7 @@
                 },
                 "equals": {
                 	"regex": "none",
-                	"alertText": "* 请输入与上面相同的密码"
+                	"alertText": "* 密码输入不一致"
                 },
                 "creditCard": {
                     "regex": "none",
