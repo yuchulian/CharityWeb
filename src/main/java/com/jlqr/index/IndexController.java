@@ -16,6 +16,7 @@ import com.jlqr.common.model.PowerInfo;
 import com.jlqr.common.model.RoleInfo;
 import com.jlqr.interceptor.NewService;
 import com.jlqr.service.EmployInfoService;
+import com.jlqr.service.LoginInfoService;
 import com.jlqr.service.PowerInfoService;
 import com.jlqr.service.RoleInfoService;
 
@@ -25,6 +26,14 @@ import com.jlqr.service.RoleInfoService;
  *
  */
 public class IndexController extends Controller {
+
+	protected static HashMap<String, Object> getReturnMap() {
+		HashMap<String, Object> returnMap = new HashMap<String, Object>();
+		returnMap.put("returnState", "error");
+		returnMap.put("returnMsg", "操作失败");
+		return returnMap;
+	}
+	
 //	@NewService("RoleInfoService")
 //	private RoleInfoService roleService;
 	
@@ -36,7 +45,8 @@ public class IndexController extends Controller {
 	
 	@NewService("PowerInfoService")
 	private PowerInfoService powerInfoService;
-	
+	@NewService("LoginInfoService")
+	LoginInfoService loginInfoService;
 	/**
 	 * 初始化系统界面
 	 */
@@ -254,6 +264,40 @@ public class IndexController extends Controller {
 		
 	}
 	
+	//重置密码
+	public void resetPwdPage(){
+		EmployView employView = getSessionAttr("employView");
+		setAttr("employView", employView);
+	}
+	//重置密码的保存
+	public void resetPwdUpdate(){
+		HashMap<String,Object> returnMap = getReturnMap();
+		Integer id = getParaToInt("employReset.id");
+		String confirmPassword = getPara("employReset.confirmPassword");
+		String oldPassword = getPara("employReset.oldPassword");
+		String newPassword = getPara("employReset.newPassword");
+		LoginInfo loginInfo = new LoginInfo();
+		if(confirmPassword.equals(newPassword)){
+			try {
+				if(loginInfoService.findLoginInfoByIdAndPassword(id,oldPassword)!=null){
+					loginInfo.setId(id);
+					loginInfo.setLoginPwd(DigestUtils.md5Hex(newPassword));
+					loginInfoService.resetPwdUpdate(loginInfo);
+					returnMap.put("returnMsg","重置成功");
+					returnMap.put("returnState", "success");
+					}else{
+						returnMap.put("returnMsg","原始密码错误,重置失败");
+						returnMap.put("returnState", "error");
+					}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}else{
+			returnMap.put("returnMsg","重置密码与确认密码不一致");
+			returnMap.put("returnState", "error");
+		}
+		renderJson(returnMap);
+	}
 }
 
 

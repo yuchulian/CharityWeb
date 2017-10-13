@@ -497,7 +497,35 @@ Login.prototype = {
 	 * 密码确认
 	 */
 	resetPwd : function() {
-		
+		util.modal({
+			bind : {
+				"#resetPwd": {
+					title : "密码重置"
+				} 
+			},
+			title : "密码重置",
+			pageUrl : "/resetPwdPage",
+			width: 600,
+			button : {
+				"submit" : {
+					name : "确定",
+					className : "btn-primary",
+					click : function(dataMap){						
+						if($("#resetpwdForm").validationEngine('validate')){
+							var employReset = util.getModal(dataMap);
+							if(employReset["employReset.newPassword"]!=employReset["employReset.confirmPassword"]){
+								util.alert("重置密码和密码确认必须一致");
+							}else{
+								util.call("/resetPwdUpdate", employReset,function(returnMap){
+									util.closeModal(dataMap);									
+									util.alert(returnMap["returnMsg"]);
+								});
+							}
+						}
+					}
+				}
+			}
+		});
 	}
 };
 login = new Login();
