@@ -172,7 +172,7 @@ public class EmployInfoService extends ServiceUtil {
 		}
 		
 		if(roleIdCondition.size() > 0 && departmentIdCondition.size() > 0) {
-			loginInfoViewList = LoginInfoView.dao.find("select * from employ_view where ("+StringUtils.join(roleIdCondition, " or ")+") and ("+StringUtils.join(departmentIdCondition, " or ")+")");
+			loginInfoViewList = LoginInfoView.dao.find("select * from login_Info_view where ("+StringUtils.join(roleIdCondition, " or ")+") and ("+StringUtils.join(departmentIdCondition, " or ")+")");
 			if(null == loginInfoViewList)
 				loginInfoViewList = new ArrayList<LoginInfoView>();
 		}
