@@ -146,6 +146,13 @@ $(function() {
 		util.selectImg(event.target);
 	}).delegate(".selectIcon", "click", function(event) {
 		util.selectIcon(event.target);
+	}).delegate(".icon-demo-list li, .icon-demo-list li>span", "click", function(event) {
+		var self = $(event.target);
+		$(".icon-demo-list li.active").removeClass("active");
+		if("SPAN" == self.get(0).tagName)
+			self = self.parent();
+		self.addClass("active");
+		event.stopPropagation();
 	}).delegate(".docs-buttons [data-method]", "click", function(event) {
 		var $this = $(this);
 		var data = $this.data();

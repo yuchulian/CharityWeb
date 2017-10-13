@@ -1197,9 +1197,8 @@ Util.prototype = {
 	},
 	selectIcon : function(self) {
 		this.modal({
-			title : "图标",
-//			pageUrl : "/Admin/Carousel/imgEdit",
-			pageHtml : util.temp.selectImgHTML,
+			title : "系统图标",
+			pageUrl : "/selectIcon",
 			height : "cover",
 			width : 1124,
 			button : {
@@ -1207,10 +1206,12 @@ Util.prototype = {
 					name : "确定",
 					className : "btn-primary",
 					click : function(dataMap) {
-						if(/^\/downloadData\//.test(util.temp.$SCREENSHOT_IMG.attr("src"))) {
-							util.alert("请选择图片");
-							return;
+						var selectedIcon = $(".icon-demo-list li.active>span").attr("class");
+						if(dataMap["callBack"] && selectedIcon) {
+							eval(dataMap["callBack"]+"('"+selectedIcon+"')");
 						}
+						util.closeModal(dataMap);
+						util.hideLoading();
 					}
 				}
 			}

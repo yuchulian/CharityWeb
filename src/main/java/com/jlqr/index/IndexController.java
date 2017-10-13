@@ -247,6 +247,13 @@ public class IndexController extends Controller {
 		}
 	}
 	
+	/**
+	 * 显示框架所有图标
+	 */
+	public void selectIcon() {
+		
+	}
+	
 }
 
 
