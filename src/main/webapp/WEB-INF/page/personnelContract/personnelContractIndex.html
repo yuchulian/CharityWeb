@@ -65,7 +65,7 @@
 									</select>
 								</div>
 								<div class="col-md">
-									<label class="control-label">员工姓名:</label>
+									<label class="control-label">用户姓名:</label>
 								</div>
 								<div class="col-md">
 									<input class="form-control w100" id="contractEmployNameSearch" type="text" />
@@ -84,7 +84,7 @@
 							<tr>
 								<th class="sorting_disabled">&nbsp;</th>
 								<th class="sorting_disabled">&nbsp;</th>
-								<th class="sorting_asc">员工姓名</th>
+								<th class="sorting_asc">用户姓名</th>
 								<th class="sorting">合同编号</th>
 								<th class="sorting">合同类型</th>
 								<th class="sorting">合同状态</th>
@@ -164,7 +164,7 @@
 								var personnelContract = util.getModal(dataMap);
 									personnelContract["personnelContract.employ_id"] = $("#employ_id").attr("_value");								
 									if($("#employ_id").val()==""){
-										util.alert("请选择员工姓名");
+										util.alert("请选择用户姓名");
 										return;
 									}
 									if($("#contract_start").val()==""){

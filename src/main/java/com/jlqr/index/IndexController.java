@@ -62,7 +62,7 @@ public class IndexController extends Controller {
 	public void login() {
 		String redirectPage = "/", returnMsg = "";
 		String loginName = StringUtils.trim(getPara("loginName")), loginPwd = StringUtils.trim(getPara("loginPwd")), rememberPwd = StringUtils.trim(getPara("rememberPwd"));
-		LoginInfoView loginInfoView = null;//员工信息
+		LoginInfoView loginInfoView = null;//用户信息
 		List<String> menuList = new ArrayList<String>();//菜单集合
 		boolean isFinish = false;//是否完成
 		List<PowerInfo> powerInfoList = null;
@@ -137,7 +137,7 @@ public class IndexController extends Controller {
 							mergeMenuList(recordList, menuList);
 							
 							/**
-							 * 获取我的下级员工
+							 * 获取我的下级用户
 							 */
 							List<LoginInfoView> loginInfoViewList = employInfoService.findStaffList(loginInfoView);
 							staffList.add(loginInfoView.getId());

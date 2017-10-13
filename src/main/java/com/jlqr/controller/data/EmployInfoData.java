@@ -114,7 +114,7 @@ public class EmployInfoData extends ControllerUtil {
 		}
 		renderJson(returnMap);
 	}
-	//员工的信息查询
+	//用户的信息查询
 	public void employInfoListForContract(){
 		try {
 			renderJson(employInfoService.employInfoPaginate(this));

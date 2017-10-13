@@ -40,7 +40,7 @@ public class EmployInfoPage extends ControllerUtil {
 	public void index() {
 		render("employInfoIndex.html");
 	}
-	//员工修改页面,此页面跳转可以进行修改
+	//用户修改页面,此页面跳转可以进行修改
 	public void employInfoEdit() {
 		EmployInfo employInfo = new EmployInfo();
 		List<Dictionary> employEducationList = null;
@@ -73,7 +73,7 @@ public class EmployInfoPage extends ControllerUtil {
 		setAttr("employSpecialityList", employSpecialityList);
 		setAttr("employInfo", employInfo);
 	}
-	//员工详情页面,此页面用于合同选择的时候进行查看员工的信息,不能够进行修改
+	//用户详情页面,此页面用于合同选择的时候进行查看用户的信息,不能够进行修改
 	public void employInfoDetail(){
 		EmployInfoView employInfo = new EmployInfoView();
 		//教育经历
@@ -97,7 +97,7 @@ public class EmployInfoPage extends ControllerUtil {
 		setAttr("itemInfoList", itemInfoList);
 	}
 
-	//编辑员工账号信息
+	//编辑用户账号信息
 	public void employViewEdit(){
 		EmployInfo employInfo = getModel(EmployInfo.class,"employInfo");
 		LoginInfo loginInfo = new LoginInfo();

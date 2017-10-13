@@ -1,10 +1,10 @@
 <form class="form-horizontal" id="personnelContractForm">
 	<input type="hidden" name="personnelContract.id" value="#(personnelContract.id)" />	
 	<div class="form-group">
-		<label class="col-sm-2 control-label"><span class="red">*</span>员工姓名</label>
+		<label class="col-sm-2 control-label"><span class="red">*</span>用户姓名</label>
 		<div class="col-sm-10" >
 			<div class="input-group" style="width: 100%;height: 100%">
-  				<input type="text" disabled="disabled"  class="form-control " id="employ_id" style="height: 100%;width: 100%" placeholder="请选择员工姓名" value="#(employInfo.employ_name)" _value="#(employInfo.id)">
+  				<input type="text" disabled="disabled"  class="form-control " id="employ_id" style="height: 100%;width: 100%" placeholder="请选择用户姓名" value="#(employInfo.employ_name)" _value="#(employInfo.id)">
   				<span class="input-group-addon btn" id="select_employ">选择</span>
 			</div>
 		</div>
@@ -100,7 +100,7 @@
 	});
 	
 	var employModal =	util.modal({
-		title : "员工姓名",
+		title : "用户姓名",
 		pageUrl : "/personnelContractPage/employNameSelectIndex",
 		width:800,
 		button : {
@@ -110,7 +110,7 @@
 				click :function(dataMap){
 					var employCheck = $("input[type='checkbox'][name='selectemploy']:checked");
 					if(employCheck.length==0){
-						util.alert("必须选择一个员工");
+						util.alert("必须选择一个用户");
 						return;
 					}
 					$("#employ_id").val(employCheck.attr("_employname"));

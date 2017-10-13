@@ -123,7 +123,7 @@ public class EmployInfoService extends ServiceUtil {
 	}
 	
 	/**
-	 * 根据部门、角色等级和报销金额获取适合审核费用报销的上级领导或下级员工
+	 * 根据部门、角色等级和报销金额获取适合审核费用报销的上级领导或下级用户
 	 * @param loginInfoView
 	 * @param roleInfoListSql
 	 * @return
@@ -163,7 +163,7 @@ public class EmployInfoService extends ServiceUtil {
 					roleInfoList = RoleInfo.dao.find("select * from role_info where role_grade > ?", loginRoleInfo.getRoleGrade() + 1);
 				}
 				if(null != roleInfoList) {
-					//获取我的下级员工
+					//获取我的下级用户
 					for (RoleInfo roleInfo : roleInfoList) {
 						roleIdCondition.add("role_id like '%,"+roleInfo.getId()+",%'");
 					}
