@@ -3709,13 +3709,13 @@ table.dataTable tfoot th {
 }
 /* DataTable panel-menu, commonly holds filters */
 .dt-panelmenu {
-  padding: 10px 14px;
+  padding: 10px 12px;
   background: #f8f8f8;
   border-bottom: 1px solid #e5e5e5;
 }
 /* DataTable panel-footer, commonly holds paginator */
 .dt-panelfooter {
-  padding: 6px 14px;
+  padding: 6px 12px;
   background: #f8f8f8;
   border-top: 1px solid #e5e5e5;
 }
@@ -3741,7 +3741,8 @@ table.dataTable .form-control {
 /* DataTable Footer Elements */
 div.dataTables_info {
   float: left;
-  padding-top: 12px;
+  padding-top: 3px;
+  /*padding-top: 12px;*/
 }
 div.dataTables_paginate {
   margin-top: 5px;
@@ -9698,7 +9699,7 @@ legend {
 label {
   display: inline-block;
   max-width: 100%;
-  margin-bottom: 5px;
+  /*margin-bottom: 5px;*/
   font-weight: 600;
 }
 input[type="search"] {
@@ -9708,7 +9709,7 @@ input[type="search"] {
 }
 input[type="radio"],
 input[type="checkbox"] {
-  margin: 4px 0 0;
+  margin: 2px 0 0;
   margin-top: 1px \9;
   line-height: normal;
 }
@@ -12650,7 +12651,7 @@ a.list-group-item:focus {
   color: #999999;
   font-size: 15px;
   font-weight: 400;
-  padding: 0 8px;
+  padding: 0 12px;
   background: #fafafa;
   border: 1px solid #e2e2e2;
   border-top-right-radius: 3px;
@@ -16929,6 +16930,9 @@ on tables, feel free to add more*/
 }
 .w100 {
   width: 100px !important;
+}
+.w120 {
+  width: 120px !important;
 }
 .w125 {
   width: 125px !important;

@@ -1,2 +1,4 @@
 .line_height39 { height: 39px; line-height: 39px; padding: 0; }
 .icon-demo-list li.active { color: #3498db; border: 1px solid #3498db; }
+div.dataTables_info .btn_batch { height: 31px; line-height: 31px; padding: 0 10px; }
+.checkbox_thead, .checkbox_tbody { float: left; width: 20px; }

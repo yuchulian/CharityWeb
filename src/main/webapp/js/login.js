@@ -115,32 +115,39 @@ $(function() {
 		} else {
 			util.alert("当前浏览器并不支持全屏");
 		}
+	}).delegate(".sorting, .sorting_asc, .sorting_desc", "click", function(event) {
+		var self = $(event.target);
+		if(self.hasClass("sorting_asc")) {
+			self.removeClass("sorting_asc").addClass("sorting_desc");
+		} else {
+			self.removeClass("sorting sorting_desc").addClass("sorting_asc");
+		}
 	}).delegate(".checkbox_thead", "change", function() {
 		var checked = $(this).is(":checked"), name = $(this).attr("name"), $table = $(this).parents("table");
 		$table.find(".checkbox_tbody").prop("checked", checked);
-		$batch_delete = $table.parents(".row").find(".batch_delete");
-		if($batch_delete.length) {
+		$btn_batch = $table.next().find(".btn_batch");
+		if($btn_batch.length) {
 			if(checked) {
 				if($table.find(".checkbox_tbody[name='"+name+"']").length) {
-					$batch_delete.removeAttr("disabled");
+					$btn_batch.removeAttr("disabled");
 				}
 			} else {
-				$batch_delete.attr("disabled", "disabled");
+				$btn_batch.attr("disabled", "disabled");
 			}
 		}
 	}).delegate(".checkbox_tbody", "change", function() {
 		var name = $(this).attr("name"), $table = $(this).parents("table");
 		var checkbox_tbody_length = $table.find(".checkbox_tbody[name='"+name+"']").length, checked_length = $table.find(".checkbox_tbody[name='"+name+"']:checked").length,
-			$batch_delete = $table.parents(".row").find(".batch_delete");
+			$btn_batch = $table.next().find(".btn_batch");
 		if(checkbox_tbody_length == checked_length) {
 			$table.find(".checkbox_thead").prop("checked", "checked");
 		} else if(checkbox_tbody_length - 1 == checked_length) {
 			$table.find(".checkbox_thead").removeAttr("checked");
 		}
-		if($batch_delete.length && !checked_length) {
-			$batch_delete.attr("disabled", "disabled");
-		} else if($batch_delete.length && checked_length == 1) {
-			$batch_delete.removeAttr("disabled");
+		if($btn_batch.length && !checked_length) {
+			$btn_batch.attr("disabled", "disabled");
+		} else if($btn_batch.length && checked_length == 1) {
+			$btn_batch.removeAttr("disabled");
 		}
 	}).delegate(".selectFile", "click", function(event) {
 		util.selectFile(event.target);
@@ -325,12 +332,6 @@ $(function() {
 		e.preventDefault();
 		e.stopPropagation();
 		$(this).siblings('a').removeClass('active').end().addClass('active').tab('show');
-	}).delegate("", "click", function() {
-		
-	}).delegate("", "click", function() {
-		
-	}).delegate("", "click", function() {
-		
 	}).delegate("", "click", function() {
 		
 	});

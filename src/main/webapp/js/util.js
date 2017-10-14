@@ -171,17 +171,17 @@ Util.prototype = {
 		var endPage = pageNumber + 4;
 		if(endPage > totalPage) endPage = totalPage;
 
-		pageHTML.push('<div class="pull-right pagination">');
+//		pageHTML.push('<div class="pull-right pagination">');
 		pageHTML.push('	<ul class="pagination">');
 		if(pageNumber <= 8) startPage = 1;
 		if(totalPage - pageNumber < 8) endPage = totalPage;
 
-//		if(pageNumber == 1) pageHTML.push('<span class="disabled prev_page">上页</span>');
-		if(pageNumber == 1) pageHTML.push('<li class="ng-scope"><a href="javascript:void(0);" class="ng-binding" style="cursor: not-allowed;">上页</a></li>');
+//		if(pageNumber == 1) pageHTML.push('<li class="ng-scope"><a href="javascript:void(0);" class="ng-binding" style="cursor: not-allowed;">上页</a></li>');
+		if(pageNumber == 1) pageHTML.push('<li class="disabled"><a href="javascript:void(0);">上页</a></li>');
 		else pageHTML.push(this._pageHTML_a({
 			href : pageUrl+(pageNumber - 1)+"-"+pageSize,
 			content : "上页",
-			className : "prev_page",
+			className : "",//prev_page
 			
 			pageNumber : pageNumber - 1,
 			randomLetter : randomLetter,
@@ -205,13 +205,13 @@ Util.prototype = {
 				randomLetter : randomLetter,
 				refresh : refresh
 			}));
-//			pageHTML.push('<span class="gap">…</span>');
-			pageHTML.push('<li class="ng-scope"><a href="javascript:void(0);" class="ng-binding">…</a></li>');
+//			pageHTML.push('<li class="ng-scope"><a href="javascript:void(0);" class="ng-binding">…</a></li>');
+			pageHTML.push('<li><a href="javascript:void(0);">…</a></li>');
 		}
 
 		for(var i=startPage; i<=endPage; i++) {
-//			if(pageNumber == i) pageHTML.push('<span class="current">',i,'</span>');
-			if(pageNumber == i) pageHTML.push('<li class="ng-scope active"><a href="javascript:void(0);" class="ng-binding">',i,'</a></li>');
+//			if(pageNumber == i) pageHTML.push('<li class="ng-scope active"><a href="javascript:void(0);" class="ng-binding">',i,'</a></li>');
+			if(pageNumber == i) pageHTML.push('<li class="active"><a href="javascript:void(0);">',i,'</a></li>');
 			else pageHTML.push(this._pageHTML_a({
 				href : pageUrl+i+"-"+pageSize,
 				content : i,
@@ -223,8 +223,8 @@ Util.prototype = {
 		}
 
 		if(totalPage - pageNumber >= 8) {
-//			pageHTML.push('<span class="gap">…</span>');
-			pageHTML.push('<li class="ng-scope"><a href="javascript:void(0);" class="ng-binding">…</a></li>');
+//			pageHTML.push('<li class="ng-scope"><a href="javascript:void(0);" class="ng-binding">…</a></li>');
+			pageHTML.push('<li><a href="javascript:void(0);">…</a></li>');
 			pageHTML.push(this._pageHTML_a({
 				href : pageUrl+(totalPage - 1)+"-"+pageSize,
 				content : totalPage - 1,
@@ -243,22 +243,24 @@ Util.prototype = {
 			}));
 		}
 
-//		if(pageNumber == totalPage) pageHTML.push('<span class="disabled next_page">下页</span>');
-		if(pageNumber == totalPage) pageHTML.push('<li class="ng-scope"><a href="javascript:void(0);" class="ng-binding" style="cursor: not-allowed;">下页</a></li>');
+//		if(pageNumber == totalPage) pageHTML.push('<li class="ng-scope"><a href="javascript:void(0);" class="ng-binding" style="cursor: not-allowed;">下页</a></li>');
+		if(pageNumber == totalPage) pageHTML.push('<li class="disabled"><a href="javascript:void(0);">下页</a></li>');
 		else pageHTML.push(this._pageHTML_a({
 			href : pageUrl+(pageNumber + 1)+"-"+pageSize,
 			content : "下页",
-			className : "next_page",
-			attribute : "rel=\"next\"",
+			className : "",//next_page
+//			attribute : "rel=\"next\"",
 			
 			pageNumber : pageNumber + 1,
 			randomLetter : randomLetter,
 			refresh : refresh
 		}));
 
-		pageHTML.push('<li class="ng-scope"><a href="javascript:void(0);" class="ng-binding" style="border-top: none; border-bottom: none;">&nbsp;</a></li>');
+//		pageHTML.push('<li class="ng-scope"><a href="javascript:void(0);" class="ng-binding" style="border-top: none; border-bottom: none;">&nbsp;</a></li>');
+		pageHTML.push('<li><a href="javascript:void(0);" style="border-top: none; border-bottom: none;">&nbsp;</a></li>');
 		
-		pageHTML.push('<li class="ng-scope"><a href="javascript:void(0);" class="ng-binding" style="padding: 0;"><select style="border: none; width: 38px; height: 32px; text-align: center;" onchange="util.execute(\''+randomLetter+'\', 1, {pageSize: $(this).val()});">');
+//		pageHTML.push('<li class="ng-scope"><a href="javascript:void(0);" class="ng-binding" style="padding: 0;"><select style="border: none; width: 38px; height: 32px; text-align: center;" onchange="util.execute(\''+randomLetter+'\', 1, {pageSize: $(this).val()});">');
+		pageHTML.push('<li><a href="javascript:void(0);" style="padding: 0;"><select style="border: none; width: 38px; height: 29px; text-align: center;" onchange="util.execute(\''+randomLetter+'\', 1, {pageSize: $(this).val()});">');
 		var pageSizeList = [10, 15, 20, 30, 50];
 		if(("#"+pageSizeList.join("#")+"#").indexOf("#"+pageSize+"#") == -1) {
 			pageSizeList.push(pageSize*1);
@@ -273,11 +275,13 @@ Util.prototype = {
 		}
 		pageHTML.push('</select></a></li>');
 		
-		pageHTML.push('<li class="ng-scope"><a href="javascript:void(0);" class="ng-binding" style="padding: 0;"><input type="number" style="border: none; width: 88px; height: 32px; text-align: center;" min="1" max="'+totalPage+'" value="'+pageNumber+'" onclick="$(this).focus().select();" onkeyup="util._pageNumberLimit(this,\''+randomLetter+'\');" onchange="util._pageNumberLimit(this,\''+randomLetter+'\');" id="'+pageNumberInput+'"/></a></li>');
-		pageHTML.push('<li class="ng-scope"><a href="javascript:void(0);" class="ng-binding" onclick="util._pageNumberLimit(\'#'+pageNumberInput+'\', \''+randomLetter+'\', 13);">跳转</a></li>');
+//		pageHTML.push('<li class="ng-scope"><a href="javascript:void(0);" class="ng-binding" style="padding: 0;"><input type="number" style="border: none; width: 88px; height: 32px; text-align: center;" min="1" max="'+totalPage+'" value="'+pageNumber+'" onclick="$(this).focus().select();" onkeyup="util._pageNumberLimit(this,\''+randomLetter+'\');" onchange="util._pageNumberLimit(this,\''+randomLetter+'\');" id="'+pageNumberInput+'"/></a></li>');
+//		pageHTML.push('<li class="ng-scope"><a href="javascript:void(0);" class="ng-binding" onclick="util._pageNumberLimit(\'#'+pageNumberInput+'\', \''+randomLetter+'\', 13);">跳转</a></li>');
+		pageHTML.push('<li><a href="javascript:void(0);" style="padding: 0;"><input type="number" style="border: none; width: 88px; height: 29px; text-align: center;" min="1" max="'+totalPage+'" value="'+pageNumber+'" onclick="$(this).focus().select();" onkeyup="util._pageNumberLimit(this,\''+randomLetter+'\');" onchange="util._pageNumberLimit(this,\''+randomLetter+'\');" id="'+pageNumberInput+'"/></a></li>');
+		pageHTML.push('<li><a href="javascript:void(0);" onclick="util._pageNumberLimit(\'#'+pageNumberInput+'\', \''+randomLetter+'\', 13);">跳转</a></li>');
 		
 		pageHTML.push('	</ul>');
-		pageHTML.push('</div>');
+//		pageHTML.push('</div>');
 
 		return pageHTML.join(" ");
 	},
@@ -295,11 +299,9 @@ Util.prototype = {
 			href = "javascript:void(0);";
 		}
 		if(refresh) {
-//			return '<a href="'+href+'" class="'+className+'" '+attribute+'>'+content+'</a>';
-			return '<li class="ng-scope"><a href="'+href+'" class="'+className+' ng-binding" '+attribute+'>'+content+'</a></li>';
+			return '<li class="'+className+'"><a href="'+href+'" '+attribute+'>'+content+'</a></li>';
 		} else {
-		return '<li class="ng-scope"><a href="javascript:void(0);" class="'+className+' ng-binding" '+attribute+' onclick="util.execute(\''+randomLetter+'\','+pageNumber+');">'+content+'</a></li>';
-//		return '<a href="javascript:void(0);" class="'+className+'" '+attribute+' onclick="util.execute(\''+randomLetter+'\','+pageNumber+');">'+content+'</a>';
+			return '<li class="'+className+'"><a href="javascript:void(0);" '+attribute+' onclick="util.execute(\''+randomLetter+'\','+pageNumber+');">'+content+'</a></li>';
 		}
 	},
 	_pageNumberLimit : function(self, callbackFn, keyCode) {
@@ -1041,7 +1043,7 @@ Util.prototype = {
 	 * @param endId 结束日期id
 	 * @param startDate 开始日期初始值
 	 * @param endDate 结束日期初始值
-	 * 说明：日期插件初始化table标签中的input标签，就会出现样式不一致的问题
+	 * 说明：日期插件初始化input标签，必须加class="form-control"
 	 */
 	initDateRange : function(startId, endId, startDate, endDate, noEndDate, config) {
 		this.temp.dateId[startId] = startId;
@@ -1065,7 +1067,7 @@ Util.prototype = {
 	 * 初始化日期
 	 * @param dateId 日期id
 	 * @param dateValue 日期默认值
-	 * 说明：日期插件初始化table标签中的input标签，就会出现样式不一致的问题
+	 * 说明：日期插件初始化input标签，必须加class="form-control"
 	 */
 	initDate : function(dateId, dateValue, noEndDate, config) {
 		dateValue = dateValue=="NaN-NaN-NaN"?"":dateValue;
