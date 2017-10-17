@@ -145,7 +145,7 @@ public class EmployInfoService extends ServiceUtil {
 		String roleId = loginInfoView.getRoleId();
 		if(StringUtils.isNotBlank(roleId) && roleId.length() > 2) {
 			//获取当前登录人最高等级的角色
-			RoleInfo loginRoleInfo = RoleInfo.dao.findFirst("select * from role_info where id in ("+roleId.substring(1, roleId.length() - 1)+") order by role_grade desc");
+			RoleInfo loginRoleInfo = RoleInfo.dao.findFirst("select * from role_info where id in ("+roleId.substring(1, roleId.length() - 1)+") order by role_grade asc");
 			
 			if(null != loginRoleInfo) {
 				//获取我的下级的角色
