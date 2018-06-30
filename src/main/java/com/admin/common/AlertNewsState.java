@@ -1,19 +1,11 @@
 package com.admin.common;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.activiti.engine.task.Task;
-import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.log4j.Logger;
-import org.junit.Test;
 
-import com.admin.common.model.ActivityInfo;
 import com.jfinal.plugin.cron4j.ITask;
 
 
@@ -90,7 +82,7 @@ public class AlertNewsState  implements ITask{
 		// TODO Auto-generated method stub
 		
 	}
-	@Test
+	/*@Test
 	public void test1(){
 		Connection con = null; 
 		PreparedStatement pre = null;
@@ -148,7 +140,7 @@ public class AlertNewsState  implements ITask{
 			JdbcUtil.close(con);
 		}
 		System.out.println("更新新闻结束....");
-	}
+	}*/
 	//根据字段进行获取时间戳
 	public Long getTimeStamp(String column,ResultSet rs){
 		String time = null;
