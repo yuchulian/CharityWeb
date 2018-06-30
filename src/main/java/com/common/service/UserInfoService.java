@@ -12,7 +12,6 @@ import com.admin.common.model.UserInfo;
 import com.jfinal.core.Controller;
 import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.Page;
-import com.sun.tools.internal.xjc.reader.xmlschema.bindinfo.BIConversion.User;
 
 public class UserInfoService extends ServiceUtil {
 
