@@ -1,0 +1,86 @@
+<form id="employViewForm" class="form-horizontal ">
+
+	<input type="hidden" name="loginInfo.id" value="#(loginInfo.id)" />
+	<input type="hidden" name="mangerInfo.id" value="#(mangerInfo.id)" />
+	
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span class="red">*</span>账号</label>
+		<div class="col-sm-8">
+			<input type="text" class="form-control validate[required, maxSize[10]]" placeholder="请输入账号" name="loginInfo.login_name" value="#(loginInfo.login_name)">
+		</div>
+	</div>
+	
+	#if(null == loginInfo.id)
+	<div class="form-group">
+		<label class="col-sm-2 control-label">密码</label>
+		<div class="col-sm-8">
+			<input type="password" class="form-control validate[required]" placeholder="请输入密码" name="loginInfo.login_pwd" value="">
+		</div>
+	</div>
+	#else
+	<div class="form-group">
+		<label class="col-sm-2 control-label">密码</label>
+		<div class="col-sm-8">
+			<button type="button" class="btn btn-primary btn-gradient dark" onclick="loginInfoUpdPwd(this);">密码重置</button>
+		</div>
+	</div>
+	<script type="text/javascript">
+		function loginInfoUpdPwd(self) {
+			var buttonText = $(self).text();
+			if("密码重置" == buttonText) {
+				$(self).text("取消重置");
+				$(self).parents(".form-group").after('<div class="form-group"> <label class="col-sm-2 control-label"></label> <div class="col-sm-8"> <input type="password" class="form-control validate[required]" placeholder="请输入密码" name="loginInfo.login_pwd" value=""> </div> </div>');
+			} else {
+				$(self).text("密码重置");
+				$(self).parents(".form-group").next().remove();
+			}
+		}
+	</script>
+	#end
+	
+	
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span class="red">*</span>账号状态</label>
+		<div class="col-sm-8">
+			<div class="form-control" id="loginStateDiv">
+				<label> <input type="radio" name="loginInfo.login_state" value="1"/> 正常 </label>
+				<label style="margin-left: 30px;"> <input type="radio" name="loginInfo.login_state" value="2"/> 冻结 </label>
+			</div>
+		</div>
+	</div>
+	
+	<div class="form-group" style="margin-bottom: 0;">
+		<label class="col-sm-6 control-label" style="text-align: center; border-right: 1px solid #dddddd;"><span class="red">*</span>角色</label>
+		<label class="col-sm-6 control-label" style="text-align: center; border-left: 1px solid #dddddd;"><span class="red">*</span>部门</label>
+	</div>
+	<div class="form-group" style="border-top: 1px solid #dddddd;">
+		<div class="col-sm-6" style="border-right: 1px solid #dddddd;">
+			<ul id="roleInfoTree" class="ztree"></ul>
+		</div>
+		<div class="col-sm-6" style="border-left: 1px solid #dddddd;">
+			<ul id="departmentTree" class="ztree"></ul>
+		</div>
+	</div>
+	
+</form>
+
+<script type="text/javascript">
+	$("#employViewForm").validationEngine({
+		showOneMessage : true,
+		promptPosition : "topLeft"
+	});
+	
+	var loginState = "#(loginInfo.login_state)"*1 || 1;
+	$("#loginStateDiv input[value="+loginState+"]").attr("checked", "checked");
+	
+	var setting = {
+		check: {
+			enable: true
+		},
+		data: {
+			simpleData: { enable: true }
+		}
+	};
+	$.fn.zTree.init($("#roleInfoTree"), setting, #(roleInfoList));
+	$.fn.zTree.init($("#departmentTree"), setting, #(projectDepartment));
+</script>

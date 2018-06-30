@@ -1,0 +1,105 @@
+<form class="form-horizontal" id="activityInfoForm">
+	<input type="hidden" name="activityInfo.id" value="#(activityInfo.id)" />
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span class="red">*</span>活动名称</label>
+		<div class="col-sm-10">
+			<input type="text"  class="form-control validate[required]" name="activityInfo.activity_title" value="#(activityInfo.activity_title)"/>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span class="red">*</span>活动海报</label>
+		<div class="col-sm-9">
+			<img id ="activityInfoImg" style="width: 600px;height: 396px;" class="selectImg" callBack="activityInfoSelectImg" fileType=".png|.jpg|.gif" aspectRatio="150/150" src="/downloadData/img?filePath=#(activityInfo.activity_cover_img)" _src="#(activityInfo.activity_cover_img)"/>
+		</div>
+	</div>	
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span class="red">*</span>活动地址</label>
+		<div class="col-sm-10">
+			<input type="text"  class="form-control"  name="activityInfo.activity_addr" value="#(activityInfo.activity_addr)"/>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span class="red">*</span>活动简介</label>
+		<div class="col-sm-10">
+			<input type="text"  class="form-control"  name="activityInfo.activity_introduce" value="#(activityInfo.activity_introduce)"/>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span class="red">*</span>活动时间</label>
+		<div class="col-sm-2">
+			<input type="text"  class="form-control" id="activity_begin_time"  name="activityInfo.activity_begin_time"/>
+		</div>
+		<label class="col-sm-1 control-label"></label>
+		<div class="col-sm-2">
+			<input type="text"  class="form-control" id="activity_end_time"  name="activityInfo.activity_end_time" />
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span class="red">*</span>报名时间</label>
+		<div class="col-sm-2">
+			<input type="text"  class="form-control" id="activity_enrol_starttime"  name="activityInfo.activity_enrol_starttime" />
+		</div>
+		<label class="col-sm-1 control-label"><span class="red"></span></label>
+		<div class="col-sm-2">
+			<input type="text"  class="form-control" id="activity_enrol_endtime"  name="activityInfo.activity_enrol_endtime" />
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span class="red">*</span>报名人数</label>
+		<div class="col-sm-10">
+			<input type="text"   class="form-control" disabled="disabled" name="activityInfo.activity_enrol_total" value="#(activityInfo.activity_enrol_total)"/>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span class="red">*</span>活动费用</label>
+		<div class="col-sm-10">
+			<input type="text"   class="form-control"  name="activityInfo.activity_free" value="#(activityInfo.activity_free)"/>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span class="red">*</span>活动内容</label>
+		<div class="col-sm-9">
+			<script type="text/plain" style="width:100%;height:360px;" id="activity_content" name="activityInfo.activity_content">#(activityInfo.activity_content)</script>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span class="red">*</span>活动状态 </label>
+		<div class="col-sm-10">
+			<input type="text"   class="form-control" disabled="disabled"  value="#(activityInfo.activity_state==4?"活动结束" : activityInfo.activity_state==1?"报名中":activityInfo.activity_state==2?"报名截止":activityInfo.activity_state==3?"活动进行中":"新建")"/>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span class="red">*</span>活动举办单位</label>
+		<div class="col-sm-10">
+			<select class="form-control" name="activityInfo.activity_hold" >
+				#for(activity :activityUnitList)
+					<option value="#(activity.id)" #if(activityInfo.activity_hold+""==activity.id+"") selected="selected" #end >#(activity.unit_name)</option>
+				#end
+			</select>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span class="red">*</span>活动类型 </label>
+		<div class="col-sm-10">
+			<select class="form-control" name="activityInfo.activity_type" >
+				#for(activity:activityTypeList)
+					<option value="#(activity.id)" #if(activityInfo.activity_type+""==activity.id+"") selected="selected" #end>#(activity.dictionary_name)</option>
+				#end
+			</select>
+		</div>
+	</div>
+
+	
+</form>
+<script type="text/javascript">
+util.initDateRange('#activity_begin_time', '#activity_end_time', '#(activityInfo.activity_begin_time)', '#(activityInfo.activity_end_time)',true,{format: 'yyyy-mm-dd'});
+util.initDateRange('#activity_enrol_starttime', '#activity_enrol_endtime', '#(activityInfo.activity_enrol_starttime)', '#(activityInfo.activity_enrol_endtime)');
+	$("#activityInfoForm").validationEngine({
+		showOneMessage: true,
+		promptPosition: "topLeft"
+	});
+	var activityContent = UE.getEditor('activity_content');
+	function activityInfoSelectImg(returnMsg) {
+		$("#activityInfoImg").attr("src", "/downloadData/img?filePath="+returnMsg.filePath).attr("_src", returnMsg.filePath);
+	}
+</script>

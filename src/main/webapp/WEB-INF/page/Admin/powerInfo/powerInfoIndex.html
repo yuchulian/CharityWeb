@@ -1,0 +1,130 @@
+#@layout()
+#define main()
+
+<div class="row">
+	<div class="col-md-12">
+		<div class="panel panel-visible">
+			<div class="panel-body pn">
+				<div id="datatable2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+					<div class="dt-panelmenu clearfix">
+						<input type="hidden" id="powerPidSearch" value="0"/>
+						<button type="button" class="btn btn-primary btn-gradient dark" id="powerInfoAdd">权限添加</button>
+					</div>
+					<table class="table table-striped table-hover dataTable no-footer" id="powerInfoTable">
+						<thead>
+							<tr>
+								<th>&nbsp;</th>
+								<th class="sorting_asc">权限名称</th>
+								<th class="sorting_disabled">权限图标</th>
+								<th class="sorting">权限路径</th>
+								<th class="sorting">权限状态</th>
+								<th class="sorting_disabled">操作</th>
+							</tr>
+						</thead>
+						<tbody> </tbody>
+					</table>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	util.initPage("/Admin/powerInfoData/powerInfoList", {
+		sort : {
+			"id" : "asc"
+		},
+		search : {
+			column : {
+				"power_pid" : [ "=", "#powerPidSearch", "0" ]
+			}
+		},
+		modal : {
+			"powerInfoUpdate" : {
+				bind : {
+					"#powerInfoAdd" : {
+						title : "权限添加"
+					}
+				},
+				pageUrl : "/Admin/powerInfoPage/powerInfoEdit",
+				title : "权限修改",
+				button : {
+					"submit" : {
+						name : "确定",
+						className : "btn-primary",
+						click : function(dataMap) {
+							if ($('#powerInfoForm').validationEngine('validate')) {
+								var powerInfo = util.getModal(dataMap);
+								powerInfo["powerInfo.power_pid"] = $("#powerPidSearch").val();
+								powerInfo["powerInfo.power_name"] = powerInfo["powerInfo.power_name"].replace(",", "，");
+								util.call("/Admin/powerInfoData/powerInfoSave", powerInfo, function(returnMsg) {
+									util.refreshPage(dataMap);
+									util.closeModal(dataMap);
+									util.alert(returnMsg["content"]);
+								});
+							}
+						}
+					}
+				}
+			},
+			"powerInfoDelete" : {
+				button : {
+					"submit" : {
+						name : "确定",
+						className : "btn-primary",
+						click : function(dataMap) {
+							util.call("/Admin/powerInfoData/powerInfoDelete", { "id" : dataMap["id"] + "" }, function(returnMsg) {
+								util.refreshPage(dataMap);
+								util.closeModal(dataMap);
+								util.alert(returnMsg["content"]);
+							});
+						}
+					}
+				}
+			}
+		}
+	},
+	function(data) {
+		var tableHTML = [],
+			obj = {},
+			powerInfo = data.list["powerInfo"],
+			powerInfoList = data.list["powerInfoList"],
+			search = data["search"],
+			powerInfoUpdate = data["powerInfoUpdate"],
+			powerInfoDelete = data["powerInfoDelete"];
+
+		var path = powerInfo["power_id_path"], pathname = powerInfo["power_name_path"], menuList = [];
+		menuList.push('<li class="crumb-link"><a href="javascript:void(0);" onclick="$(\'#powerPidSearch\').val(0);util.execute(\'', search, '\');">全部</a> </li>');
+		var pathList = [], pathnameList = [];
+		if (path && pathname) {
+			pathList = path.split(",");
+			pathnameList = pathname.split(",");
+			for (var i = 1; i < pathList.length - 1; i++) {
+				menuList.push('<li class="crumb-link"><a href="javascript:void(0);" onclick="$(\'#powerPidSearch\').val(', pathList[i], ');util.execute(\'', search, '\');">', pathnameList[i], '</a> </li>');
+			}
+		}
+		$("#powerInfo_menu").html(menuList.join(""));
+
+		for (var i = 0; i < powerInfoList.length; i++) {
+			obj = powerInfoList[i];
+			tableHTML.push('<tr>');
+			tableHTML.push('	<td>', (i + 1), '</td>');
+			if(pathList.length < 4) {
+				tableHTML.push('	<td><a href="javascript:void(0);" onclick="$(\'#powerPidSearch\').val(', obj.id, ');util.execute(\'', search, '\');">', obj.power_name, '</a></td>');
+			} else {
+				tableHTML.push('	<td>', obj.power_name, '</td>');
+			}
+			tableHTML.push('	<td><span class="', obj.power_ico, '"></span></td>');
+			tableHTML.push('	<td>', obj.power_url, '</td>');
+			tableHTML.push('	<td>', obj.power_state ? "显示" : "隐藏", '</td>');
+			tableHTML.push('	<td>');
+			tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',powerInfoUpdate,'\', {id : ',obj.id,', title: \'权限修改\'});">修改</a>');
+			tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',powerInfoDelete,'\', {id : ',obj.id,', pageHtml: \'确定要删除【',obj.power_name,'】吗？\'});">删除</a>');
+			tableHTML.push('	</td>');
+			tableHTML.push('</tr>');
+		}
+		$("#powerInfoTable tbody").html(tableHTML.join(""));
+	});
+</script>
+#end

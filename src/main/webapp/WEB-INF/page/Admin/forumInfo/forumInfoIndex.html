@@ -1,0 +1,186 @@
+#@layout()
+#define main()
+<div class="row">
+	<div class="col-md-2">
+		<ul class="nav ztree_menu ztree" style="width: 100%; background-color: #fff; z-index: 1;" id="forumInfoIndexTree"> </ul>
+	</div>
+	<div class="col-md-10">
+		<input type="hidden" id="forumSmallType" />
+		<div class="panel panel-visible">
+			<div class="panel-body pn">
+				<div id="datatable2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+					<div class="dt-panelmenu clearfix">				
+						<div class="form-horizontal">
+							<div class="form-group">
+								<label class="col-md control-label">帖子主题</label>													
+								<div class="col-md">
+									<input class="form-control w150" placeholder="帖子主题" id="forumInfoTitleSearch" type="text">
+								</div>
+								<label class="col-md control-label">作者</label>													
+								<div class="col-md">
+									<input class="form-control w150" placeholder="作者" id="forumInfoNicknameSearch" type="text">
+								</div>
+								<div class="col-md">
+									<input class="btn btn-primary btn-gradient dark" type="button"  value="搜索" id="forumInfoSearch"/>
+									<input class="btn btn-primary btn-gradient dark" type="button" value="重置" id="forumInfoReset"/>
+								</div>							
+							</div>
+						</div>
+
+					</div>
+					<table class="table table-striped table-hover dataTable no-footer" id="forumInfoTable">
+						<thead>
+							<tr>
+								<th>&nbsp;</th>
+								<th class="sorting_disabled">帖子主题</th>
+								<th class="sorting">帖子作者</th>
+								<th class="sorting">帖子分数</th>
+								<th class="sorting">是否精帖</th>
+								<th class="sorting">评论条数</th>
+								<th class="sorting_disabled">操作</th>
+							</tr>
+						</thead>
+						<tbody> </tbody>
+					</table>
+					<div class="dt-panelfooter clearfix">
+						<div class="dataTables_info"> </div>
+						<div class="dataTables_paginate paging_simple_numbers" id="forumInfo">
+						</div>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+   //ztree配置项
+   var setting = {
+		check: { enable: true, chkStyle: "radio", radioType: "all" },
+		data : { simpleData : { enable : true } },
+		callback : {onClick : selectCheckText,onCheck : zTreeOnCheck}
+	},  nodeList = [];
+   function selectCheckText(e, treeId, treeNode, clickFlag) { 
+	  var treeObj = $.fn.zTree.getZTreeObj("forumInfoIndexTree");
+	  var nodes = treeObj.getSelectedNodes();
+	  for (var i=0, l=nodes.length; i < l; i++) {
+	  	treeObj.checkNode(nodes[i], true, true);
+	  } 
+	  zTreeOnCheck(e, treeId, treeNode);
+	}
+   function zTreeOnCheck(event, treeId, treeNode) {
+	    $("#forumSmallType").val(treeNode.id);
+	    $("#forumInfoSearch").click();
+	};
+		var forumChannelList =#(session.forumChannelList);
+		var obj = {},node = {};
+		nodeList = [];
+		for(var i=0; i<forumChannelList.length; i++) {
+			obj = forumChannelList[i];
+			nodeList.push({id: obj.id, pId: obj.channel_pid, name: obj.channel_name,open:true});
+		}
+		$.fn.zTree.init($("#forumInfoIndexTree"), setting, nodeList);
+		
+		var treeObj = $.fn.zTree.getZTreeObj("forumInfoIndexTree");
+		
+		var nodes = treeObj.getNodes();
+		changeState(nodes,treeObj);
+		
+		var obj = treeObj.getCheckedNodes(false)[0];
+		if(obj) {
+			treeObj.checkNode(obj, true, true);
+			$("#forumSmallType").val(obj.id);
+			initPage();
+		}
+	function changeState(nodes,treeObj){		
+		for(var i = 0;i < nodes.length;i++){
+			var node = nodes[i];
+			if(node.isParent){
+				node.nocheck = true;
+				treeObj.updateNode(node);
+				changeState(node.children,treeObj);
+			}
+		}
+	}
+	function initPage(){
+		util.initPage("/Admin/forumInfoData/forumInfoPaginate", {
+			paginate:{
+				paginateId:"#forumInfo",
+				pageNumber:1,
+				pageSize:10
+			},
+			sort : {
+				"id" : "desc"
+			},
+			search : {
+				bind : {
+					searchId : "#forumInfoSearch",
+					resetId : "#forumInfoReset"
+				},
+				column : {
+	 				"forum_small_type" : ["=" , "#forumSmallType", "", false],
+	 				"forum_title" : ["like" , "#forumInfoTitleSearch"],
+	 				"user_nickname" : ["like" , "#forumInfoNicknameSearch"]
+				}
+			},
+			modal : {
+				"forumInfoDelete" : {
+					button : {
+						"submit" : {
+							name : "确定",
+							className : "btn-primary",
+							click : function(dataMap) {
+								util.call("/Admin/forumInfoData/forumInfoDelete", { "id" : dataMap["id"] + "" }, function(returnMsg) {
+									util.refreshPage(dataMap);
+									util.closeModal(dataMap);
+									util.alert(returnMsg["returnMsg"]);
+								});
+							}
+						}
+					}
+				},
+				"forumInfoisBan" : {
+					button : {
+						"submit" : {
+							name : "确定",
+							className : "btn-primary",
+							click : function(dataMap) {
+								util.call("/Admin/forumInfoData/forumInfoisBan", { "id" : dataMap["id"] + "" }, function(returnMsg) {
+									util.refreshPage(dataMap);
+									util.closeModal(dataMap);
+									util.alert(returnMsg["returnMsg"]);
+								});
+							}
+						}
+					}
+				}
+			}
+		},
+		function(data) {
+			var tableHTML = [],
+				obj = {},
+				forumInfoList = data.list,
+				forumInfoDelete = data["forumInfoDelete"],
+				forumInfoisBan = data["forumInfoisBan"];
+			for (var i = 0; i < forumInfoList.length; i++) {
+				obj = forumInfoList[i];
+				tableHTML.push('<tr>');
+				tableHTML.push('	<td>', (i + 1), '</td>');
+				tableHTML.push('	<td>', obj.forum_title, '</td>');
+				tableHTML.push('	<td>', obj.user_nickname, '</td>');
+				tableHTML.push('	<td>', obj.forum_score, '</td>');
+				tableHTML.push('	<td>', obj.forum_fine_post==1?"是":"否", '</td>');
+				tableHTML.push('	<td>', obj.forum_comment_count, '</td>');
+				tableHTML.push('	<td>');
+				tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',forumInfoDelete,'\', {id : ',obj.id,', pageHtml: \'确定要删除【',obj.forum_title,'】吗？\'});">删除</a>');
+				tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',forumInfoDelete,'\', {id : ',obj.id,', pageHtml: \'确定要屏蔽【',obj.forum_title,'】吗？\'});">屏蔽</a>');
+				tableHTML.push('	</td>');
+				tableHTML.push('</tr>');
+			}
+			$("#forumInfoTable tbody").html(tableHTML.join(""));
+		});
+	}
+			
+	</script>
+#end

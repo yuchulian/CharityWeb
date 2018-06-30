@@ -1,0 +1,21 @@
+#@header()
+#define main()
+<link rel="stylesheet" href="/css/postPlate.css">
+<div class="form_head center"><a href="#">论坛</a> >>论坛板块
+</div>
+<div class="container">
+	#for(record : recordList)
+	<div class="head">#(record.channel_name)</div>
+	<div class="body clearfix">
+		#for(child : record.children)
+		<div class="item fl">
+			<div class="content">
+				<a href="/AllPostPage?type=#(child.type)&&name=#(child.channel_name)">#(child.channel_name)</a> <br/>
+				<span>共#(child.topticCount)条主题/#(child.commentCount)回复</span>
+			</div>
+		</div>
+		#end
+	</div>
+	#end
+</div>
+#end

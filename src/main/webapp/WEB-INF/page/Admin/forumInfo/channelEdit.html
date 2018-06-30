@@ -1,0 +1,30 @@
+<form class="form-horizontal" id="channelForm">
+	<input type="hidden" name="channel.id" value="#(channel.id)" />
+	
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span class="red">*</span>栏目名称</label>
+		<div class="col-sm-10">
+			<input type="text" class="form-control validate[required]" name="channel.channel_name" value="#(channel.channel_name)" placeholder="请输入栏目名称"/>
+		</div>
+	</div>
+	
+	<div class="form-group">
+		<label class="col-sm-2 control-label">栏目类型</label>
+		<div class="col-sm-10">
+			<input type="text" class="form-control" name="channel.channel_type" value="#(channel.channel_type)" placeholder="请输入栏目类型"/>
+		</div>
+	</div>
+	
+	<div class="form-group">
+		<label class="col-sm-2 control-label">备注</label>
+		<div class="col-sm-10">
+			<input type="text" class="form-control" name="channel.channel_remark" value="#(channel.channel_remark)" placeholder="请输入备注"/>
+		</div>
+	</div>
+</form>
+<script type="text/javascript">
+	$("#channelForm").validationEngine({
+		showOneMessage: true,
+		promptPosition: "topLeft"
+	});
+</script>

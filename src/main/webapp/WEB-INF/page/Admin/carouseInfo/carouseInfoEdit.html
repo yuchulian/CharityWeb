@@ -1,0 +1,48 @@
+<form class="form-horizontal" id="carouseInfoForm">
+	<input type="hidden" name="carouseInfo.id" value="#(carouseInfo.id)" />
+	
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span class="red">*</span>图片名称</label>
+		<div class="col-sm-10">
+			<input type="text" class="form-control validate[required]" name="carouseInfo.carouse_title" value="#(carouseInfo.carouse_title)" placeholder="请输入图片的名称"/>
+		</div>
+	</div>
+	
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span class="red">*</span>选择图片</label>
+		<div class="col-sm-8">
+			<img id ="carouseInfoImg" style="width: 900px;" class="selectImg" callBack="carouseInfoSelectImg" fileType=".png|.jpg|.gif" aspectRatio="640/300" src="/downloadData/img?filePath=#(carouseInfo.carouse_img)" _src="#(carouseInfo.carouse_img)"/>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span class="red">*</span>图片链接</label>
+		<div class="col-sm-10">
+			<input type="text"  class="form-control validate[required]" name="carouseInfo.carouse_link" value="#(carouseInfo.carouse_link)"/>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span class="red">*</span>创建时间</label>
+		<div class="col-sm-10">
+			<input type="text" id="carouse_createtime" disabled="disabled" class="form-control validate[required]" name="carouseInfo.carouse_createtime" value="#(carouseInfo.carouse_createtime)"/>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span class="red">*</span>修改时间</label>
+		<div class="col-sm-10">
+			<input type="text" disabled="disabled" class="form-control validate[required]" name="carouseInfo.carouse_chagetime" value="#(carouseInfo.carouse_chagetime)"/>
+		</div>
+	</div>
+</form>
+<script type="text/javascript">
+	$("#carouseInfoForm").validationEngine({
+		showOneMessage: true,
+		promptPosition: "topLeft"
+	});
+	function carouseInfoSelectImg(returnMsg) {
+		$("#carouseInfoImg").attr("src", "/downloadData/img?filePath="+returnMsg.filePath).attr("_src", returnMsg.filePath);
+	}
+	//获取当前的时间
+	$(function(){
+		$("#carouse_createtime").val(util.getNowDate(new Date(),'yyyy-mm-dd hh:ii:ss'));
+	});
+</script>

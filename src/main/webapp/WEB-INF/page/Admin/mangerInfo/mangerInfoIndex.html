@@ -1,0 +1,221 @@
+#@layout()
+#define main()
+
+<div class="row">
+	<div class="col-md-12">
+		<div class="panel panel-visible">
+			<div class="panel-body pn">
+				<div id="datatable2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+					<div class="dt-panelmenu clearfix">
+						<div class="form-horizontal">
+							<div class="form-group" style="padding-left: 20px;">
+							
+								<div class="col-md">
+									<input class="col-md-1 form-control" type="text" placeholder="请输入用户姓名" style="width: 140px;" id="mangerInfoTitleSearch"/>
+								</div>
+								
+								<input class="btn btn-primary " type="button" value="搜索" id="mangerInfoSearch"/>
+								<input class="btn btn-primary " type="button" value="重置" id="mangerInfoReset"/>
+								<button type="button" class="btn btn-primary btn-gradient dark" id="mangerInfoAdd">用户添加</button>
+							</div>
+						</div>
+					</div>
+					<table class="table table-striped table-hover dataTable no-footer" id="mangerInfoTable">
+						<thead>
+							<tr>
+								<th>&nbsp;</th>
+								<th class="sorting_asc">姓名</th>
+								<th class="sorting_disabled">性别</th>
+								<th class="sorting">联系方式</th>
+								<th class="sorting_disabled">操作</th>
+							</tr>
+						</thead>
+						<tbody> </tbody>
+					</table>
+					<div class="dt-panelfooter clearfix">
+						<div class="dataTables_info" id="datatable2_info" role="status"
+							aria-live="polite">Showing 1 to 5 of 13 entries</div>
+						<div class="dataTables_paginate paging_simple_numbers"
+							id="mangerInfo">
+							<ul class="pagination">
+								<li class="paginate_button active" aria-controls="datatable2"
+									tabindex="0"><a href="#">1</a></li>
+								<li class="paginate_button " aria-controls="datatable2" tabindex="0"><a
+									href="#">2</a></li>
+								<li class="paginate_button " aria-controls="datatable2" tabindex="0"><a
+									href="#">3</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	util.initPage("/Admin/mangerInfoData/mangerInfoPaginate", {
+		paginate:{
+			paginateId:"#mangerInfo",
+			pageNumber:1,
+			pageSize:10
+		},
+		sort : {
+			"id" : "asc"
+		},
+		search : {
+			bind : {
+				searchId : "#mangerInfoSearch",
+				resetId : "#mangerInfoReset"
+			},
+			column : {
+				"mangerInfoTitleSearch" : ["like" , "#mangerInfoTitleSearch"]
+			}
+		},
+		modal : {
+			"mangerInfoUpdate" : {
+				bind : {
+					"#mangerInfoAdd" : {
+						title : "用户添加"
+					}
+				},
+				pageUrl : "/Admin/mangerInfoPage/mangerInfoEdit",
+				title : "用户修改",
+				width : 1100,
+				button : {
+					"submit" : {
+						name : "确定",
+						className : "btn-primary",
+						click : function(dataMap) {
+// 							if ($('#mangerInfoForm').validationEngine('validate')) {
+								var mangerInfo = util.getModal(dataMap),$this="";
+								$("#mangerInfo_id td[id]").each(function() {
+									$this = $(this);
+									mangerInfo["mangerInfo."+$this.attr("id")] = $.trim($this.text());
+								});
+								mangerInfo["mangerInfo.manger_diploma"] = $.trim($("#manger_diploma").val());
+								mangerInfo["mangerInfo.manger_img"] = $.trim($("#mangerInfoImg").attr("_src"));
+								util.call("/Admin/mangerInfoData/mangerInfoSave", mangerInfo, function(returnMsg) {
+									util.refreshPage(dataMap);
+									util.closeModal(dataMap);
+									util.alert(returnMsg["returnMsg"]);
+								});
+// 							}
+						}
+					}
+				}
+			},
+			"mangerInfoDelete" : {
+				button : {
+					"submit" : {
+						name : "确定",
+						className : "btn-primary",
+						click : function(dataMap) {
+							util.call("/Admin/mangerInfoData/mangerInfoDelete", { "id" : dataMap["id"] + "" }, function(returnMsg) {
+								util.refreshPage(dataMap);
+								util.closeModal(dataMap);
+								util.alert(returnMsg["returnMsg"]);
+							});
+						}
+					}
+				}
+			},
+			/* "mangerOpenAccount" : {
+				button : {
+					"submit" : {
+						name : "确定",
+						className : "btn-primary",
+						click : function(dataMap) {
+							util.call("/mangerInfoData/mangerOpenAccount", { "id" : dataMap["id"] + "" }, function(returnMsg) {
+								util.refreshPage(dataMap);
+								util.closeModal(dataMap);
+								util.alert(returnMsg["returnMsg"]);
+							});
+						}
+					}
+				}
+			}, */
+			"mangerEditAccount" : {
+				pageUrl : "/Admin/mangerInfoPage/mangerViewEdit",
+				width : 794,
+				button : {
+					"submit" : {
+						name : "确定",
+						className : "btn-primary",
+						click : function(dataMap) {
+							if ($('#mangerViewForm').validationEngine('validate')) {
+								var loginInfo = util.getModal(dataMap);
+								
+								//角色
+								var treeObj = $.fn.zTree.getZTreeObj("roleInfoTree");
+								var nodeList = treeObj.getCheckedNodes(true), idList = [], nodeObj = {};
+								for(var i=0; i<nodeList.length; i++) {
+									nodeObj = nodeList[i];
+									idList.push(nodeObj.id);
+								}
+								loginInfo["loginInfo.role_id"] = ","+idList.join(",")+",";
+								if(!idList.length) {
+									util.alert("最少勾选一个角色");
+									return;
+								}
+								
+								//部门
+								treeObj = $.fn.zTree.getZTreeObj("departmentTree");
+								nodeList = treeObj.getCheckedNodes(true),
+								idList = [];
+								nodeObj = {};
+								for(var i=0; i<nodeList.length; i++) {
+									nodeObj = nodeList[i];
+									idList.push(nodeObj.id);
+								}
+								if(!idList.length) {
+									util.alert("最少勾选一个部门");
+									return;
+								}
+								loginInfo["loginInfo.department_id"] = ","+idList.join(",")+",";
+								
+								util.call("/Admin/mangerInfoData/mangerViewSave", loginInfo, function(returnMsg) {
+									util.refreshPage(dataMap);
+									util.closeModal(dataMap);
+									util.alert(returnMsg["returnMsg"]);
+								});
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	function(data) {
+		var tableHTML = [],
+			obj = {},
+			mangerInfoList = data.list,
+			search = data["search"],
+			mangerInfoUpdate = data["mangerInfoUpdate"],
+			mangerInfoDelete = data["mangerInfoDelete"],
+			mangerOpenAccount = data["mangerOpenAccount"],
+			mangerEditAccount = data["mangerEditAccount"];
+		for (var i = 0; i < mangerInfoList.length; i++) {
+			obj = mangerInfoList[i];
+			tableHTML.push('<tr>');
+			tableHTML.push('	<td>', (i + 1), '</td>');
+			tableHTML.push('	<td>', obj.manger_name, '</td>');
+			tableHTML.push('	<td>', obj.manger_sex==1?"男" : "女", '</td>');
+			tableHTML.push('	<td>', obj.manger_phone , '</td>');
+			tableHTML.push('	<td>');
+			tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',mangerInfoUpdate,'\', {id : ',obj.id,', title: \'用户修改\'});">修改</a>');
+			tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',mangerInfoDelete,'\', {id : ',obj.id,', pageHtml: \'确定要删除【',obj.manger_name,'】吗？\'});">删除</a>');
+			if(obj.login_name==null){
+				tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',mangerEditAccount,'\', {\'mangerInfo.id\' : ',obj.id,', \'mangerInfo.manger_name\' : \'',obj.manger_name,'\', title: \'开通账号\'});">开通账号</a>');
+			}else{
+				tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',mangerEditAccount,'\', {\'mangerInfo.id\' : ',obj.id,', title: \'设置账号\'});">设置账号</a>');
+			}
+			tableHTML.push('	</td>');
+			tableHTML.push('</tr>');
+		}
+		$("#mangerInfoTable tbody").html(tableHTML.join(""));
+	});
+		
+</script>
+#end

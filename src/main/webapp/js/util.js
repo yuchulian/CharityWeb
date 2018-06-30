@@ -1,9 +1,9 @@
 
 /**
  * 集成增删查改，封装一些常用方法
- * @author LiQiRan
- * @QQ 243736993
- * @date 2017-5-18 16:20:04
+ * @author Yuchulian
+ * @QQ 1490798238
+ * @date 2018-10-18 16:20:04
  */
 var util, Util = function() {};
 Util.prototype = {
@@ -723,7 +723,7 @@ Util.prototype = {
 		}
 		var formData = $(formId).serializeArray();
 		$.each(formData, function() {
-			formMap[this.name] = this.value;
+			formMap[this.name] = this.value.replace(/<[^<>]+?>/g, "");
 		});
 		return formMap;
 	},
@@ -849,6 +849,14 @@ Util.prototype = {
 			}
 			return (new Date(dateStr)).getTime();
 //			return (new Date(dateStr)).valueOf();
+		} else {
+			return 0;
+		}
+	},
+	differDay : function(date1, date2) {
+		if(date1 && date2) {
+			var dateLong1 = this.formatDateToLong(date1), dateLong2 = this.formatDateToLong(date2);
+			return (dateLong2 - dateLong1)/24/60/60/1000+1
 		} else {
 			return 0;
 		}
@@ -1198,7 +1206,7 @@ Util.prototype = {
 	selectIcon : function(self) {
 		this.modal({
 			title : "系统图标",
-			pageUrl : "/selectIcon",
+			pageUrl : "/Admin/selectIcon",
 			height : "cover",
 			width : 1124,
 			button : {

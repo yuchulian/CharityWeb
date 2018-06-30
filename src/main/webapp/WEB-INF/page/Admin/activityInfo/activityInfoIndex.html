@@ -1,0 +1,192 @@
+#@layout()
+#define main()
+
+<div class="row">
+	<div class="col-md-12">
+		<div class="panel panel-visible">
+			<div class="panel-body pn">
+				<div id="datatable2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+					<div class="dt-panelmenu clearfix">
+						<div class="form-horizontal">
+							<div class="form-group" style="padding-left: 20px;">
+							
+								<label class="col-sm control-label">状态：</label>
+								<div class="col-md">
+				         			<select class="form-control" id="activityInfoStateSearch">
+				         				<option value="">全部</option>
+				         				<option value="0">未审核</option>
+				         				<option value="1">审核通过</option>
+				         				<option value="2">审核不通过</option>
+									</select>
+								</div>
+								<div class="col-md">
+									<label class="col-sm control-label">活动名称：</label>
+									<input class="col-md-1 form-control" type="text" placeholder="请输入活动名称" style="width: 140px;" id="activityInfoTitleSearch"/>
+								</div>
+								<div class="col-md">
+									<label class="col-sm control-label">活动地址：</label>
+									<input class="col-md-1 form-control" type="text" placeholder="请输入活动地址" style="width: 140px;" id="activityInfoAddrSearch"/>
+								</div>
+								
+								<input class="btn btn-primary " type="button" value="搜索" id="activityInfoSearch"/>
+								<input class="btn btn-primary " type="button" value="重置" id="activityInfoReset"/>
+								<button type="button" class="btn btn-primary btn-gradient dark" id="activityInfoAdd">活动添加</button>
+							</div>
+						</div>
+					</div>
+					<table class="table table-striped table-hover dataTable no-footer" id="activityInfoTable">
+						<thead>
+							<tr>
+								<th>&nbsp;</th>
+								<th class="sorting_asc w250">活动名称</th>
+								<th class="sorting_disabled">活动地址</th>
+								<th class="sorting_disabled">活动发起单位</th>
+								<th class="sorting_disabled">活动状态</th>
+								<th class="sorting_disabled">审核状态</th>
+								<th class="sorting_disabled">操作</th>
+							</tr>
+						</thead>
+						<tbody> </tbody>
+					</table>
+					<div class="dt-panelfooter clearfix">
+						<div class="dataTables_info" id="datatable2_info" role="status"
+							aria-live="polite">Showing 1 to 5 of 13 entries</div>
+						<div class="dataTables_paginate paging_simple_numbers"
+							id="activityInfo">
+							<ul class="pagination">
+								<li class="paginate_button active" aria-controls="datatable2"
+									tabindex="0"><a href="#">1</a></li>
+								<li class="paginate_button " aria-controls="datatable2" tabindex="0"><a
+									href="#">2</a></li>
+								<li class="paginate_button " aria-controls="datatable2" tabindex="0"><a
+									href="#">3</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	util.initPage("/Admin/activityInfoData/activityInfoPaginate", {
+		paginate:{
+			paginateId:"#activityInfo",
+			pageNumber:1,
+			pageSize:10
+		},
+		sort : {
+			"id" : "desc"
+		},
+		search : {
+			bind : {
+				searchId : "#activityInfoSearch",
+				resetId : "#activityInfoReset"
+			},
+			column : {
+ 				"activity_check_state" : ["=" , "#activityInfoStateSearch", ""],
+				"activity_title" : ["like" , "#activityInfoTitleSearch"],
+				"activity_addr" : ["like" , "#activityInfoAddrSearch"]
+			}
+		},
+		modal : {
+			"activityInfoUpdate" : {
+				bind : {
+					"#activityInfoAdd" : {
+						title : "活动添加"
+					}
+				},
+				pageUrl : "/Admin/activityInfoPage/activityInfoEdit",
+				title : "活动修改",
+				width : 1200,
+				button : {
+					"submit" : {
+						name : "确定",
+						className : "btn-primary",
+						click : function(dataMap) {
+// 							if ($('#mangerInfoForm').validationEngine('validate')) {
+								var activityInfo = util.getModal(dataMap);
+								activityInfo["activityInfo.activity_content"] = $.trim(activityContent.getContent());
+								activityInfo["activityInfo.activity_cover_img"] = $.trim($("#activityInfoImg").attr("_src"));
+								util.call("/Admin/activityInfoData/activityInfoSave", activityInfo, function(returnMsg) {
+									util.refreshPage(dataMap);
+									util.closeModal(dataMap);
+									util.alert(returnMsg["returnMsg"]);
+								});
+// 							}
+						}
+					}
+				}
+			},
+			"activityAttendInfo" : {
+				pageUrl : "/Admin/activityInfoPage/activityAttendInfo",
+				title : "活动报名表单",
+				width : 1000
+			},
+			"activityInfoDelete" : {
+				button : {
+					"submit" : {
+						name : "确定",
+						className : "btn-primary",
+						click : function(dataMap) {
+							util.call("/Admin/activityInfoData/activityInfoDelete", { "id" : dataMap["id"] + "" }, function(returnMsg) {
+								util.refreshPage(dataMap);
+								util.closeModal(dataMap);
+								util.alert(returnMsg["returnMsg"]);
+							});
+						}
+					}
+				}
+			},
+			"activityInfoRecomend" : {
+				button : {
+					"submit" : {
+						name : "确定",
+						className : "btn-primary",
+						click : function(dataMap) {
+							util.call("/Admin/activityInfoData/activityInfoRecomend", { "id" : dataMap["id"] + "" }, function(returnMsg) {
+								util.refreshPage(dataMap);
+								util.closeModal(dataMap);
+								util.alert(returnMsg["returnMsg"]);
+							});
+						}
+					}
+				}
+			}
+		}
+	},
+	function(data) {
+		var tableHTML = [],
+			obj = {},
+			activityInfoList = data.list,
+			activityInfoUpdate = data["activityInfoUpdate"],
+			activityInfoRecomend = data["activityInfoRecomend"],
+			activityAttendInfo = data["activityAttendInfo"],
+			activityInfoDelete = data["activityInfoDelete"];
+		for (var i = 0; i < activityInfoList.length; i++) {
+			obj = activityInfoList[i];
+			tableHTML.push('<tr>');
+			tableHTML.push('	<td>', (i + 1), '</td>');
+			if(obj.activity_check_state==1){
+				tableHTML.push('<td><a href="javascript:void(0);" onclick="util.execute(\'',activityAttendInfo,'\', {\'id\' : ',obj.id,', title: \'活动报名表单\'});">', obj.activity_title, '</a></td>');
+			}else{
+				tableHTML.push('	<td>', obj.activity_title, '</td>');
+			}
+			tableHTML.push('	<td>', obj.activity_addr, '</td>');
+			tableHTML.push('	<td>', obj.activity_hold_name, '</td>');		
+			tableHTML.push('	<td>', obj.activity_state==0?"新建":obj.activity_state==1?"报名中":obj.activity_state==2?"报名截止":obj.activity_state==3?"活动进行中":"活动结束", '</td>');
+			tableHTML.push('	<td>', obj.activity_check_state==0?"待审核":obj.activity_check_state==1?"审核通过":"审核失败", '</td>');
+			tableHTML.push('	<td>');
+			tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',activityInfoUpdate,'\', {id : ',obj.id,', title: \'活动修改\'});">修改</a>');
+			tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',activityInfoRecomend,'\', {id : ',obj.id,', pageHtml: \'确定要推荐【',obj.activity_title,'】吗？\'});">',obj.activity_is_recomened==0?"推荐":"取消推荐",'</a>');
+			tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',activityInfoDelete,'\', {id : ',obj.id,', pageHtml: \'确定要删除【',obj.activity_title,'】吗？\'});">删除</a>');
+			tableHTML.push('	</td>');
+			tableHTML.push('</tr>');
+		}
+		$("#activityInfoTable tbody").html(tableHTML.join(""));
+	});
+		
+</script>
+#end

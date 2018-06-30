@@ -1,0 +1,123 @@
+#define header()
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="/css/common.css">
+	<link rel="stylesheet" href="/css/layout.css">
+	<link rel="stylesheet" href="/css/basic.css">
+	<link rel="stylesheet" href="/css/jquery.slideBox.css">
+	<link rel="stylesheet" href="/css/textCarousel.css">
+	<link rel="stylesheet" type="text/css" href="/css/cropper.min.css">
+	<link rel="stylesheet" type="text/css" href="/css/validationEngine.jquery.css">
+	<title>小风车公益</title>
+	<script type="text/javascript" src="/js/jquery-2.1.0.min.js"></script>
+	<script type="text/javascript" src="/js/jquery.slideBox.min.js"></script>
+	<script type="text/javascript" src="/js/scroll.js"></script>
+	<script type="text/javascript" src="/js/index.js"></script>
+	<script type="text/javascript" src="/js/jquery.form.min.js"></script>
+	<script type="text/javascript" src="/js/jquery.validationEngine.js"></script>
+	<script type="text/javascript" src="/js/jquery.validationEngine-zh_CN.js"></script>
+	<script type="text/javascript" src="/js/ueditor/Topic-ueditor.config.js"></script>
+	<script type="text/javascript" src="/js/ueditor/ueditor.all.js"></script>
+	<script type="text/javascript" src="/js/cropper.min.js"></script>
+	<style type="text/css">
+		.title .font a:hover {
+			color: #579f23 !important;
+		}
+	</style>
+	<script type="text/javascript">
+		$(function (){
+			$('#carousel_content').slideBox();
+		});
+	</script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$('.list_lh li:even').addClass('lieven');
+		})
+		$(function(){
+			$("div.list_lh").myScroll({
+				speed:80, //数值越大，速度越慢
+				rowHeight:68 //li的高度
+			});
+		});
+	</script>
+</head>
+<body>
+	<div class="top center">
+		<div class="logo fl">
+			<a href="#"></a>
+		</div>
+		<div class="tip fr">
+			<div class="title">
+				<div class="font fl">
+					#if(session.loginInfo??)
+						<span>欢迎,<a href="/userInfo" style="font-weight: bold;color: #4c4c4c;"> #(session.loginInfo.user_nickname)</a></span>						
+					#else
+						你好,欢迎参与小风车公益
+					#end
+				</div>
+				<div class="login fr">
+					#if(session.loginInfo??)
+						<a href="/logout" style="color: #4c4c4c;">退出</a>
+					#else
+						<input type="button" id="userLogin" value="用户登录">
+					#end
+				</div>
+			</div>
+			<div class="search">
+				<div class="search_c">
+					<div class="s_content fl">
+						<input type="text" placeholder="请输入关键字" />
+					</div>
+					<div class="s_btn fr">
+						<input type="button" />
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="nav center" id="navbar" style="margin-bottom: 16px;">
+		<ul>
+		</ul>
+	</div>
+		#@main()
+	<!--尾部-->
+	<div class="tail center">
+		<div class="tail_top">
+			<ul>
+				<li><a href="#">服务协议</a></li>
+				<li><a href="#">隐私政策</a></li>
+				<li><a href="#">开放平台</a></li>
+				<li><a href="#">广告服务</a></li>
+				<li><a href="#">招聘服务</a></li>
+				<li><a href="#">公益服务</a></li>
+				<li><a href="#">客服中心</a></li>
+				<li><a href="#">举报中心</a></li>
+				<li><a href="#">网站导航</a></li>
+			</ul>
+		</div>
+		<div class="tail_center">
+			Copyright © 1998 - 2017 Small Windmill. All Rights Reserved
+		</div>
+		<div class="tail_bottom">
+			 小风车公司 版权所有 
+		</div>
+	</div>
+	
+</body>
+<script type="text/javascript">
+	$.post("/getTitleList",{},function(data){
+		var tableHTML = [],obj = {};
+		for(var i = 0;i<data.length;i++){
+			obj = data[i];
+			tableHTML.push("<li><a href='",obj.dictionary_type,"'>",obj.dictionary_name,"</a></li>");
+		}
+		$("#navbar ul").html(tableHTML.join(""));
+	});
+	$("#userLogin").click(function(){
+		window.location.href = "/toLogin";
+	});
+</script>
+</html>
+#end

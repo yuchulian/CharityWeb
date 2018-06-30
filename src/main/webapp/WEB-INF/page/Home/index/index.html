@@ -1,0 +1,165 @@
+#@header()
+#define main()
+	<div class="container center clearfix">
+		<div class="con_left fl ">
+			<!--首页轮播-->
+			<div class="carousel">
+				<div id="carousel_content" class="slideBox">
+				  <ul class="items">
+				    #for(img : imgList)
+				    	<li><a href="#(img.carouse_link)" title="#(img.carouse_title)"><img src="/downloadData/img?filePath=#(img.carouse_img)"></a></li>
+				    #end
+				  </ul>
+				</div>
+			</div>
+			<div class="new" id = "newConent">
+				<ul>
+		
+				</ul>										
+			</div>
+			<div class="dataTables_paginate" id="newsInfo">				
+			</div>
+		</div>
+		<script type="text/javascript">
+		 util.initPage("/Admin/newsInfoData/newsInfoPaginate", {
+			paginate:{
+				paginateId:"#newsInfo",
+				pageNumber:1,
+				pageSize:6
+			},
+			sort : {
+				"news_is_top" : "desc",
+				"news_changetime" : "desc",
+			},
+			search : {
+				column : {
+					"news_state" : ["=","",2]
+				}
+			}
+		},function(data){
+			var newsInfoList =  data.list,tableHTML = [],obj = {};
+			for(var i = 0;i<newsInfoList.length;i++){
+				obj = newsInfoList[i];
+				tableHTML.push("<li>");
+				tableHTML.push("<a href='/newsContentPage?id=",obj.id,"'>");
+				tableHTML.push("<div class='new_top'>",obj.news_title,"</div>");
+				tableHTML.push("<div class='new_bottom'>");
+				tableHTML.push("<div class='new_bottom_left fl'>");
+				tableHTML.push("<img src='/downloadData/img?filePath=",obj.news_img,"'/>");
+				tableHTML.push("</div>");
+				tableHTML.push("<div class='new_bottom_right fr'>");
+				tableHTML.push("<p>",obj.news_introduce,"</p>");
+				tableHTML.push("</div>");
+				tableHTML.push("</div>");
+				tableHTML.push("</a>");				
+				tableHTML.push("</li>");
+			}
+			$("#newConent ul").html(tableHTML.join(""));			
+		});
+		</script>
+		<div class="con_right fr">
+			<!--文字轮播-->
+				<div class="new_carousel">
+					<div class="bcon">
+						<h1><b>资讯速报</b></h1>
+						<!-- 代码开始 -->
+						<div class="list_lh" style="height: 261px;">
+							<ul>
+							
+							</ul>
+						</div>
+					</div>
+				</div>
+				<script type="text/javascript">
+					window.onload = function(){
+						$.post("/getFirstNews",{},function(data){
+							var tableHTML = [],obj={};
+							for(var i = 0;i<data.length;i++){
+								obj = data[i];
+								tableHTML.push("<li style='background:#ddefcf'>");
+								tableHTML.push("<p><a href='/newsContentPage?id=",obj.id,"'>",obj.news_title,"</a></p>");
+								tableHTML.push("<p><a href='/newsContentPage?id=",obj.id,"'  class='a_blue'>",(obj.news_introduce).substring(0,13),"</a><span>",obj.news_changetime,"</span></p>");
+								tableHTML.push("</li>");
+							}
+							$(".list_lh ul").html(tableHTML.join(""));
+						});
+					}
+				</script>
+			<!--公益活动-->
+			<div class="activity">
+				<div class="activity_top">
+					<div class="top_l fl">公益活动</div>
+					<div class="top_r fr"><a href="/activityIndex">更多</a></div>
+				</div>
+				<div class="activity_bottom">
+					<ul>
+						#for(new:newActivityInfoList)
+						<li>
+							<div class="act_img fl">
+								<img src="/downloadData/img?filePath=#(new.activity_cover_img)">
+							</div>
+							<div class="act_content fr">
+								<div class="act_c">
+									<dl>
+									   <dt><strong>#(new.activity_title)</strong></dt>
+									   <dt>活动开始:#(new.activity_begin_time)</dt>
+									   <dt>发起人:#(new.activity_hold_name)</dt>
+									</dl>
+								</div>
+								<div class="act_btn">
+									<a href="/activityInfoDetail?id=#(new.id)" style="color: #4c4c4c">详细</a>
+								</div>
+							</div>
+						</li>
+						#end
+					</ul>
+				</div>
+			</div>
+			<!--项目推荐-->
+			<div class="activity">
+				<div class="activity_top">
+					<div class="top_l fl">项目推荐</div>
+					<div class="top_r fr"><a href="/recomendActivity">更多</a></div>
+				</div>
+				<div class="activity_bottom">
+					<ul>
+						#for(recomen:recomenActivityInfoList)
+						<li>
+							<div class="act_img fl">
+								<img src="/downloadData/img?filePath=#(recomen.activity_cover_img)">
+							</div>
+							<div class="act_content fr">
+								<div class="act_c">
+									<dl>
+									   <dt><strong>#(recomen.activity_title)</strong></dt>
+									   <dt>#(recomen.activity_introduce)</dt>
+									</dl>
+								</div>
+								<div class="act_btn">
+									<a href="/activityInfoDetail?id=#(recomen.id)" style="color: #4c4c4c">详细</a>
+								</div>
+							</div>
+						</li>
+						#end
+					</ul>
+				</div>
+			</div>
+			<!--公益百科-->
+			<div class="cyclopedia">
+				<div class="cyclopedia_top">公益百科</div>
+				<div class="cyclopedia_bottom">
+					<img src="/downloadData/img?filePath=#(wikipediaInfo.wikipedia_img)" style="width: 350px;">
+					<div class="text"><a href="/showWikipedia?id=#(wikipediaInfo.id)" style="color: black;">#(wikipediaInfo.wikipedia_name)</a></div>
+				</div>
+			</div>
+			<!--公益人物-->
+			<div class="cyclopedia">
+				<div class="cyclopedia_top">公益人物</div>
+				<div class="cyclopedia_bottom">
+					<img src="/downloadData/img?filePath=#(publicManInfo.public_img)" style="width: 350px;">
+					<div class="text"><a href="/showPublicContent?id=#(publicManInfo.id)" style="color: black;">#(publicManInfo.public_name)&nbsp;:&nbsp;#(publicManInfo.public_proverbs)</a></div>
+				</div>
+			</div>
+		</div>
+	</div>
+#end

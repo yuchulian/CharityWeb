@@ -1,0 +1,76 @@
+.form_head {
+	height: 40px;
+	background: #afdf8c;
+	margin-top: 20px;
+	padding-left: 10px;
+	font-size: 16px;
+	box-sizing: border-box;
+	font-weight: bold;
+	line-height: 40px;
+}
+.form_head a {
+	color: #4c4c4c;
+}
+.form_head a:hover {
+	color:#579f23;
+}
+.container {
+}
+.container .btn {
+	height: 60px;
+	padding-left: 20px;
+	padding-top:20px;
+	padding-right: 20px;
+	box-sizing: border-box;
+}
+.container .btn .submit {
+	height: 30px;
+	width: 80px;
+	border-radius: 3px;
+}
+.container .btn .submit a {
+	display:block;
+	background: #579f23;
+	width: 100%;
+	height: 100%;
+	outline: none;
+	border:none;
+	cursor: pointer;
+	color: #fff;
+	font-size: 18px;
+	text-align: center;
+}
+.container .content {
+	width: 960px;
+	margin: 0 auto;
+}
+.container .content .post {
+	border-collapse: collapse;
+	width: 960px;
+	font-size: 16px;
+	height: 36px;
+	line-height: 36px;
+}
+
+.container .content .post tr {
+	border-bottom: 1px dotted #579f23;
+}
+.container .content .post tr:first-child {
+	border-bottom: none;
+}
+.container .content .post th{
+	background: #579f23;
+	height: 36px;
+	color:#fff;
+}
+.container .content .post td {
+	font-size: 14px;
+	text-align: center;
+}
+
+.post a {
+	color: #4c4c4c;
+}
+.post a:hover {
+	color:#579f23;
+}

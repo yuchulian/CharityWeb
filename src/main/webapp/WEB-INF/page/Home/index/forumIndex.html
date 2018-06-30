@@ -1,0 +1,150 @@
+#@header()
+#define main()
+<link rel="stylesheet" href="/css/forumIndex.css">
+	<div class="container center clearfix" >
+		<div class="con-l fl">
+			<!--热帖开始-->
+			<div class="article">
+				<div class="article_head">
+					<div class="article_head_l fl">
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;热帖榜
+						<font style="font-style: italic;">
+						top10</font>
+					</div>
+					<div class="article_head_r fr">
+						<a href="/AllPostPage">More>></a>
+					</div>
+				</div>
+				<div class="article_body">
+					<ul>
+						
+						#for(hot : hotForumViewList)
+							<li>
+							<font style="font-style: italic;font-size: 20px;">
+							#(for.count)
+							</font><a href="/AllPostPage?name=#(hot.big_type_name)&&bigType=#(hot.forum_big_type)">#(hot.big_type_name)</a>-
+							<a href="/AllPostPage?name=#(hot.small_type_name)&&type=#(hot.forum_small_type)">#(hot.small_type_name)</a>
+							 || 
+							<a href="/forumInfoDetail?id=#(hot.id)">#(hot.forum_title)</a>
+							<span class="fr" ><a href="#">#(hot.user_nickname)</a></span>
+						</li>
+						#end
+					</ul>
+				</div>
+			</div>
+			<!--热帖结束-->
+			<!--新帖开始-->
+			<div class="article">
+				<div class="article_head">
+					<div class="article_head_l fl">
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;新帖榜
+						<font style="font-style: italic;">
+						top10</font>
+					</div>
+					<div class="article_head_r fr">
+						<a href="/AllPostPage">More>></a>
+					</div>
+				</div>
+				<div class="article_body">
+					<ul>
+						#for(newForum : newForumViewList)
+						<li>
+							<font style="font-style: italic;font-size: 20px;">
+							#(for.count)
+							</font><a href="/AllPostPage?name=#(newForum.big_type_name)&&bigType=#(newForum.forum_big_type)">#(newForum.big_type_name)</a>-
+							<a href="/AllPostPage?name=#(newForum.small_type_name)&&type=#(newForum.forum_small_type)">#(newForum.small_type_name)</a>
+							 || 
+							<a href="/forumInfoDetail?id=#(newForum.id)">#(newForum.forum_title)</a>
+							<span class="fr" ><a href="#">#(newForum.user_nickname)</a></span>
+						</li>
+						#end
+					</ul>
+				</div>
+			</div>
+			<!--新帖结束-->
+			<!--精帖开始-->
+			<div class="article">
+				<div class="article_head">
+					<div class="article_head_l fl">
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;精帖榜
+						<font style="font-style: italic;">
+						top10</font>
+					</div>
+					<div class="article_head_r fr">
+						<a href="/AllPostPage">More>></a>
+					</div>
+				</div>
+				<div class="article_body">
+					<ul>
+						#for(fine:fineForumViewList)
+						<li>
+							<font style="font-style: italic;font-size: 20px;">
+							#(for.count)
+							</font><a href="/AllPostPage?name=#(fine.big_type_name)&&bigType=#(fine.forum_big_type)">#(fine.big_type_name)</a>-
+							<a href="/AllPostPage?name=#(fine.small_type_name)&&type=#(fine.forum_small_type)">#(fine.small_type_name)</a>
+							 || 
+							<a href="/forumInfoDetail?id=#(fine.id)">#(fine.forum_title)</a>
+							<span class="fr" ><a href="#">#(fine.user_nickname)</a></span>
+						</li>
+						#end
+					</ul>
+				</div>
+			</div>
+			<!--精帖结束-->
+		</div>
+		<div class="con-r fl">
+			<div class="notice">
+				<div class="notice_title">
+					<div class="notice_title_l fl">
+						论坛公告
+					</div>
+				</div>
+				<div class="notice_body">
+					<ul>
+						#for( noice:topNoice)
+							<li><a href="/showforumManager?id=#(noice.id)">#(noice.manager_title)</a>
+							<span class="fr">#date(noice.manager_create_time,"yyyy-MM-dd")</span>
+						</li>
+						#end
+					</ul>
+				</div>
+			</div>
+			<div class="add"><a href="/toAddForum">我要发帖</a></div>
+			<div class="others">
+				<div class="fl tiezi"><a href="/AllPostPage?name=所有帖子">帖子</a></div>
+				<div class="fr bankuai"><a href="/postPlate">板块</a></div>
+			</div>
+			<div class="notice">
+				<div class="notice_title" style="margin-top:20px;">
+					<div class="notice_title_l fl">
+						论坛帮助
+					</div>
+				</div>
+				<div class="notice_body">
+					<ul>
+						#for( help:forumHelp)
+							<li><a href="/showforumManager?id=#(help.id)">#(help.manager_title)</a>
+							<span class="fr">#date(help.manager_create_time, "yyyy-MM-dd")</span>
+						</li>
+						#end
+					</ul>
+				</div>
+			</div>
+			<div class="notice">
+				<div class="notice_title">
+					<div class="notice_title_l fl">
+						友情链接
+					</div>
+				</div>
+				<div class="notice_body">
+					<ul>
+						#for( link:friendLink)
+							<li><a href="#(link.manager_link)">#(link.manager_title)</a>
+						</li>
+						#end
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+#end

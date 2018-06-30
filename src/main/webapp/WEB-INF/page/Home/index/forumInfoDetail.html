@@ -1,0 +1,139 @@
+#@header()
+#define main()
+	<link rel="stylesheet" href="/css/postDetail.css">
+	<script type="text/javascript" src="/js/ueditor/comment-ueditor.config.js"></script>
+	<script type="text/javascript" src="/js/ueditor/ueditor.all.js"></script>
+	<div class="form_head center"><a href="/forumIndex">论坛
+	</a> >><a href="/AllPostPage?name=#(forumInfo.big_type_name)&&bigType=#(forumInfo.forum_big_type)">#(forumInfo.big_type_name)</a>>>
+	<a href="/AllPostPage?name=#(forumInfo.small_type_name)&&type=#(forumInfo.forum_small_type)">#(forumInfo.small_type_name)>></a>#(forumInfo.forum_title)
+	</div>
+	<div class="container center">
+		<div class="btn">
+			<div class="submit">
+				<button>发帖</button>
+			</div>
+		</div>
+		<div class="content">
+			<div class="con_head" style="padding-left: 10px;box-sizing: border-box; "> 
+			#(forumInfo.forum_title)
+				<div class="select fr">
+					<select id="searchSelf">
+						<option>--全部--</option>
+						<option>--只看楼主--</option>
+					</select>
+				</div>
+			</div>
+			<div class="con">
+				<div class="con_l fl">
+					<div class="u_img">
+						<img src="/downloadData/img?filePath=#(forumInfo.user_img)" />
+					</div>
+					<div class="u_name">#(forumInfo.user_nickname)</div>
+				</div>
+				<div class="con_r fr">
+					<div class="con_head">
+						发表于： #(forumInfo.forum_create_time)
+						<span class="fr"><a href="#">楼主</a></span>
+					</div>
+					<div class="con_content" style="padding-left:10px;font-size: 16px; ">
+						#(forumInfo.forum_content)
+					</div>
+				</div>
+			</div>
+			<!-- 这是评论部分 -->
+			<div id="comment">
+				
+			</div>
+			
+		<script type="text/javascript">
+		util.initPage("/ForumCommentList", {
+			sort : {
+				"id" : "asc"
+			},
+			search : {
+				column : {
+					"commentpid" : ["=","","#(forumInfo.id)"],
+					"isdisplay" : ["=","","1"]
+				}
+			}
+		},function(data){
+			var commentList =  data.list,tableHTML = [],obj = {};
+			for(var i = 0;i<commentList.length;i++){
+				obj = commentList[i];
+				tableHTML.push('<div class="con"><div class="con_l fl"><div class="u_img">');
+				tableHTML.push('<img src="/downloadData/img?filePath=',obj.user_img,'" /></div><div class="u_name">',obj.user_nickname,'</div></div>');
+				tableHTML.push('<div class="con_r fr"><div class="con_head">回复于：',obj.forum_discusstime,'<span class="fr">得:5</span>');
+				tableHTML.push('</div><div class="con_content" style="padding-left:10px;font-size: 16px; ">',obj.forum_content,'</div></div></div>');
+			}
+			$("#comment").html(tableHTML.join(""));			
+		});
+		</script>
+			<!-- 评论部分结束 -->
+		</div>
+		<!--翻页信息-->
+		<!--翻页信息结束-->
+		<div class="comment">
+			<div class="con">
+				<div class="con_l fl">
+					<div class="u_img">
+						<img src="../image/logo.png" />
+					</div>
+					<div class="u_name">
+						#if(session.loginInfo!=null) #(session.loginInfo.user_nickname) #else您还没有<a href="/toLogin" style="color:#579f23;">登录</a>  #end
+					</div>
+				</div>
+				<div class="con_r fr">
+					<form id="forumCommentForm">
+						<div class="con_content">
+							<script type="text/plain" name="forumComment.forum_content" id="commentContent"></script>
+						</div>
+						<input type="hidden" name="forumComment.commentpid" value="#(forumInfo.id)"/>
+						<div class="btn ">
+							<div class="co fl">
+								<input type="button" id="forumCommentSubmit" value="发表评论"/>
+							</div>
+							<div class="warn fl" style="margin-left: 20px;">
+								提示：请不要恶意灌水！谢谢！
+							</div>
+							 <span id="message" class="fl" style="margin-left: 20px;font-size: 18px;color: red;height: 30px;line-height: 30px;"></span>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		UE.delEditor("commentContent");
+		var commentContent = UE.getEditor("commentContent",{
+			initialFrameWidth :762,//设置编辑器宽度
+			initialFrameHeight:180,//设置编辑器高度
+			scaleEnabled:false//设置不自动调整高度
+			});
+		//进行提交评论
+		$("#forumCommentSubmit").click(function(){			
+				//判断主题是不是为空,要是为空,进行返回
+				if(!$.trim(commentContent.getContent())) {
+					$("#message").html("内容不能为空");
+					window.setTimeout(function(){
+						$("#message").html("");
+					},2000);
+		 			return;
+		 		}
+				var forumComment = util.getModal("#forumCommentForm");
+				console.log(forumComment);
+				$.post("/commitComment",forumComment,function(returnMsg){
+					if("success"==returnMsg["returnState"]){
+						$("#message").html(returnMsg["returnMsg"]);
+ 						window.setTimeout(function(){
+ 							window.location ="/forumInfoDetail?id=#(forumInfo.id)";
+ 						},500);					
+					}else{
+						$("#message").html(returnMsg["returnMsg"]);
+						window.setTimeout(function(){
+							$("#message").html("");
+						},2000);
+					}
+				});				
+		});
+	</script>
+#end

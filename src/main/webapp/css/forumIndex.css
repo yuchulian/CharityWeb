@@ -1,0 +1,139 @@
+a {
+	color: #4c4c4c; 
+}
+a:hover {
+	color: #579f23;
+}
+.container {
+}
+.container .con-l {
+	width: 784px;
+	padding-right: 20px;
+	padding-left: 20px;
+	padding-bottom : 20px;
+	box-sizing: border-box;
+}
+.container .con-l .article {
+	width: 740px;
+	margin-bottom: 14px;
+}
+.con-l .article .article_head {
+	height: 32px;
+	width: 740px;
+	border-top: 2px solid #579f23;
+}
+.article_head .article_head_l {
+	height: 32px;
+	width: 208px;
+	font-size: 16px;
+	line-height: 32px;
+	color: #fff;
+	background: url(/image/forum_title.png);
+}
+.article_head .article_head_r {
+	width: 90px;
+	height: 32px;
+	line-height: 32px;
+	text-align: center;
+}
+.article_head .article_head_r a {
+	color: #579f23;
+	font-size: 18px;
+	font-weight: bold;
+}
+.con-l .article .article_body ul {
+	padding-left: 20px;
+}
+.con-l .article .article_body ul li{
+	display: block;
+	height: 38px;
+	width: 720px;
+	line-height: 38px;
+	text-align: left;
+	font-size: 14px;
+}
+.con-l .article .article_body ul li span {
+	width: 80px;
+	overflow: hidden;
+	text-overflow:ellipsis; 
+	white-space: nowrap;
+}
+.con-l .article .article_body ul li span a {
+	color: #579f23;
+}
+.con-r {
+	width: 200px;
+}
+
+.con-r .notice .notice_title {
+	border-top: 2px solid #579f23;
+	height: 32px;
+	width: 200px;
+}
+.notice .notice_title .notice_title_l {
+	width: 122px;
+	height: 32px;
+	background: url(/image/forum_notice.png);
+	padding-left: 16px;
+	box-sizing: border-box;
+	font-size: 16px;
+	line-height: 32px;
+	color: #fff;
+}
+.notice .notice_body {
+	width: 200px;
+	height: 200px;
+}
+.notice .notice_body ul li {
+	padding-left: 10px;
+	box-sizing: border-box;
+	display: block;
+	width: 200px;
+	height: 40px;
+	border-bottom: 1px dotted #579f23;
+	line-height: 40px;
+	font-size: 14px;
+}
+.con-r .add {
+	background: #579f23;
+	height: 50px;
+	width: 200px;
+	font-size: 30px;
+	text-align: center;
+	color: #fff;
+	line-height: 50px;
+}
+.others {
+	height:50px;
+	width: 200px;
+	background: red;
+	margin-top: 14px;
+	font-size: 24px;
+	text-align: center;
+}
+.others .tiezi {
+	width: 98px;
+	height: 50px;
+	border-right: 4px solid white;
+	background: #579f23;
+	line-height: 50px;
+
+}
+.others .bankuai {
+	width: 98px;
+	height: 50px;
+	background: #579f23;
+	line-height: 50px;
+}
+.con-r .add a{
+	color: #fff;
+}
+.con-r .add a:hover {
+	 color: #4c4c4c;
+}
+.con-r .others a{
+	color: #fff;
+}
+.con-r .others a:hover{
+	color: #4c4c4c;
+}

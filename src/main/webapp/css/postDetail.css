@@ -1,0 +1,173 @@
+.form_head {
+	height: 40px;
+	background: #afdf8c;
+	margin-top: 20px;
+	padding-left: 10px;
+	font-size: 16px;
+	box-sizing: border-box;
+	font-weight: bold;
+	line-height: 40px;
+}
+a {
+	color: #4c4c4c;
+}
+a:hover {
+	color:#579f23;
+}
+.container {
+	padding-left: 20px;
+	box-sizing: border-box;
+}
+.container .btn {
+	height: 60px;
+	padding-top:20px;
+	padding-right: 20px;
+	box-sizing: border-box;
+}
+.container .btn .submit {
+	height: 30px;
+	width: 80px;
+	border-radius: 3px;
+}
+.container .btn .submit button {
+	background: #579f23;
+	width: 100%;
+	height: 100%;
+	outline: none;
+	border:none;
+	cursor: pointer;
+	color: #fff;
+	font-size: 18px;
+}
+.content .con_head {
+	width: 960px;
+	height: 40px;
+	background: #afdf8c;
+	font-size: 16px;
+	line-height: 40px;
+}
+.content .con_head .select {
+	width: 200px;
+	height: 40px;
+
+}
+.content .con_head .select select {
+	width: 90%;
+	height: 80%;
+	outline: none;
+	border:none;
+}
+.content .con {
+	width: 958px;
+	height: 304px;
+	border:1px solid #579f23; 
+}
+.content .con .con_l {
+	width: 194px;
+	height: 304px;
+	padding-top: 40px;
+	box-sizing: border-box;
+	border-right: 1px solid #579f23;
+}
+.content .con .con_l .u_img {
+	height: 134px;
+	width: 108px;
+	margin: 0 auto;
+}
+.content .con .con_l .u_img img {
+	height: 134px;
+	width: 108px;
+}
+.content .con .con_l .u_name {
+	height: 50px;
+	text-align: center;
+	font-size: 16px;
+	line-height: 50px;
+}
+.content .con .con_r {
+	width: 764px;
+	height: 304px;
+}
+.content .con .con_r .con_head {
+	width: 764px;
+	height: 40px;
+	background: #8ed45c;
+}
+.con_r .con_head span {
+	padding-right: 10px;
+}
+
+.content .con .con_r .con_content {
+	width: 764px;
+	height: 264px;
+}
+
+
+
+.comment .con {
+	width: 958px;
+	height: 304px;
+	border:1px solid #579f23; 
+}
+.comment .con .con_l {
+	width: 194px;
+	height: 304px;
+	padding-top: 40px;
+	box-sizing: border-box;
+	border-right: 1px solid #579f23;
+}
+.comment .con .con_l .u_img {
+	height: 134px;
+	width: 108px;
+	margin: 0 auto;
+}
+.comment .con .con_l .u_img img {
+	height: 134px;
+	width: 108px;
+}
+.comment .con .con_l .u_name {
+	height: 50px;
+	text-align: center;
+	font-size: 16px;
+	line-height: 50px;
+}
+.comment .con .con_r {
+	width: 764px;
+	height: 304px;
+}
+.comment .con .con_r .con_content {
+	width: 764px;
+	height: 244px;
+}
+.comment .btn {
+	height: 60px;
+	padding:15px;
+	width: 120px;
+	box-sizing: border-box;
+
+}
+.comment .btn {
+	height: 60px;
+	width: 600px;
+	box-sizing: border-box;
+
+}
+.comment .btn .co{
+	width: 120px;
+	height: 30px;
+}
+.comment .btn .co input {
+	display:block;
+	width: 120px;
+	height: 30px;
+	background: #579f23;
+	outline: none;
+	border:none;
+	font-size: 18px;
+	text-align:center;
+	color: #fff;
+}
+.comment .btn .warn {
+	height: 30px;
+	line-height: 30px;
+}

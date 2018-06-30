@@ -2,11 +2,11 @@ package com.jlqr.test;
 
 import javax.sql.DataSource;
 
+import com.admin.common.MainConfig;
 import com.jfinal.kit.PathKit;
 import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.generator.Generator;
 import com.jfinal.plugin.druid.DruidPlugin;
-import com.jlqr.common.MainConfig;
 
 /**
  * 本 demo 仅表达最为粗浅的 jfinal 用法，更为有价值的实用的企业级用法
@@ -25,12 +25,12 @@ public class BuildModel {
 	
 	public static void main(String[] args) {
 		// base model 所使用的包名
-		String baseModelPackageName = "com.jlqr.common.model.base";
+		String baseModelPackageName = "com.admin.common.model.base";
 		// base model 文件保存路径
-		String baseModelOutputDir = PathKit.getWebRootPath() + "/src/main/java/com/jlqr/common/model/base";
+		String baseModelOutputDir = PathKit.getWebRootPath() + "/src/main/java/com/admin/common/model/base";
 		
 		// model 所使用的包名 (MappingKit 默认使用的包名)
-		String modelPackageName = "com.jlqr.common.model";
+		String modelPackageName = "com.admin.common.model";
 		// model 文件保存路径 (MappingKit 与 DataDictionary 文件默认保存路径)
 		String modelOutputDir = baseModelOutputDir + "/..";
 		

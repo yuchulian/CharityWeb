@@ -5,7 +5,7 @@
     <filter-class>com.jfinal.core.JFinalFilter</filter-class>
     <init-param>
       <param-name>configClass</param-name>
-      <param-value>com.jlqr.common.MainConfig</param-value>
+      <param-value>com.admin.common.MainConfig</param-value>
     </init-param>
   </filter>
   <filter-mapping>

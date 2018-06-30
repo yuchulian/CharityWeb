@@ -1,0 +1,61 @@
+<style type="text/css">
+	#publicManInfoForm input {background: white;}
+</style>
+<form class="form-horizontal" id="publicManInfoForm">
+	<input type="hidden" name="publicManInfo.id" value="#(publicManInfo.id)" />
+	
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span class="red">*</span>人物姓名</label>
+		<div class="col-sm-9">
+			<input type="text" class="form-control validate[required]" name="publicManInfo.public_name" value="#(publicManInfo.public_name)" placeholder="请输入人物姓名"/>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span class="red">*</span>人物介绍</label>
+		<div class="col-sm-9">
+			<input type="text" class="form-control validate[required]" name="publicManInfo.public_introduce" value="#(publicManInfo.public_introduce)" placeholder="请输入人物介绍"/>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span class="red">*</span>人物年龄</label>
+		<div class="col-sm-9">
+			<input type="text" class="form-control validate[required]" name="publicManInfo.public_age" value="#(publicManInfo.public_age)" placeholder="请输入人物年龄"/>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span class="red">*</span>公益箴言</label>
+		<div class="col-sm-9">
+			<input type="text" class="form-control validate[required]" name="publicManInfo.public_proverbs" value="#(publicManInfo.public_proverbs)" placeholder="请输入公益箴言"/>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span class="red">*</span>公益评价</label>
+		<div class="col-sm-9">
+			<input type="text" class="form-control validate[required]" name="publicManInfo.public_evaluation" value="#(publicManInfo.public_evaluation)" placeholder="请输入公益评价"/>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span class="red">*</span>新闻图片</label>
+		<div class="col-sm-9">
+			<img id ="publicManInfoImg" style="width: 600px;height: 396px;" class="selectImg" callBack="publicManInfoSelectImg" fileType=".png|.jpg|.gif" aspectRatio="6/5" src="/downloadData/img?filePath=#(publicManInfo.public_img)" _src="#(publicManInfo.public_img)"/>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span class="red">*</span>新闻内容</label>
+		<div class="col-sm-9">
+			#(publicManInfo.public_content)
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span class="red">*</span>创建时间</label>
+		<div class="col-sm-9">
+			<input type="text" id="public_create_time" disabled="disabled" class="form-control validate[required]" name="publicManInfo.public_create_time" value="#(publicManInfo.public_create_time)"/>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span class="red">*</span>查看次数</label>
+		<div class="col-sm-9">
+			<input type="text" disabled="disabled" class="form-control" name="publicManInfo.public_open_size" value="#(publicManInfo.public_open_size)"/>
+		</div>
+	</div>
+</form>

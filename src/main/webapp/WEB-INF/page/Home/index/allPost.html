@@ -1,0 +1,64 @@
+#@header()
+#define main()
+<link rel="stylesheet" href="/css/allPost.css">
+<div class="form_head center"><a href="/forumIndex">论坛
+</a> >>#(name)
+</div>
+<div class="container center">
+	<input type="hidden" id="type" value="#(type)"/>
+	<input type="hidden" id="bigType" value="#(bigType)"/>
+	<div class="btn">
+		<div class="submit">
+			<a href="/toAddForum">发帖</a>
+		</div>
+	</div>
+	<div class="content">
+		<table class="post" id="forumInfoTable">
+			<thead>
+				<tr>
+					<th style="width: 180px;">类型</th>
+					<th style="width: 250px;">标题</th>
+					<th style="width: 150px;">作者</th>
+					<th style="width: 80px;">积分</th>
+					<th style="width: 50px;">回复</th>
+					<th >发布时间</th>
+				</tr>
+			</thead>
+			<tbody>
+				
+			</tbody>			
+		</table>		
+	</div>
+	<div class="dataTables_paginate" id="postInfo">				
+	</div>
+</div>
+<!-- 进行获得所有的数据 -->
+<script type="text/javascript">
+		 util.initPage("/forumInfoPaginate", {
+			paginate:{
+				paginateId:"#postInfo",
+				pageNumber:1,
+				pageSize:10
+			},
+			sort : {
+				"id" : "desc"
+			},
+			search : {
+				column : {
+					"forum_small_type" : ["=" , "#type"],
+					"forum_big_type" : ["=" , "#bigType"]
+				}
+			}
+		},function(data){
+			var forumInfoList =  data.list,tableHTML = [],obj = {};
+			for(var i = 0;i<forumInfoList.length;i++){
+				obj = forumInfoList[i];
+				tableHTML.push('<tr><td><a href="/AllPostPage?bigType=',obj.forum_big_type,'&&name=',obj.big_type_name,'">',obj.big_type_name,'</a>-<a href="/AllPostPage?type=',obj.forum_small_type,'&&name=',obj.small_type_name,'">',obj.small_type_name,'</a></td>');
+				tableHTML.push('<td style="text-align:left;">[未结帖 ]<a href="/forumInfoDetail?id=',obj.id,'">',obj.forum_title,'</a></td>');
+				tableHTML.push('<td><a href="#">',obj.user_nickname,'</a></td>');
+				tableHTML.push('<td>10 </td><td>0</td><td>2017-12-17 15:21</td></tr>');
+			}
+			$("#forumInfoTable tbody").html(tableHTML.join(""));			
+		});
+</script>
+#end

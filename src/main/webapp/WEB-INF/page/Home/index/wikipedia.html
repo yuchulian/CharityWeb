@@ -1,0 +1,37 @@
+#@header()
+#define main()
+<link rel="stylesheet" type="text/css" href="/css/wikipedia.css" />
+<div class="container">
+	<div id="wikipediaContent" class="clearfix">	
+	</div>
+	<div class="dataTables_paginate" id="wikipediaInfo">				
+	</div>
+</div>
+
+<script type="text/javascript">
+ util.initPage("/Admin/wikipediaInfoData/wikipediaInfoPaginate", {
+		paginate:{
+			paginateId:"#wikipediaInfo",
+			pageNumber:1,
+			pageSize:9
+		},
+		sort : {
+			"wikipedia_isTop" : "desc",
+			"wikipedia_create_time" : "desc"
+		},
+		search : {
+			column : {
+				"wikipedia_state" : ["=","",2]
+			}
+		}
+	},function(data){
+		var wikipediaInfoList =  data.list,tableHTML = [],obj = {};
+		for(var i = 0;i<wikipediaInfoList.length;i++){
+			obj = wikipediaInfoList[i];
+			tableHTML.push('<div class="fl con"><div class="imgDiv"><img style="width: 230px;height: 150px;" src="/downloadData/img?filePath=',obj.wikipedia_img,'"/></div><p class="textDiv">');
+			tableHTML.push('<a href="/showWikipedia?id=',obj.id,'">',obj.wikipedia_name,'</a></p></div>');
+		}
+		$("#wikipediaContent").html(tableHTML.join(""));			
+	});
+</script>
+#end

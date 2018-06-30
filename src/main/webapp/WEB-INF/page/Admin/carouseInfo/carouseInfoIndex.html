@@ -1,0 +1,170 @@
+#@layout()
+#define main()
+
+<div class="row">
+	<div class="col-md-12">
+		<div class="panel panel-visible">
+			<div class="panel-body pn">
+				<div id="datatable2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+					<div class="dt-panelmenu clearfix">
+						<button type="button" class="btn btn-primary btn-gradient dark" id="carouseInfoAdd">轮播添加</button>
+					</div>
+					<table class="table table-striped table-hover dataTable no-footer" id="carouseInfoTable">
+						<thead>
+							<tr>
+								<th>&nbsp;</th>
+								<th class="sorting_asc">轮播名称</th>
+								<th class="sorting_disabled">链接地址</th>
+								<th class="sorting_disabled">创建时间</th>
+								<th class="sorting_disabled">是否置顶</th>
+								<th class="sorting_disabled">操作</th>
+							</tr>
+						</thead>
+						<tbody> </tbody>
+					</table>
+					<div class="dt-panelfooter clearfix">
+						<div class="dataTables_info" id="datatable2_info" role="status"
+							aria-live="polite">Showing 1 to 5 of 13 entries</div>
+						<div class="dataTables_paginate paging_simple_numbers"
+							id="carouseInfo">
+							<ul class="pagination">
+								<li class="paginate_button active" aria-controls="datatable2"
+									tabindex="0"><a href="#">1</a></li>
+								<li class="paginate_button " aria-controls="datatable2" tabindex="0"><a
+									href="#">2</a></li>
+								<li class="paginate_button " aria-controls="datatable2" tabindex="0"><a
+									href="#">3</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	util.initPage("/Admin/carouseInfoData/carouseInfoPaginate", {
+		paginate:{
+			paginateId:"#carouseInfo",
+			pageNumber:1,
+			pageSize:10
+		},
+		sort : {
+			"carouse_istop" : "desc",
+			"carouse_chagetime" : "desc"
+		},
+		search : {
+			column : {
+// 				"power_pid" : [ "=", "#powerPidSearch", "0" ]
+			}
+		},
+		modal : {
+			"carouseInfoUpdate" : {
+				bind : {
+					"#carouseInfoAdd" : {
+						title : "轮播添加"
+					}
+				},
+				pageUrl : "/Admin/carouseInfoPage/carouseInfoEdit",
+				title : "轮播修改",
+				width : 1200,
+				button : {
+					"submit" : {
+						name : "确定",
+						className : "btn-primary",
+						click : function(dataMap) {
+// 							if ($('#mangerInfoForm').validationEngine('validate')) {
+								var carouseInfo = util.getModal(dataMap);
+								carouseInfo["carouseInfo.carouse_img"] = $.trim($("#carouseInfoImg").attr("_src"));
+								carouseInfo["carouseInfo.carouse_createtime"] = $.trim($("#carouse_createtime").val());
+								util.call("/Admin/carouseInfoData/carouseInfoSave", carouseInfo, function(returnMsg) {
+									util.refreshPage(dataMap);
+									util.closeModal(dataMap);
+									util.alert(returnMsg["returnMsg"]);
+								});
+// 							}
+						}
+					}
+				}
+			},
+			"carouseInfoDelete" : {
+				button : {
+					"submit" : {
+						name : "确定",
+						className : "btn-primary",
+						click : function(dataMap) {
+							util.call("/Admin/carouseInfoData/carouseInfoDelete", { "id" : dataMap["id"] + "" }, function(returnMsg) {
+								util.refreshPage(dataMap);
+								util.closeModal(dataMap);
+								util.alert(returnMsg["returnMsg"]);
+							});
+						}
+					}
+				}
+			},
+			"carouseInfoistop" : {
+				button : {
+					"submit" : {
+						name : "确定",
+						className : "btn-primary",
+						click : function(dataMap) {
+							util.call("/Admin/carouseInfoData/carouseInfoToTop", { "id" : dataMap["id"] + "" }, function(returnMsg) {
+								util.refreshPage(dataMap);
+								util.closeModal(dataMap);
+								util.alert(returnMsg["returnMsg"]);
+							});
+						}
+					}
+				}
+			},
+			"carouseInfoCanceltop" : {
+				button : {
+					"submit" : {
+						name : "确定",
+						className : "btn-primary",
+						click : function(dataMap) {
+							util.call("/Admin/carouseInfoData/carouseInfoCanceltop", { "id" : dataMap["id"] + "" }, function(returnMsg) {
+								util.refreshPage(dataMap);
+								util.closeModal(dataMap);
+								util.alert(returnMsg["returnMsg"]);
+							});
+						}
+					}
+				}
+			}
+		}
+	},
+	function(data) {
+		var tableHTML = [],
+			obj = {},
+			carouseInfoList = data.list,
+			carouseInfoUpdate = data["carouseInfoUpdate"],
+			carouseInfoistop = data["carouseInfoistop"],
+			carouseInfoCanceltop = data["carouseInfoCanceltop"],
+			carouseInfoDelete = data["carouseInfoDelete"];
+		for (var i = 0; i < carouseInfoList.length; i++) {
+			obj = carouseInfoList[i];
+			tableHTML.push('<tr>');
+			tableHTML.push('	<td>', (i + 1), '</td>');
+			tableHTML.push('	<td>', obj.carouse_title, '</td>');
+			tableHTML.push('	<td>', obj.carouse_link, '</td>');
+			tableHTML.push('	<td>', obj.carouse_createtime, '</td>');
+			tableHTML.push('	<td>', obj.carouse_istop==1?"已置顶" : "未置顶", '</td>');
+			tableHTML.push('	<td>');
+			tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',carouseInfoUpdate,'\', {id : ',obj.id,', title: \'用户修改\'});">修改</a>');
+			tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',carouseInfoDelete,'\', {id : ',obj.id,', pageHtml: \'确定要删除【',obj.carouse_title,'】吗？\'});">删除</a>');
+			if(obj.carouse_istop==0){
+				tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',carouseInfoistop,'\', {id : ',obj.id,', pageHtml: \'确定要置顶【',obj.carouse_title,'】吗？\'});">置顶</a>');
+			}else{
+				tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',carouseInfoCanceltop,'\', {id : ',obj.id,', pageHtml: \'确定要取消【',obj.carouse_title,'】置顶吗？\'});">取消置顶</a>');
+			}
+			tableHTML.push('	</td>');
+			tableHTML.push('</tr>');
+		}
+		$("#carouseInfoTable tbody").html(tableHTML.join(""));
+	});
+		
+</script>
+#end

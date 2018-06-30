@@ -1,0 +1,42 @@
+<div class="row">
+	<input type="hidden" id="nodeValueList"/>
+	<ul class="nav ztree_menu ztree" id="mangerSelectTree"> </ul>
+</div>
+<script type="text/javascript">
+	var setting = {
+		check: { enable: true, chkStyle: "checkbox",chkboxType: { "Y": "s", "N": "ps"},autoCheckTrigger: true},
+		view : { dblClickExpand : false },
+		data : { simpleData : { enable : true } },
+		callback : {
+			onCheck : onCheck
+		}
+	};
+	function onCheck(e, treeId, treeNode){ 
+		var nodeValueList=[];
+		var zTree = $.fn.zTree.getZTreeObj(treeId);
+		var nodeObj = zTree.getCheckedNodes(true);
+		var obj = {};
+		for(var i=0;i<nodeObj.length;i++){
+			obj = nodeObj[i];
+			if(obj.isParent!=true){
+			nodeValueList.push(obj["name"]);
+			}
+		}
+		nodeValueList.join(",");
+		$("#manger_diploma").val(nodeValueList);
+	}  
+	util.initPage("/Admin/mangerInfoData/mangerDiplomaSelect",{},function(data){
+		var obj = {},nodeList = [],DiplomaList=[],employDiploma=[];
+		employDiploma = $.trim($("#manger_diploma").val());
+		DiplomaList = data.list;
+			for(var i=0;i<DiplomaList.length;i++){
+				obj = DiplomaList[i];
+				if(employDiploma.indexOf(obj.dictionary_name)>=0){
+					nodeList.push({id: obj.id, pId: obj.dictionary_pid, name: obj.dictionary_name,open: true,checked:true});
+				}else{
+					nodeList.push({id: obj.id, pId: obj.dictionary_pid, name: obj.dictionary_name,open: true});
+				}				
+			}
+		$.fn.zTree.init($("#mangerSelectTree"),setting,nodeList);
+	});
+</script>

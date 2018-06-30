@@ -1,0 +1,79 @@
+.head{
+	height: 40px;
+	line-height: 40px;
+	padding-left: 10px;
+	font-size: 16px;
+	background: #afdf8c;
+	font-weight: bold;
+	box-sizing: border-box;
+}
+.con {
+	width: 1000px;
+	margin:  0 auto;
+
+}
+a {
+	color: #4c4c4c;
+}
+.con .con_l {
+	width: 200px;
+	border:1px solid #cccccc;
+}
+.con .con_r {
+	width: 780px;
+	border: 1px solid #cccccc;
+	
+}
+.con_l ul li {
+	height: 40px;
+	font-size: 18px;
+	padding-left: 20px;
+	line-height: 40px;
+}
+.con .con_r .user_info {
+	width: 500px;	
+}
+.con .con_r .user_img{
+	width:270px;
+	height: 400px;
+	border-left: 1px solid #cccccc;
+}
+.con .con_r .user_img .img {	
+	width: 150px;
+	height: 200px; 
+	margin: 0 auto;
+	margin-top:30px;
+}
+.con .con_r .user_img .text {
+	margin: 0 auto; 
+	width:206px;
+	margin-top: 30px;
+}
+.user_img .text  .path {
+	border: 1px solid #afdf8c;
+	outline: none;
+	height: 30px;
+	width: 150px;
+}
+.user_img .text .select{
+	height: 30px;
+	width: 50px;
+	background: #afdf8c;
+	outline: none;
+	cursor: pointer;
+}
+.user_img .upload {	
+	height: 30px;
+	width: 50px;
+	margin-top: 20px;
+	background: #afdf8c;
+	overflow: hidden;
+}
+.user_img .upload input {
+	height: 30px;
+	width: 50px;
+	background: #afdf8c;
+}
+.upload_file {
+	background: red;
+}

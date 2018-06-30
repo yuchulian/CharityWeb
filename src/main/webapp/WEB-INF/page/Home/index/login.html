@@ -1,0 +1,76 @@
+#@header()
+#define main()
+<link rel="stylesheet" href="/css/login_l.css">
+		<div class="container center">
+		<div class="c_content">
+			<div class="title">用户登录<span>
+				<a href="/toRegist">
+				还没有账号?10秒注册->
+				</a>
+			</span></div>
+			<form action="/login" id="loginForm">
+				<div class="name">
+					<div class="name_logo fl"></div>
+					<div class="name_c fr">
+						<input type="text" name="userInfo.user_nickname" class="validate[required,maxSize[10]]" placeholder="请输入登录账号" />
+					</div>
+				</div>
+				<div class="password">
+					<div class="password_logo fl"></div>
+					<div class="password_c fr">
+						<input type="password" name="userInfo.user_password" class="validate[required]" placeholder="请输入密码" />
+					</div>
+				</div>
+				<div class="captcha">
+					<div class="fl" style="height:46px;width: 150px;font-size: 22px;font-weight: bold;">
+						<input type="text" class="validate[required]" name="code" style="width: 148px;height: 100%;font-size: 22px;text-align: center;border:1px solid #579f23;border-radius: 10px;outline: none;" placeholder="验证码" />
+					</div>
+					<div class="fl" style="width: 100px;height: 46px;text-align: center;">
+						<img id="imgCaptcha" src="/captcha" style="margin-top: 10px;">
+					</div>
+					<div class="fl" style="height: 46px;">
+						<span class="fl"><a id="chageCode"  style="font-size:18px;line-height: 46px;cursor: pointer;">看不清楚,换一张</a></span>
+					</div>
+				</div>
+				<div class="message" id="login_message">
+					
+				</div>
+				<div class="login_btn">
+					<button id="loginFormSubmit">登录</button>
+				</div>
+			</form>
+			<div class="findword">
+				<a href="#">忘记密码?</a>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		$("#loginForm").validationEngine({
+			showOneMessage: true,
+			promptPosition: "topLeft"		
+		});
+		$("#chageCode").click(function(){
+			$("#imgCaptcha").attr("src","/captcha?"+new Date().getTime());
+		});
+		$("#loginFormSubmit").click(function(){
+			if($("#loginForm").validationEngine('validate')){
+				var userInfo = util.getModal("#loginForm");
+				$.post("/login",userInfo,function(returnMsg){
+					if("success"==returnMsg["returnState"]){
+						$("#login_message").html(returnMsg["returnMsg"]);
+						window.setTimeout(function(){
+							window.location ="/";
+						},1000);					
+					}else{
+						$("#login_message").html(returnMsg["returnMsg"]);
+						window.setTimeout(function(){
+							$("#login_message").html(" ");
+						},2000);
+					}
+				});
+			}else {
+				return;	
+			}					
+		});
+	</script>
+#end

@@ -1,0 +1,132 @@
+#@layout()
+#define main()
+
+<div class="row">
+	<div class="col-md-12">
+		<div class="panel panel-visible">
+			<div class="panel-body pn">
+				<div id="datatable2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+					<div class="dt-panelmenu clearfix">
+						<button type="button" class="btn btn-primary btn-gradient dark" id="activityUnitAdd">单位添加</button>
+					</div>
+					<table class="table table-striped table-hover dataTable no-footer" id="activityUnitTable">
+						<thead>
+							<tr>
+								<th>&nbsp;</th>
+								<th class="sorting_asc">单位名称</th>
+								<th class="sorting_disabled">活动发布的次数</th>
+								<th class="sorting_disabled">活动举办成功的次数</th>
+								<th class="sorting_disabled">活动举办失败的次数</th>
+								<th class="sorting_disabled">操作</th>
+							</tr>
+						</thead>
+						<tbody> </tbody>
+					</table>
+					<div class="dt-panelfooter clearfix">
+						<div class="dataTables_info" id="datatable2_info" role="status"
+							aria-live="polite">Showing 1 to 5 of 13 entries</div>
+						<div class="dataTables_paginate paging_simple_numbers"
+							id="activityUnit">
+							<ul class="pagination">
+								<li class="paginate_button active" aria-controls="datatable2"
+									tabindex="0"><a href="#">1</a></li>
+								<li class="paginate_button " aria-controls="datatable2" tabindex="0"><a
+									href="#">2</a></li>
+								<li class="paginate_button " aria-controls="datatable2" tabindex="0"><a
+									href="#">3</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	util.initPage("/Admin/activityInfoData/activityUnitPaginate", {
+		paginate:{
+			paginateId:"#activityUnit",
+			pageNumber:1,
+			pageSize:10
+		},
+		sort : {
+			"id" : "desc"
+		},
+		search : {
+			column : {
+// 				"power_pid" : [ "=", "#powerPidSearch", "0" ]
+			}
+		},
+		modal : {
+			"activityUnitUpdate" : {
+				bind : {
+					"#activityUnitAdd" : {
+						title : "单位添加"
+					}
+				},
+				pageUrl : "/Admin/activityInfoPage/activityUnitEdit",
+				title : "单位修改",
+				width : 1200,
+				button : {
+					"submit" : {
+						name : "确定",
+						className : "btn-primary",
+						click : function(dataMap) {
+// 							if ($('#mangerInfoForm').validationEngine('validate')) {
+								var activityUnit = util.getModal(dataMap);
+								activityUnit["activityUnit.unit_img"] = $.trim($("#activityUnitImg").attr("_src"));
+								activityUnit["activityUnit.unit_create_time"] = $.trim($("#unit_create_time").val());
+								util.call("/Admin/activityInfoData/activityUnitSave", activityUnit, function(returnMsg) {
+									util.refreshPage(dataMap);
+									util.closeModal(dataMap);
+									util.alert(returnMsg["returnMsg"]);
+								});
+// 							}
+						}
+					}
+				}
+			},
+			"activityUnitDelete" : {
+				button : {
+					"submit" : {
+						name : "确定",
+						className : "btn-primary",
+						click : function(dataMap) {
+							util.call("/Admin/activityInfoData/activityUnitDelete", { "id" : dataMap["id"] + "" }, function(returnMsg) {
+								util.refreshPage(dataMap);
+								util.closeModal(dataMap);
+								util.alert(returnMsg["returnMsg"]);
+							});
+						}
+					}
+				}
+			}
+		}
+	},
+	function(data) {
+		var tableHTML = [],
+			obj = {},
+			activityUnitList = data.list,
+			activityUnitUpdate = data["activityUnitUpdate"],
+			activityUnitDelete = data["activityUnitDelete"];
+		for (var i = 0; i < activityUnitList.length; i++) {
+			obj = activityUnitList[i];
+			tableHTML.push('<tr>');
+			tableHTML.push('	<td>', (i + 1), '</td>');
+			tableHTML.push('	<td>', obj.unit_name, '</td>');
+			tableHTML.push('	<td>', obj.unit_post_number, '</td>');
+			tableHTML.push('	<td>', obj.unit_post_success_number, '</td>');
+			tableHTML.push('	<td>', obj.unit_post_fail_number, '</td>');
+			tableHTML.push('	<td>');
+			tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',activityUnitUpdate,'\', {id : ',obj.id,', title: \'用户修改\'});">修改</a>');
+			tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',activityUnitDelete,'\', {id : ',obj.id,', pageHtml: \'确定要删除【',obj.unit_name,'】吗？\'});">删除</a>');
+			tableHTML.push('	</td>');
+			tableHTML.push('</tr>');
+		}
+		$("#activityUnitTable tbody").html(tableHTML.join(""));
+	});
+		
+</script>
+#end

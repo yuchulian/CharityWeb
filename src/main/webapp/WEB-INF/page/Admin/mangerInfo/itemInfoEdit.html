@@ -1,0 +1,43 @@
+<form class="form-horizontal" id="itemInfoForm">
+	<input type="hidden" name="itemInfo.id" value="#(itemInfo.id)" />
+	
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span class="red">*</span>项目名称</label>
+		<div class="col-sm-10">
+			<input type="text" class="form-control validate[required]" name="itemInfo.item_name" value="#(itemInfo.item_name)" placeholder="请输入项目名称"/>
+		</div>
+	</div>
+	
+	<div class="form-group">
+		<label class="col-sm-2 control-label">工作时间</label>
+		<div class="col-sm w120">
+			<input type="text" class="form-control" name="itemInfo.item_start" placeholder="请选择日期" id="item_start"/>
+		</div>
+		<div class="col-sm line_height39">-</div>
+		<div class="col-sm w120">
+			<input type="text" class="form-control" name="itemInfo.item_end" placeholder="请选择日期" id="item_end"/>
+		</div>
+	</div>
+	
+	<div class="form-group">
+		<label class="col-sm-2 control-label">工作简介</label>
+		<div class="col-sm-10">
+			<textarea class="form-control" name="itemInfo.item_brief" placeholder="请输入工作简介">#(itemInfo.item_brief)</textarea>
+		</div>
+	</div>
+	
+	<div class="form-group">
+		<label class="col-sm-2 control-label">负责部分</label>
+		<div class="col-sm-10">
+			<textarea class="form-control" name="itemInfo.item_duty" placeholder="请输入负责部分">#(itemInfo.item_duty)</textarea>
+		</div>
+	</div>
+	
+</form>
+<script type="text/javascript">
+	$("#itemInfoForm").validationEngine({
+		showOneMessage: true,
+		promptPosition: "topLeft"
+	});
+	util.initDateRange('#item_start', '#item_end', '#(itemInfo.item_start)', '#(itemInfo.item_end)');
+</script>

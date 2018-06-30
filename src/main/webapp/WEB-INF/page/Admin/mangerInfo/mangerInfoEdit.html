@@ -1,0 +1,458 @@
+<style type="text/css">
+	#mangerInfo_id, #educationInfoTable, #workInfoTable, #itemInfoTable{ width: 1024px; word-wrap:break-word; word-break:break-all;}
+	#educationInfoTable td, #workInfoTable td, #itemInfoTable td{ background-color:#f9f9f9; }
+	#mangerInfo_id tr:nth-child(1) > *{ border: none; border-bottom: 1px solid #ccc; }
+	#mangerInfo_id th, #mangerInfo_id td{ border: 1px solid #ccc; text-align: center; height: 40px; line-height: auto; }
+	#mangerInfo_id img, #mangerInfo_id select, #mangerInfo_id input[type="text"]{width: 100%;height: 100%;border: none;background-color:#f9f9f9; }
+	#mangerInfo_id td[contenteditable="true"]{ background-color: #f9f9f9; }
+	#mangerInfoForm .add_btn{ float: right; font-size: 12px; font-weight: normal; height: 33px; line-height: 33px; }
+</style>
+<form id="mangerInfoForm" class="form-horizontal ">
+	<input type="hidden"  name="mangerInfo.id" value="#(mangerInfo.id)"/>
+	<table id="mangerInfo_id" align="center">
+		<caption>
+			<h1>用户信息</h1>
+		</caption>
+		<tr>
+			<td colspan="5"></td>
+			<th>管理员编号</th>
+			<td contenteditable="true" id="manger_job_number">#(mangerInfo.manger_job_number)</td>
+		</tr>
+		<tr>
+			<th style="width: 120px">姓名</th>
+			<td style="width: 170px" contenteditable="true" id="manger_name">#(mangerInfo.manger_name)</td>
+			<th style="width: 120px" >性别</th>
+			<td style="width: 170px" >
+				<label style="margin-left: 10px" class="radio-inline"><input type="radio" value="1" name="mangerInfo.manger_sex" checked #(1 == mangerInfo.manger_sex ? "checked='checked'" : "")/>男</label>
+				<label style="margin-left: 40px" class="radio-inline"><input type="radio" value="2" name="mangerInfo.manger_sex" #(2 == mangerInfo.manger_sex ? "checked='checked'" : "")/>女</label>
+			</td>
+			<th style="width: 120px">籍贯</th>
+			<td style="width: 170px" contenteditable="true" id="manger_nativeplace">#(mangerInfo.manger_nativeplace)</td>
+			<th rowspan="5">
+				<div style="width: 100%; height: 100%;">
+					<img id ="mangerInfoImg" class="selectImg" callBack="mangerInfoSelectImg" fileType=".png|.jpg|.gif" aspectRatio="5/7" src="/downloadData/img?filePath=#(mangerInfo.manger_img)" _src="#(mangerInfo.manger_img)"/>
+				</div>
+			</th>
+		</tr>
+		<tr>
+			<th>年龄</th>
+			<td contenteditable="true" id="manger_age">#(mangerInfo.manger_age)</td>
+			<th>婚姻状态</th>
+			<td  colspan="3">
+				<label style="margin-left: 10px" class="radio-inline"><input type="radio" value="1" name="mangerInfo.manger_marrage" checked #(1 == mangerInfo.manger_marrage ? "checked='checked'" : "")/>未婚</label>
+				<label style="margin-left: 10px" class="radio-inline"><input type="radio" value="2" name="mangerInfo.manger_marrage" #(2 == mangerInfo.manger_marrage ? "checked='checked'" : "")/>已婚</label>
+				<label style="margin-left: 10px" class="radio-inline"><input type="radio" value="3" name="mangerInfo.manger_marrage" #(3 == mangerInfo.manger_marrage ? "checked='checked'" : "")/>离异</label>
+			</td>		
+		</tr>
+		<tr>
+			<th>出生时间</th>
+			<td>
+  				<input id="manger_birthday" type="text" name="mangerInfo.manger_birthday" value="#(mangerInfo.manger_birthday)" class="form-control"/>
+			</td>			
+			<th>健康状态</th>
+			<td colspan="3" contenteditable="true" id="manger_health">#(mangerInfo.manger_health)</td>	
+		</tr>
+		<tr>
+			<th>血型</th>
+			<td id="manger_blood_type" contenteditable="true">
+				#(mangerInfo.manger_blood_type)
+			</td>
+			<th>身份证号码</th>
+			<td colspan="3" contenteditable="true" id ="manger_identity_card">#(mangerInfo.manger_identity_card)</td>
+		</tr>
+		<tr>
+			<th>毕业院校</th>
+			<td colspan="2" contenteditable="true" id="manger_graduation">#(mangerInfo.manger_graduation)</td>
+			<th>学历</th>
+			<td colspan="2">
+				<select id="manger_education_id" name="mangerInfo.manger_education_id">
+					#for(education : mangerEducationList) 
+						#if(education.id+""==mangerInfo.manger_education_id+"")
+							<option value="#(education.id)" selected="selected">#(education.dictionary_name)</option>
+						#else
+							<option value="#(education.id)">#(education.dictionary_name)</option>
+						#end
+					#end
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<th>户口所在地 </th>
+			<td colspan="2" contenteditable="true" id="manger_domicile">#(mangerInfo.manger_domicile)</td>
+			<th>档案所在地</th>
+			<td colspan="3" contenteditable="true" id="manger_dossier_place">#(mangerInfo.manger_dossier_place)</td>	
+		</tr>
+		<tr>
+			<th>学位</th>
+			<td>
+				<select id="manger_degree_id" name="mangerInfo.manger_degree_id">
+					#for(degree : mangerDegreeList) 
+						#if(degree.id+""==mangerInfo.manger_degree_id+"")
+							<option value="#(degree.id)" selected="selected">#(degree.dictionary_name)</option>
+						#else
+							<option value="#(degree.id)">#(degree.dictionary_name)</option>
+						#end
+					#end
+				</select>
+			</td>
+			<th>政治面貌</th>
+			<td contenteditable="true" id ="manger_politics">#(mangerInfo.manger_politics)</td>
+			<th>外语水平</th>
+			<td colspan="2" contenteditable="true" id ="manger_wsk">#(mangerInfo.manger_wsk)</td>
+		</tr>
+		<tr>
+			<th>语种</th>
+			<td>
+				<select id="manger_language_id" name="mangerInfo.manger_language_id">
+					#for(language : mangerLanguageList) 
+						#if(language.id+""==mangerInfo.manger_language_id+"")
+							<option value="#(language.id)" selected="selected">#(language.dictionary_name)</option>
+						#else
+							<option value="#(language.id)">#(language.dictionary_name)</option>
+						#end
+					#end
+				</select>
+			</td>	
+			<th>专业</th>
+			<td colspan="4">
+				<select id="manger_speciality" name="mangerInfo.manger_speciality">
+					#for(mangerSpeciality : mangerSpecialityList) 
+						#if(mangerSpeciality.id+""==mangerInfo.manger_speciality+"")
+							<option value="#(mangerSpeciality.id)" selected="selected">#(mangerSpeciality.dictionary_name)</option>
+						#else
+							<option value="#(mangerSpeciality.id)">#(mangerSpeciality.dictionary_name)</option>
+						#end
+					#end
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<th>专业证书</th>
+			<td colspan="6">
+				<div class="input-group" style="width: 100%;height: 100%">
+  					<input type="text" disabled="disabled" style="height: 100%;width: 100%" placeholder="请选择专业证书" id="manger_diploma" name="mangerInfo.manger_diploma" value="#(mangerInfo.manger_diploma)">
+  					<span class="input-group-addon btn" id="select_manger_diploma">选择</span>
+				</div> 				
+			</td>		
+		</tr>
+		<tr>
+			<th>参加工作时间</th>
+			<td>
+				<input id="manger_job_time" type="text" name="mangerInfo.manger_job_time" value="#(mangerInfo.manger_job_time)" class="form-control"/>
+			</td>
+			<th>加入公司时间</th>
+			<td>
+				<input id="manger_join_time" type="text" name="mangerInfo.manger_join_time" value="#(mangerInfo.manger_join_time)" class="form-control"/>
+			</td>
+			<th>联系方式</th>
+			<td colspan="2" contenteditable="true" id="manger_phone">#(mangerInfo.manger_phone)</td>
+		</tr>
+		<tr>
+			<th>电子邮箱</th>
+			<td colspan="2" contenteditable="true" id="manger_email">#(mangerInfo.manger_email)</td>
+			<th>QQ</th>
+			<td colspan="3" contenteditable="true" id ="manger_qq">#(mangerInfo.manger_qq)</td>
+		</tr>
+	</table>
+	
+	#if(mangerInfo.id != null)
+	<table align="center" id="educationInfoTable">
+		<caption>
+			<h1>
+				&nbsp; &nbsp; 教育经历
+				<a href="javascript:void(0);" class="add_btn" id="educationInfoAdd">添加</a>
+			</h1>
+		</caption>
+		<tbody> </tbody>
+	</table>
+	
+	<table align="center" id="workInfoTable">
+		<caption>
+			<h1>
+				&nbsp; &nbsp; 工作经历
+				<a href="javascript:void(0);" class="add_btn" id="workInfoAdd">添加</a>
+			</h1>
+		</caption>
+		<tbody> </tbody>
+	</table>
+	
+	<table align="center" id="itemInfoTable">
+		<caption>
+			<h1>
+				&nbsp; &nbsp; 工作经验
+				<a href="javascript:void(0);" class="add_btn" id="itemInfoAdd">添加</a>
+			</h1>
+		</caption>
+		<tbody> </tbody>
+	</table>
+	<script type="text/javascript">
+		//教育经历
+		util.initPage("/Admin/mangerInfoData/educationInfoList", {
+			sort : {
+				"id" : "asc"
+			},
+			search : {
+				column : {
+					"manger_id" : [ "=", "", "#(mangerInfo.id)" ]
+				}
+			},
+			modal : {
+				"educationInfoSave" : {
+					bind : {
+						"#educationInfoAdd" : {
+							title : "教育经历添加"
+						}
+					},
+					pageUrl : "/Admin/mangerInfoPage/educationInfoEdit",
+					title : "教育经历修改",
+					button : {
+						"submit" : {
+							name : "确定",
+							className : "btn-primary",
+							click : function(dataMap) {
+								if ($('#educationInfoForm').validationEngine('validate')) {
+									var educationInfo = util.getModal(dataMap);
+									educationInfo["educationInfo.manger_id"] = "#(mangerInfo.id)";
+									util.call("/Admin/mangerInfoData/educationInfoSave", educationInfo, function(returnMsg) {
+										util.refreshPage(dataMap);
+										util.closeModal(dataMap);
+										util.alert(returnMsg["returnMsg"]);
+									});
+								}
+							}
+						}
+					}
+				},
+				"educationInfoDelete" : {
+					button : {
+						"submit" : {
+							name : "确定",
+							className : "btn-primary",
+							click : function(dataMap) {
+								util.call("/Admin/mangerInfoData/educationInfoDelete", { "id" : dataMap["id"] + "" }, function(returnMsg) {
+									util.refreshPage(dataMap);
+									util.closeModal(dataMap);
+									util.alert(returnMsg["returnMsg"]);
+								});
+							}
+						}
+					}
+				}
+			}
+		},
+		function(data) {
+			var tableHTML = [],
+				obj = {},
+				educationInfoList = data.list,
+				educationInfoSave = data["educationInfoSave"],
+				educationInfoDelete = data["educationInfoDelete"];
+			for (var i = 0; i < educationInfoList.length; i++) {
+				obj = educationInfoList[i];
+				tableHTML.push('<tr style="border-bottom: 1px solid #ccc;">');
+				tableHTML.push('	<td>',obj.education_start,'到', obj.education_end , '</td>');
+				tableHTML.push('	<td>', obj.school_name , '</td>');
+				tableHTML.push('	<td>', obj.major , '</td>');
+				tableHTML.push('	<td style="text-align: right;">');
+				tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',educationInfoSave,'\', {id : ',obj.id,', title: \'教育经历修改\'});">修改</a>');
+				tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',educationInfoDelete,'\', {id : ',obj.id,', pageHtml: \'确定要删除【',obj.school_name,'】吗？\'});">删除</a>');
+				tableHTML.push('	</td>');
+				tableHTML.push('</tr>');
+			}
+			$("#educationInfoTable tbody").html(tableHTML.join(""));
+		});
+		
+		
+		
+	
+		//工作经历
+		util.initPage("/Admin/mangerInfoData/workInfoList", {
+			sort : {
+				"id" : "asc"
+			},
+			search : {
+				column : {
+					"manger_id" : [ "=", "", "#(mangerInfo.id)" ]
+				}
+			},
+			modal : {
+				"workInfoSave" : {
+					bind : {
+						"#workInfoAdd" : {
+							title : "工作经历添加"
+						}
+					},
+					pageUrl : "/Admin/mangerInfoPage/workInfoEdit",
+					title : "工作经历修改",
+					button : {
+						"submit" : {
+							name : "确定",
+							className : "btn-primary",
+							click : function(dataMap) {
+								if ($('#workInfoForm').validationEngine('validate')) {
+									var workInfo = util.getModal(dataMap);
+									workInfo["workInfo.manger_id"] = "#(mangerInfo.id)";
+									util.call("/Admin/mangerInfoData/workInfoSave", workInfo, function(returnMsg) {
+										util.refreshPage(dataMap);
+										util.closeModal(dataMap);
+										util.alert(returnMsg["returnMsg"]);
+									});
+								}
+							}
+						}
+					}
+				},
+				"workInfoDelete" : {
+					button : {
+						"submit" : {
+							name : "确定",
+							className : "btn-primary",
+							click : function(dataMap) {
+								util.call("/Admin/mangerInfoData/workInfoDelete", { "id" : dataMap["id"] + "" }, function(returnMsg) {
+									util.refreshPage(dataMap);
+									util.closeModal(dataMap);
+									util.alert(returnMsg["returnMsg"]);
+								});
+							}
+						}
+					}
+				}
+			}
+		},
+		function(data) {
+			var tableHTML = [],
+				obj = {},
+				workInfoList = data.list,
+				workInfoSave = data["workInfoSave"],
+				workInfoDelete = data["workInfoDelete"];
+			for (var i = 0; i < workInfoList.length; i++) {
+				obj = workInfoList[i];
+				tableHTML.push('<tr>');
+				tableHTML.push('	<td>', obj.work_start , '到',obj.work_end,'</td>');
+				tableHTML.push('	<td>', obj.company_name , '</td>');
+				tableHTML.push('	<td>', obj.position_name , '</td>');
+				tableHTML.push('	<td>', obj.wages , '元/月</td>');
+				tableHTML.push('	<td style="text-align: right;">');
+				tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',workInfoSave,'\', {id : ',obj.id,', title: \'工作经历修改\'});">修改</a>');
+				tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',workInfoDelete,'\', {id : ',obj.id,', pageHtml: \'确定要删除【',obj.company_name,'】吗？\'});">删除</a>');
+				tableHTML.push('	</td>');
+				tableHTML.push('</tr>');
+				tableHTML.push('<tr style="border-bottom: 1px solid #ccc;">');
+				tableHTML.push('	<td colspan="5">&nbsp; &nbsp; ',obj.work_content,'</td>');
+				tableHTML.push('</tr>');
+			}
+			$("#workInfoTable tbody").html(tableHTML.join(""));
+		});
+		
+	
+		//项目经验
+		util.initPage("/Admin/mangerInfoData/itemInfoList", {
+			sort : {
+				"id" : "asc"
+			},
+			search : {
+				column : {
+					"manger_id" : [ "=", "", "#(mangerInfo.id)" ]
+				}
+			},
+			modal : {
+				"itemInfoSave" : {
+					bind : {
+						"#itemInfoAdd" : {
+							title : "工作经验添加"
+						}
+					},
+					pageUrl : "/Admin/mangerInfoPage/itemInfoEdit",
+					title : "工作经验修改",
+					button : {
+						"submit" : {
+							name : "确定",
+							className : "btn-primary",
+							click : function(dataMap) {
+								if ($('#itemInfoForm').validationEngine('validate')) {
+									var itemInfo = util.getModal(dataMap);
+									itemInfo["itemInfo.manger_id"] = "#(mangerInfo.id)";
+									util.call("/Admin/mangerInfoData/itemInfoSave", itemInfo, function(returnMsg) {
+										util.refreshPage(dataMap);
+										util.closeModal(dataMap);
+										util.alert(returnMsg["returnMsg"]);
+									});
+								}
+							}
+						}
+					}
+				},
+				"itemInfoDelete" : {
+					button : {
+						"submit" : {
+							name : "确定",
+							className : "btn-primary",
+							click : function(dataMap) {
+								util.call("/Admin/mangerInfoData/itemInfoDelete", { "id" : dataMap["id"] + "" }, function(returnMsg) {
+									util.refreshPage(dataMap);
+									util.closeModal(dataMap);
+									util.alert(returnMsg["returnMsg"]);
+								});
+							}
+						}
+					}
+				}
+			}
+		},
+		function(data) {
+			var tableHTML = [],
+				obj = {},
+				itemInfoList = data.list,
+				itemInfoSave = data["itemInfoSave"],
+				itemInfoDelete = data["itemInfoDelete"];
+			for (var i = 0; i < itemInfoList.length; i++) {
+				obj = itemInfoList[i];
+				tableHTML.push('<tr>');
+				tableHTML.push('	<td>', obj.item_start , '到',obj.item_end,'</td>');
+				tableHTML.push('	<td>', obj.item_name , '</td>');
+				tableHTML.push('	<td style="text-align: right;">');
+				tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',itemInfoSave,'\', {id : ',obj.id,', title: \'项目经验修改\'});">修改</a>');
+				tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',itemInfoDelete,'\', {id : ',obj.id,', pageHtml: \'确定要删除【',obj.item_name,'】吗？\'});">删除</a>');
+				tableHTML.push('	</td>');
+				tableHTML.push('</tr>');
+				tableHTML.push('<tr>');
+				tableHTML.push('	<td colspan="3">&nbsp; &nbsp; ', obj.item_brief , '</td>');
+				tableHTML.push('</tr>');
+				tableHTML.push('<tr style="border-bottom: 1px solid #ccc;">');
+				tableHTML.push('	<td colspan="3">&nbsp; &nbsp; ', obj.item_duty , '</td>');
+				tableHTML.push('</tr>');
+			}
+			$("#itemInfoTable tbody").html(tableHTML.join(""));
+		});
+	</script>
+	#end
+	
+</form>
+<script type="text/javascript">
+	util.initDate("#manger_birthday","#(mangerInfo.manger_birthday)");
+	util.initDate("#manger_job_time","#(mangerInfo.manger_job_time)");
+	util.initDate("#manger_join_time","#(mangerInfo.manger_join_time)");
+	var mangerDiplomaSelectModal =	util.modal({
+		title : "专业证书",
+		pageUrl : "/Admin/mangerInfoPage/mangerDiplomaSelectIndex",
+		button : {
+			"submit" : {
+				name : "确定",
+				className : "btn-primary",
+				click :function(dataMap){
+					util.closeModal(dataMap);
+				}
+			}
+		}
+	});
+	$("#select_manger_diploma").click(function(){
+		util.execute(mangerDiplomaSelectModal,{});
+	});
+	$("#mangerInfoForm").validationEngine({
+		showOneMessage : true,
+		promptPosition : "topLeft"
+	});
+	function mangerInfoSelectImg(returnMsg) {
+		$("#mangerInfoImg").attr("src", "/downloadData/img?filePath="+returnMsg.filePath).attr("_src", returnMsg.filePath);
+	}
+	
+</script>

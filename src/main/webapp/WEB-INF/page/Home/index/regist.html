@@ -1,0 +1,73 @@
+#@header()
+#define main()
+<link rel="stylesheet" href="/css/regist_r.css">
+	<div class="container center">
+		<div class="c_content">
+			<div class="title">用户注册<span>
+				<a href="/toLogin">
+				已有账号?马上去登录->
+				</a>
+			</span></div>
+			<form action="/regist" id="registForm">
+				<div class="email">
+					<div class="email_logo fl"></div>
+					<div class="email_c fr">
+						<input type="text" name="userInfo.user_email" class="validate[required,custom[email]]" placeholder="请输入邮箱" />
+					</div>
+				</div>
+				<div class="password">
+					<div class="password_logo fl"></div>
+					<div class="password_c fr">
+						<input id="userPassword" name="userInfo.user_password" type="password" class="validate[required,custom[password]]" placeholder="请输入密码" />
+					</div>
+				</div>
+				<div class="repassword">
+					<div class="repassword_logo fl"></div>
+					<div class="repassword_c fr">
+						<input type="password" name="user_rePassword" class="validate[required,custom[password],equals[userPassword]]" placeholder="请确定密码" />
+					</div>
+				</div>
+				<div class="name">
+					<div class="name_logo fl"></div>
+					<div class="name_c fr">
+						<input type="text" id="nickName" name="userInfo.user_nickname" class="validate[required,maxSize[10]]" placeholder="请输入登录账号" />
+					</div>
+				</div>
+				<div class="message" style="width: 400px;margin: 0 auto;height: 34px;line-height: 34px;font-size: 18px;text-align: center;color: red;" id="regist_message">
+				</div>
+				<div class="login_btn">
+					<button id="registFormSubmit" type="submit">注册</button>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div hidden="hidden"  id="loginSuccess" class="c_content" style="width:  300px;height:200px;box-shadow:0 0 20px #666;border-radius: 5px;color: #fff;text-align: center;top:50%;left: 50%;  position: fixed;transform: translate(-50%,-50%);line-height: 200px;background: #579f23;font-size: 24px;">
+		注册成功,请前往邮箱激活!
+	</div>
+	<script type="text/javascript">
+	$("#registForm").validationEngine({
+		showOneMessage: true,
+		promptPosition: "topLeft"		
+	});
+	$("#registFormSubmit").click(function(){
+		if($("#registForm").validationEngine('validate')){
+			var userInfo = util.getModal("#registForm");
+			$.post("/regist",userInfo,function(returnMsg){
+				if("success"==returnMsg["returnState"]){
+					$("#loginSuccess").removeAttr("hidden");					
+					window.setTimeout(function(){
+						window.location ="/toLogin";
+					},2000);					
+				}else{
+					$("#regist_message").html(returnMsg["returnMsg"]);
+					window.setTimeout(function(){
+						$("#regist_message").html("");
+					},2000);
+				}
+			});
+		}else {
+			return;	
+		}					
+	});
+	</script>
+#end

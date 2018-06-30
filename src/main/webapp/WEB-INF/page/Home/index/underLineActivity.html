@@ -1,0 +1,54 @@
+#@activity()
+#define actContent()
+	<div class="panel_sd">
+		<div class="con-f fr">
+			<div class="con-f-cen">
+				<div class="f-cen-top"> 
+					<span class="fl">线下活动</span>
+					<span class="fr">意见反馈</span>
+				</div>
+				<div id="activityInfo">
+					
+				</div>
+				
+				<div class="f-cen-tail clearfix">
+					<div id="recomendInfo" class="fr dataTables_paginate" style="width: 300px;height: 50px; margin-right: 150px;">
+						
+					</div>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		 util.initPage("/Admin/activityInfoData/activityInfoPaginate", {
+			paginate:{
+				paginateId:"#recomendInfo",
+				pageNumber:1,
+				pageSize:10
+			},
+			sort : {
+				"id" : "desc"
+			},
+			search : {
+				column : {
+					"activity_type" : ["=","",78],
+					"activity_check_state" : ["=","",1]
+				}
+			}
+		},function(data){
+			var activityInfoList =  data.list,tableHTML = [],obj = {};
+			for(var i = 0;i<activityInfoList.length;i++){
+				obj = activityInfoList[i];
+				tableHTML.push('<div class="f-cen-tail clearfix"><div class="f-cen-l fl"><div class="cen-l-img">');
+				tableHTML.push('<img src="/downloadData/img?filePath=',obj.activity_cover_img,'"></div></div>');
+				tableHTML.push('<div class="f-cen-r fr"><p class="cen-f-r-top"><a style="color:#4c4c4c;font-weight: 500;" href="/activityInfoDetail?id=',obj.id,'">',obj.activity_title,'</a></p>');
+				tableHTML.push('<div class="cen-f-r-cen"><p class="cen-c1 fl">报名截止:</p><p class="cen-v1 fr">',obj.activity_enrol_endtime,'</p></div>');
+				tableHTML.push('<div class="cen-f-r-cens"><p class="cen-c1 fl" style="overflow: hidden;text-overflow: ellipsis;">活动简介:</p><p class="cen-v2 fr">',obj.activity_introduce,'</p></div>');
+				tableHTML.push('<div class="cen-f-r-cen"><p class="cen-c1 fl">活动发起:</p><p class="cen-v1 fr">',obj.activity_hold_name,'</p></div></div></div>');				
+			}
+			$("#activityInfo").html(tableHTML.join(""));			
+		});
+		</script>
+	
+#end

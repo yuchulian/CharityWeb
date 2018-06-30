@@ -1,0 +1,148 @@
+#@header()
+#define main()
+	<script type="text/javascript" src="/js/ueditor/activity-ueditor.config.js"></script>
+	<script type="text/javascript" src="/js/ueditor/ueditor.all.js"></script>
+	<link rel="stylesheet" href="/css/activityDetail.css">
+	<div class="center snav"></div>
+
+	<div class="container center clearfix">
+		<div class="con_l fl">
+			<div class="con_for_frist clearfix">	
+				<div class="a_img fl">
+					<img src="/downloadData/img?filePath=#(activityInfo.activity_cover_img)" >
+				</div>
+				<input type="hidden" value="#(activityInfo.id)" id="activityId"/>
+				<div class="a_con fr">
+					<span>	
+						#(activityInfo.activity_title)
+					</span>
+					<p>活动时间：#(activityInfo.activity_begin_time)至 #(activityInfo.activity_end_time)
+					</p>
+					<p>活动地点： #(activityInfo.activity_addr)</p>
+					<p>活动费用： #(activityInfo.activity_free==0?"免费":activityInfo.activity_free+"元")</p>
+					<p>报名截止： #(activityInfo.activity_enrol_endtime)</p>
+					<p style="color: #919191;"> 活动内容已于 2011-07-13 16:46:59 更新，请关注。</p>
+					<div class="attend">
+						<button id = "attendActivity">
+							我要参加
+						</button>
+					</div>
+					<span style="color: #919191">
+						已有<span id="enrolTotal">
+						 #(activityInfo.activity_enrol_total)</span>&nbsp;位网友参加此活动
+					</span>
+				</div>
+			</div>
+			<div class="con_for_second">
+				 #(activityInfo.activity_content)
+			</div>
+			<div class="con_for_thrid">
+				<p class="title"> 我来说两句</p>
+				#if(session.loginInfo)
+					<p class="only_login">		
+					<button id="commentButton" style="outline:none;cursor:pointer;border-radius:5px;border:none;background:#579f23;color:#fff;font-size: 16px;">评论
+					</button>
+					</p>
+				#else
+					<p class="only_login">		
+					只有登录了才能报名和回复活动
+					<a href="/toLogin"><span style="color: #579f23;">请登录
+					</span></a>
+					</p>
+				#end				
+				<div class="comment">
+					<div class="commentli" id ="commentDiv"  style="display:none;height: 242px;width:740px;border: none;">
+						<div style="width: 100px;height: 500px;" id="commentId"></div>
+						<button id = "saveComment" style="float: right;outline:none;cursor:pointer;border-radius:5px;border:none;background:#579f23;color:#fff;font-size: 16px;">保存</button>
+					</div>
+					<!--评论开始-->
+					<div id="user_comment"></div>
+					<!--评论结束-->
+				</div>
+			</div>
+
+		</div>
+		<div class="con_r fr">
+			<div class="company">
+				<p class="title">活动发起机构</p>
+				<div class="company_img">
+					<img src="/downloadData/img?filePath=#(activityInfo.unit_img)" />
+				</div>
+				<p class="topic">
+					<a href="#"> #(activityInfo.activity_hold_name)
+					</a>
+				</p>
+				<p>发布活动:  #(activityInfo.unit_post_number)次</p>
+				<p>成功举办： #(activityInfo.unit_post_success_number)次</p>
+				<p>活动评价: 10条</p>
+			</div>
+			<div class="reco_user">
+				<p class="title">报名爱心网友
+					<span class="fr">
+<!-- 						<a href="#">更多<a> -->
+					</span>
+				</p>				
+				#for( userInfo:userInfoList)
+				<div class="user fl">
+					<div class="user_detail">
+						<div class="u_img">
+							<img style="width: 50px;height: 50px;" src="/downloadData/img?filePath=#(userInfo.user_img)" />
+						</div>
+						<p>#(userInfo.user_nickname)</p>
+					</div>
+				</div>
+				#end		
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		$("#commentButton").click(function(){
+			$("#commentDiv").toggle();
+		});
+		UE.delEditor("commentId");
+		var forumContent = UE.getEditor("commentId",{
+			initialFrameWidth :738,//设置编辑器宽度
+			initialFrameHeight:150,//设置编辑器高度
+			scaleEnabled:true//设置不自动调整高度
+		});
+		$("#attendActivity").click(function(){
+			var actId = $("#activityId").val();
+			$.post("/attendActivity",{actId:actId},function(returnMsg){
+				if(returnMsg.returnState=="success"){
+					var enrolTotal = $("#enrolTotal");
+					enrolTotal.text(returnMsg.activityNum);
+				}
+				alert(returnMsg.returnMsg);
+			});
+		});
+		$("#saveComment").click(function(){
+			var content = forumContent.getContent();
+			var actId = $("#activityId").val();
+			if(content.trim()==""){
+				alert("请输入内容");
+				return false;
+			}
+			$.post("/commentCommit",{content:content,actId:actId},function(returnMsg){
+				if(returnMsg.returnState=="success"){
+					alert(returnMsg.returnMsg);
+					getAjaxData(actId);
+					forumContent.setContent("");
+				}				
+			});
+		});
+		function getAjaxData(actId){
+			$.post("/getCommentData",{actId:actId},function(dataList){
+				var tableHTML = [];
+				for(var i =0;i<dataList.length;i++){
+					data = dataList[i];
+					tableHTML.push("<div class='commentli'><div class='com_img fl'><img src='/downloadData/img?filePath="+data.user_img+"'></div>");
+					tableHTML.push("<div class='com_content fr'><p>"+data.user_nickname+"#"+data.content+"</p><div><p class='fl'>"+data.content_time+"</p>");
+					tableHTML.push("</div></div></div>");
+				}
+				console.log(tableHTML);
+				$("#user_comment").html(tableHTML.join(""));
+			});
+		}
+		getAjaxData($("#activityId").val());
+	</script>
+#end

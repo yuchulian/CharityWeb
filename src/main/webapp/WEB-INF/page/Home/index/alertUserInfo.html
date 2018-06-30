@@ -1,0 +1,156 @@
+#@header()
+#define main()
+<style>
+	#userInfo tr {
+	 height: 40px;
+	}
+</style>
+<!--中间部分开始-->
+<link rel="stylesheet" href="/css/info_l.css">
+<div class="head center">
+	<a href="/">首页</a> >> <a href="/userInfo">个人中心</a>
+</div>
+<div class="con clearfix">
+	<div class="con_l fl">
+		<input  id="userId" style="display: none;" value="#(session.loginInfo.id)"/>
+		<ul id="menu">
+			<li><a href="/userInfo">个人资料</a></li>
+			<li><a href="/alertUserInfo?id=#(session.loginInfo.id)">修改资料</a></li>
+			<li><a href="/alertUserPasswordPage">修改密码</a></li>
+		</ul>
+	</div>
+	<div class="con_r fr">
+		<div class="user_info fl">
+			<form action="/userInfoSave">
+			<input type="text" style="display: none;" value="#(userInfo.id)" name="userInfo.id"/>
+			<table id="userInfo" style="margin:0 auto;font-size: 18px;margin-top: 40px;color: #4e931c;">
+				<caption style="margin:0 auto;font-weight: 900;font-size: 24px;width: 200px;">个人资料</caption>
+				<tr>
+					<td>昵称:</td>
+					<td colspan="5">
+						#(userInfo.user_nickname)
+					</td>
+				</tr>
+				<tr>
+					<td>姓名:</td>
+					<td colspan="5">
+						<input type="text" name="userInfo.user_username" value="#(userInfo.user_username)" style="padding-left:20px;outline:none;width: 250px;height: 30px;border: 1px solid #4e931c;border-radius: 8px;"/>
+					</td>
+				</tr>
+				<tr>
+					<td>性别:</td>
+					<td colspan="5">
+					<input type="radio" name="userInfo.user_sex" value="1"  #if(userInfo.user_sex!=0) checked="checked" #end/>男&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="radio" name="userInfo.user_sex" value="0" #if(userInfo.user_sex==0) checked="checked" #end/>女
+					</td>
+				</tr>
+				<tr>
+					<td>邮箱:</td>
+					<td colspan="5">
+						<input type="text" name="userInfo.user_email" value="#(userInfo.user_email)" style="padding-left:20px;outline:none;width: 250px;height: 30px;border: 1px solid #4e931c;border-radius: 8px;"/>
+					</td>
+				</tr>
+				<tr>
+					<td>电话:</td>
+					<td colspan="5">
+						<input type="text" name="userInfo.user_phone" value="#(userInfo.user_phone)" style="padding-left:20px;outline:none;width: 250px;height: 30px;border: 1px solid #4e931c;border-radius: 8px;"/>
+					</td>
+				</tr>
+				<tr>
+					<td>发帖数:</td>
+					<td style="width: 50px;">#(session.loginInfo.user_post_num)</td>
+					<td>评论数:</td>
+					<td style="width: 50px;">#(session.loginInfo.user_comment_num)</td>
+					<td>积分:</td>
+					<td style="width: 50px">#(session.loginInfo.user_score)</td>
+				</tr>
+			</table>
+			<input type="submit" style="width:300px;height: 40px;margin-left: 100px;margin-top: 10px;background: #4e931c;border-radius: 10px;font-size: 20px;color: #fff;" value="保    存" />
+			</form>
+		</div>
+		<div class="user_img fr">
+			<div class="img">
+				<img  id="portrait" src="/downloadData/img?filePath=#(session.loginInfo.user_img)" style="width: 150px;height: 200px;"/>
+			</div>
+			
+			<div  style="width: 270px;height: 60px;display: inline-block;">
+				<div class="upload fl" style="margin-left: 60px;border-radius: 5px;">
+				<a style="cursor: pointer;padding: 10px 8px;font-size: 16px;position: relative;" class="input-fileup" href="javascript:void(0);">上传 
+				 <input id = "file" type="file" style="cursor: pointer;;opacity: 0;position: absolute;top: 8px;left:0;width: 50px;height: 30px;"  accept="image/png,image/jpeg" onchange="showPreview(this)"/>
+ 				</a> 
+				</div>
+				<div class="fr">
+					<input type="button" onclick="saveImg();" value="保存" style="width: 50px;height: 30px;font-size: 14px;margin-top: 20px;margin-right: 60px;background: #afdf8c;outline: none;border-radius: 5px;"/>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+function showPreview(source) {
+    var file = source.files[0];
+    var filePath=$("input[type='file']").val();
+    console.log(filePath);
+    if(window.FileReader) {
+        var fr = new FileReader();
+        console.log(fr);
+        var portrait = document.getElementById('portrait');
+        fr.onloadend = function(e) {
+          portrait.src = e.target.result;
+        };
+        fr.readAsDataURL(file);
+        portrait.style.display = 'block';
+    }
+  }
+  function saveImg(){
+	  var content = $("#portrait").attr('src');
+	  if(content==''){
+		  alert('内容为空,保存失败');
+		  return false;
+	  }
+	  if(content.indexOf("/downloadData/img")!=-1){
+		  alert('请先上传图片');
+		  return false;
+	  }
+	  var file =  document.getElementById('file').files[0];
+	  var formData = new FormData();
+	  formData.append('file', file);
+	  $.ajax({
+          url: "/uploadData",
+          type: "post",
+          data: formData,
+          contentType: false,
+          processData: false,
+          mimeType: "multipart/form-data",
+          success: function (data) {
+        	 var dataContent = JSON.parse(data);
+             var imgContent = dataContent.filePath;
+             var id = $("#userId").val();
+             $.post("/saveUserImg",{id:id,imgContent:imgContent},function(returnMsg){
+            	 alert(returnMsg.returnMsg);
+             });
+          },
+          error: function (data) {
+              alert(data.returnMsg);
+          }
+      });
+
+  }
+  <!-- 进行对选中选项进行颜色显示 -->
+	$(function(){
+		console.log(location.pathname);
+		selectMenu($("#menu"),location.pathname);
+	});
+	
+	function selectMenu($ul,pathname){
+		var self = {};
+		$ul.find('a').each(function(){
+			self = $(this);
+			var liPathname = self.attr('href').split("?")[0];
+			if(pathname==liPathname){
+				self.parent('li').css("background","#4e931c");
+			}
+		});
+	}
+</script>
+#end

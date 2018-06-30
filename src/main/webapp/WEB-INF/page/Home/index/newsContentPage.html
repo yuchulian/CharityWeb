@@ -1,0 +1,12 @@
+#@header()
+#define main()
+	<div class="container center">
+		<div class="center" style="height: 100px;">
+			<div style="height: 50px;"><h1 align="center">#(newInfo.news_title)</h1></div>
+			<div style="height: 20px;width: 450px;margin: 0 auto;">
+				<span  style="font-size: 14px;color: #c5cfc8;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;作者:#(newInfo.news_writer)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;发布时间:#(newInfo.news_changetime)</span>
+			</div>
+		</div>
+	#(newInfo.news_content)
+	</div>
+#end

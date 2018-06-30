@@ -1,0 +1,90 @@
+#@header()
+#define main()
+<style>
+	#userInfo tr {
+	 height: 40px;
+	}
+</style>
+<!--中间部分开始-->
+<link rel="stylesheet" href="/css/info_l.css">
+<div class="head center">
+	<a href="/">首页</a> >> <a href="/userInfo">个人中心</a>
+</div>
+<div class="con clearfix">
+	<div class="con_l fl">
+		<input  id="userId" style="display: none;" value="#(session.loginInfo.id)"/>
+		<ul id="menu">
+			<li><a href="/userInfo">个人资料</a></li>
+			<li><a href="/alertUserInfo?id=#(session.loginInfo.id)">修改资料</a></li>
+			<li><a href="/alertUserPasswordPage">修改密码</a></li>
+		</ul>
+	</div>
+	<div class="con_r fr">
+		<div class="user_info fl">
+			<table id="userInfo" style="margin:0 auto;font-size: 18px;margin-top: 40px;color: #4e931c;">
+				<caption style="margin:0 auto;font-weight: 900;font-size: 24px;width: 200px;">个人资料</caption>
+				<tr>
+					<td>昵称:</td>
+					<td colspan="5">
+						#(session.loginInfo.user_nickname)
+					</td>
+				</tr>
+				<tr>
+					<td>姓名:</td>
+					<td colspan="5">
+						#(session.loginInfo.user_username)
+					</td>
+				</tr>
+				<tr>
+					<td>性别:</td>
+					<td colspan="5">
+					#(session.loginInfo.user_sex==1?"男":"女")
+					</td>
+				</tr>
+				<tr>
+					<td>邮箱:</td>
+					<td colspan="5">
+						#(session.loginInfo.user_email)
+					</td>
+				</tr>
+				<tr>
+					<td>电话:</td>
+					<td colspan="5">
+						#(session.loginInfo.user_phone)
+					</td>
+				</tr>
+				<tr>
+					<td>发帖数:</td>
+					<td style="width: 50px;">#(session.loginInfo.user_post_num)</td>
+					<td>评论数:</td>
+					<td style="width: 50px;">#(session.loginInfo.user_comment_num)</td>
+					<td>积分:</td>
+					<td style="width: 50px">#(session.loginInfo.user_score)</td>
+				</tr>
+			</table>
+		</div>
+		<div class="user_img fr">
+			<div class="img">
+				<img  id="portrait" src="/downloadData/img?filePath=#(session.loginInfo.user_img)" style="width: 150px;height: 200px;"/>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+  <!-- 进行对选中选项进行颜色显示 -->
+	$(function(){
+		selectMenu($("#menu"),location.pathname);
+	});
+	
+	function selectMenu($ul,pathname){
+		var self = {};
+		$ul.find('a').each(function(){
+			self = $(this);
+			var liPathname = self.attr('href');
+			if(pathname==liPathname){
+				self.parent('li').css("background","#4e931c");
+			}
+		});
+	}
+</script>
+#end

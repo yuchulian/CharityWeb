@@ -1,0 +1,71 @@
+#@header()
+#define main()
+<link rel="stylesheet" href="/css/public.css" />
+	<link rel="stylesheet" type="text/css" href="/css/message.css" />
+<script type="text/javascript" src="/js/zturn.js"></script>
+<div class="container">
+	<ul id="zturn" class="poster-list" style="height: 518px;width: 1000px;margin: 0 auto;">
+		#for(publicManInfo:publicManInfoList)
+		<li class="poster-item  zturn-item" >
+			<p class="xxgy" style="font-size: 23px;">公益箴言</p>
+			<p class="say">#(publicManInfo.public_proverbs)</p>
+			<div class="for_btn">
+				<img src="/downloadData/img?filePath=#(publicManInfo.public_img)" width="100%">
+			</div>
+
+			<div class="students_star">
+				<p class="cell_list"><span class="lf">姓名：<a href="/showPublicContent?id=#(publicManInfo.id)"><span class="darks">#(publicManInfo.public_name)</span></a></span> <span class="rt">年龄 ：<span class="darks">#(publicManInfo.public_age)</span></span>
+				</p>
+				<p class="cell_list"><span>评价：<span class="darks">#(publicManInfo.public_evaluation)</span></span>
+				</p>
+				<div class="zwjs">
+					#(publicManInfo.public_introduce)
+				</div>
+			</div>
+		</li>
+		#end
+	</ul>
+	<div class="clearfix" id="publicManContent"  style="margin: 0 auto;width: 1000px;border-top: 1px dotted #c7c7c7;">		
+	</div>
+	<div class="dataTables_paginate" id="publicManInfo">				
+	</div>
+</div>
+<script type="text/javascript">
+	var aa=new zturn({
+		id:"zturn",
+		opacity:0.9,
+		width:382,
+		Awidth:750,
+		scale:0.9
+	})
+</script>
+<script type="text/javascript">
+ util.initPage("/Admin/publicManInfoData/publicManInfoPaginate", {
+		paginate:{
+			paginateId:"#publicManInfo",
+			pageNumber:1,
+			pageSize:6
+		},
+		sort : {
+			"public_isTop" : "desc",
+			"public_create_time" : "desc"
+		},
+		search : {
+			column : {
+				"public_state" : ["=","",2]
+			}
+		}
+	},function(data){
+		var publicManInfoList =  data.list,tableHTML = [],obj = {};
+		for(var i = 0;i<publicManInfoList.length;i++){
+			obj = publicManInfoList[i];
+			tableHTML.push('<div><div class="fl" style="width: 320px;height: 206px;"><img style="width: 240px;height: 150px;padding:30px;" src="/downloadData/img?filePath=',obj.public_img,'"></div>');
+			tableHTML.push('<div class="fr" style="width: 660px;height: 214px;border-bottom: 1px dotted #c7c7c7">');
+			tableHTML.push('<div style="width: 680px;height: 60px;"><a href="/showPublicContent?id=',obj.id,'"><h1 style="line-height: 60px;">',obj.public_name,' : ',obj.public_proverbs,'</h1></a>');
+			tableHTML.push('</div><div style="width: 680px;height: 150px;font-size: 14px;">');
+			tableHTML.push('<p style="width: 680px;height: 150px;text-indent: 2em;overflow: hidden;display: -webkit-box;-webkit-line-clamp: 7;-webkit-box-orient: vertical;">',obj.public_content.replace(/<\/?.+?>/g,"").replace(/ /g,""),'</p></div></div></div>');
+		}
+		$("#publicManContent").html(tableHTML.join(""));			
+	});
+</script>
+#end

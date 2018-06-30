@@ -1,0 +1,30 @@
+.container {
+	width: 1000px;
+	margin:0 auto;
+}
+.container .con{
+	width: 312px;
+	height:230px;
+	margin: 10px;
+	border-radius: 20px;
+	background: #ddefcf;
+}
+.container .con .imgDiv {
+	width: 230px;
+	height: 150px;
+	border-radius: 10px;
+	margin: 40px;
+	margin-top: 28px;
+	margin-bottom: 10px;
+	background: #fff;
+}
+.container .con .textDiv {
+	height: 30px;
+	margin: 0 auto;
+	line-height: 30px;
+	font-size: 18px;
+	text-align: center;
+}
+.container .con .textDiv a {
+		color: #579f23;
+}

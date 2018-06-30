@@ -1,0 +1,147 @@
+#@activity()
+#define actContent()
+<div class="panel_pf">
+	<div class="con-f fr">
+		<div class="con-f-cen">
+			<div class="f-cen-top"> 
+				<span class="fl">推荐活动</span>
+				<span class="fr">意见反馈</span>
+			</div>
+			#for(activityInfo:activityInfoList)
+			<div class="f-cen-tail clearfix">
+				<div class="f-cen-l fl">
+					<div class="cen-l-img">
+						<img src="/downloadData/img?filePath=#(activityInfo.activity_cover_img)">
+					</div>
+				</div>
+				<div class="f-cen-r fr">
+					<p class="cen-f-r-top"><a style="color:#4c4c4c;font-weight: 500;"  href="/activityInfoDetail?id=#(activityInfo.id)" >#(activityInfo.activity_title)</a></p>
+					<div class="cen-f-r-cen">
+						<p class="cen-c1 fl">报名截止:</p>
+						<p class="cen-v1 fr">#(activityInfo.activity_enrol_endtime)</p>
+					</div>
+					<div class="cen-f-r-cens">
+						<p class="cen-c1 fl">活动简介:</p>
+						<p class="cen-v2 fr" style="overflow: hidden;text-overflow: ellipsis;">
+							#(activityInfo.activity_introduce)
+						</p>
+					</div>
+					<div class="cen-f-r-cen">
+						<p class="cen-c1 fl">活动发起:</p>
+						<p class="cen-v1 fr">
+							#(activityInfo.activity_hold_name)
+						</p>
+					</div>
+				</div>
+			</div>
+			#end
+		</div>
+	</div>
+	<div class="con-f fr">
+		<div class="con-f-act">
+			<div class="f-cen-top"> 
+				<span class="fl">线上公益活动</span>
+				<span class="fr"><a href="/onlineActivity"  style="color:#4c4c4c;">更多</a></span>
+			</div>
+			#for(online:onlineActList)
+			<div class="f-act">
+				<div class="act-con fl">
+					<div class="act-con-l fl" style="margin-top: 10px;">
+						<img src="/downloadData/img?filePath=#(online.activity_cover_img)">
+					</div>
+					<div class="act-con-r fr">
+						<p class="ptitle" style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">
+							<a style="color:#4c4c4c;font-weight: 500;"  href="/activityInfoDetail?id=#(online.id)" >
+								#(online.activity_title)
+							</a>
+						</p>
+						<div class="act-p">
+							<p class="act-p-n fl">开始时间:</p>
+							<p class="act-p-v fr">
+							#(online.activity_title)
+							</p>
+						</div>
+						<div class="act-p">
+							<p class="act-p-n fl">活动地点:</p>
+							<p class="act-p-v fr">
+							#(online.activity_addr)
+							</p>
+						</div>
+						<div class="act-p">
+							<p class="act-p-n fl">活动发起:</p>
+							<p class="act-p-v fr">
+							#(online.activity_hold_name)
+							</p>
+						</div>
+						<div class="act-p">
+							<p class="act-p-n fl">报名截止:</p>
+							<p class="act-p-v fr">
+							#(online.activity_enrol_endtime)
+							</p>
+						</div>
+						<div class="act-p">
+							<p class="act-p-n fl">#(online.activity_enrol_total)人报名</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			#end
+		</div>
+	</div>
+
+
+<!-- 线下活动 -->
+
+	<div class="con-f fr">
+		<div class="con-f-act">
+			<div class="f-cen-top"> 
+				<span class="fl">线下公益活动</span>
+				<span class="fr"><a href="/underLineActivity" style="color:#4c4c4c;">更多</a></span>
+			</div>
+			#for(under:underlineActList)
+			<div class="f-act">
+				<div class="act-con fl">
+					<div class="act-con-l fl" style="margin-top: 10px;">
+						<img src="/downloadData/img?filePath=#(under.activity_cover_img)">
+					</div>
+					<div class="act-con-r fr">
+						<p class="ptitle" style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">
+							<a style="color:#4c4c4c;font-weight: 500;"  href="/activityInfoDetail?id=#(under.id)" >
+								#(under.activity_title)
+							</a>
+						</p>
+						<div class="act-p">
+							<p class="act-p-n fl">开始时间:</p>
+							<p class="act-p-v fr">
+							#(under.activity_begin_time)
+							</p>
+						</div>
+						<div class="act-p">
+							<p class="act-p-n fl">活动地点:</p>
+							<p class="act-p-v fr">
+							#(under.activity_addr)
+							</p>
+						</div>
+						<div class="act-p">
+							<p class="act-p-n fl">活动发起:</p>
+							<p class="act-p-v fr">
+							#(under.activity_hold_name)
+							</p>
+						</div>
+						<div class="act-p">
+							<p class="act-p-n fl">报名截止:</p>
+							<p class="act-p-v fr">
+							#(under.activity_enrol_endtime)
+							</p>
+						</div>
+						<div class="act-p">
+							<p class="act-p-n fl">#(under.activity_enrol_total)人报名</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			#end		
+		</div>
+	</div>
+</div>
+#end

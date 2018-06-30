@@ -1,0 +1,165 @@
+.container {
+	width: 952px;
+	margin: 0 auto;
+	border: 1px solid #cccccc;
+	margin-bottom: 40px;
+}
+.container .con_l {
+	width: 224px;
+}
+.container .con_l  .con_l_cen {
+	width: 192px;
+	margin: 0 auto;
+	margin-top: 12px;
+}
+
+.container .con_l  .con_l_cen ul li {
+	height: 36px;
+	width: 192px;
+	display: block;
+	border-bottom: 1px solid #e4e7e9;
+	line-height: 36px;
+	text-align: center;
+	cursor: pointer;
+}
+.con_l_cen ul li a {
+	color: #3f3f3f;
+	font-size: 15px;
+}
+.current {
+	background: #f1f1f1;
+}
+
+.container .con-f {
+	width: 728px;
+}
+.container .con-f .con-f-cen {
+	width: 694px;
+	height: 200px;
+	margin: 0 auto;
+}
+
+.con-f-cen .f-cen-top {
+	width: 694px;
+	height: 38px;
+	border-bottom: 1px solid #f1f1f1;
+}
+.con-f-cen .f-cen-top span {
+	height: 38px;
+	width: 100px;
+	line-height: 38px;
+	text-align: center;
+	font-size: 14px;
+	font-weight: 700;
+	cursor: pointer;
+}
+.con-f-cen .f-cen-tail{
+	width: 694px;
+	cursor: pointer;
+}
+.con-f-cen .f-cen-tail .f-cen-l{
+	width: 120px;
+	padding-left: 10px;
+}
+
+.f-cen-l .cen-l-img img {
+	width: 100px;
+	height: 100px;
+}
+.f-cen-tail .f-cen-r  {
+	width: 558px;
+}
+.f-cen-r  .cen-f-r-top{
+	width: 558px;
+	height: 24px;
+	font-size: 14px;
+	font-weight: 700;
+}
+.f-cen-r .cen-f-r-cen {
+	width: 558px;
+	height: 20px;
+}
+.cen-f-r-cen .cen-c1{
+	font-size: 14px;
+	color: #99b3cd;
+	width: 80px;
+	height: 20px;
+}
+.cen-f-r-cen .cen-v1{
+	width: 478px;
+	height: 20px;
+	line-height:20px;
+	font-size: 12px;
+}
+.f-cen-r .cen-f-r-cens{
+	height: 60px;
+}
+.cen-f-r-cens .cen-c1{
+	font-size: 14px;
+	color: #99b3cd;
+	width: 80px;
+	height: 20px;
+}
+.cen-f-r-cens .cen-v2{
+	width: 478px;
+	height: 60px;
+	font-size: 12px;
+	line-height: 20px;
+}
+.con-f .con-f-act {
+	width: 694px;
+	height: 200px;
+	margin: 0 auto;
+	cursor: pointer;
+}
+.con-f-act .f-cen-top {
+	width: 694px;
+	height: 38px;
+	border-bottom: 1px solid #f1f1f1;
+}
+.con-f .con-f-act .f-cen-top span{
+	height: 38px;
+	width: 100px;
+	line-height: 38px;
+	text-align: center;
+	font-size: 14px;
+	font-weight: 700;
+	cursor: pointer;
+}
+.con-f-act .f-act {
+	width: 694px;
+}
+.f-act .act-con {
+	width: 347px;
+}
+.act-con .act-con-l {
+	width: 60px;
+	height:60px;
+}
+.act-con .act-con-l img {
+	width: 60px;
+	height: 60px;
+}
+.act-con-r .ptitle {
+	width: 280px;
+	height: 30px;
+	font-size: 14px;
+	line-height: 30px;
+}
+.act-con-r  .act-p {
+	width: 280px;
+	height: 30px;
+}
+.act-p .act-p-n {
+	height: 30px;
+	width: 60px;
+	font-size: 12px;
+	line-height: 30px;
+	color: #99a6c5;
+}
+.act-p .act-p-v {
+	height: 30px;
+	width: 216px;
+	font-size: 12px;
+	line-height: 30px;
+}

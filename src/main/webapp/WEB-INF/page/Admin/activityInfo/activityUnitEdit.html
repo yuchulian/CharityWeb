@@ -1,0 +1,59 @@
+<form class="form-horizontal" id="activityUnitForm">
+	<input type="hidden" name="activityUnit.id" value="#(activityUnit.id)" />
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span class="red">*</span>单位名称</label>
+		<div class="col-sm-10">
+			<input type="text"  class="form-control validate[required]" name="activityUnit.unit_name" value="#(activityUnit.unit_name)"/>
+		</div>
+	</div>	
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span class="red">*</span>单位图标</label>
+		<div class="col-sm-8">
+			<img id ="activityUnitImg" style="width: 300px;height: 300px;" class="selectImg" callBack="activityUnitSelectImg" fileType=".png|.jpg|.gif" aspectRatio="300/300" src="/downloadData/img?filePath=#(activityUnit.unit_img)" _src="#(activityUnit.unit_img)"/>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span class="red">*</span>活动发布的次数</label>
+		<div class="col-sm-10">
+			<input type="text"  class="form-control" disabled="disabled" name="activityUnit.unit_post_number" value="#(activityUnit.unit_post_number)"/>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span class="red">*</span>活动举办成功的次数</label>
+		<div class="col-sm-10">
+			<input type="text"  class="form-control" disabled="disabled" name="activityUnit.unit_post_success_number" value="#(activityUnit.unit_post_success_number)"/>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span class="red">*</span>活动举办失败的次数</label>
+		<div class="col-sm-10">
+			<input type="text"  class="form-control" disabled="disabled" name="activityUnit.unit_post_fail_number" value="#(activityUnit.unit_post_fail_number)"/>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span class="red">*</span>单位介绍</label>
+		<div class="col-sm-9">
+			<script type="text/plain" style="width:100%;height:360px;" id="unit_introduce" name="activityUnit.unit_introduce">#(activityUnit.unit_introduce)</script>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span class="red">*</span>创建时间</label>
+		<div class="col-sm-10">
+			<input type="text" id="unit_create_time" disabled="disabled" class="form-control validate[required]" name="activityUnit.unit_create_time" value="#(activityUnit.unit_create_time)"/>
+		</div>
+	</div>
+</form>
+<script type="text/javascript">
+	$("#activityUnitForm").validationEngine({
+		showOneMessage: true,
+		promptPosition: "topLeft"
+	});
+	function activityUnitSelectImg(returnMsg) {
+		$("#activityUnitImg").attr("src", "/downloadData/img?filePath="+returnMsg.filePath).attr("_src", returnMsg.filePath);
+	}
+	//获取当前的时间
+	$(function(){
+		$("#unit_create_time").val(util.getNowDate(new Date(),'yyyy-mm-dd hh:ii:ss'));
+	});
+	var unitIntroduce = UE.getEditor('unit_introduce');
+</script>

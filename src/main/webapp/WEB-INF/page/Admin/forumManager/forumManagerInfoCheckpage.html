@@ -1,0 +1,47 @@
+<form class="form-horizontal" id="forumManagerInfoForm">
+	<input type="hidden" name="forumManagerInfo.id" value="#(forumManagerInfo.id)" />
+	
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span class="red">*</span>标题</label>
+		<div class="col-sm-9">
+			<label class="form-control">#(forumManagerInfo.manager_title)</label>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span class="red">*</span>类型</label>
+		<div class="col-sm-9">
+			<label class="form-control">#(forumManagerInfo.manager_type==1?"论坛公告":forumManagerInfo.manager_type==2?"论坛帮助":forumManagerInfo.manager_type==3?"友情链接":"")</label>
+		</div>
+	</div>
+	<div class="form-group" id="manager_link_p">
+		<label class="col-sm-2 control-label"><span class="red">*</span>链接</label>
+		<div class="col-sm-9">
+			<label class="form-control">#(forumManagerInfo.manager_link)</label>
+		</div>
+	</div>
+	<div class="form-group" id="manager_content_p">
+		<label class="col-sm-2 control-label"><span class="red">*</span>内容</label>
+		<div class="col-sm-9">
+			#(forumManagerInfo.manager_content)
+		</div>
+	</div>
+	
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span class="red">*</span>创建时间</label>
+		<div class="col-sm-9">
+			<label class="form-control">#(forumManagerInfo.manager_create_time)</label>
+		</div>
+	</div>
+</form>
+<script type="text/javascript">
+	$(function(){
+		var type='#(forumManagerInfo.manager_type)';
+		if(type=="3"){
+			$("#manager_link_p").show();
+			$("#manager_content_p").hide();
+		}else{
+			$("#manager_link_p").hide();
+			$("#manager_content_p").show();
+		}
+	});
+</script>

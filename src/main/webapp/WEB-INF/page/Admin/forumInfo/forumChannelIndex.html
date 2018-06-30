@@ -1,0 +1,175 @@
+#@layout() #define main()
+
+<div class="row">
+	<div class="col-md-12">
+		<div class="panel panel-visible">
+
+			<div class="panel-heading">
+				<ol class="breadcrumb" id="channel_menu">
+				</ol>
+			</div>
+			<div class="panel-body pn">
+				<div id="datatable2_wrapper"
+					class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+					<div class="dt-panelmenu clearfix">
+						<input type="hidden" value="0" id="channelPidSearch" />
+						<button type="button" class="btn btn-primary btn-gradient dark"
+							id="channelAdd">栏目添加</button>
+					</div>
+					<table class="table table-striped table-hover dataTable no-footer"
+						id="channelTable">
+						<thead>
+							<tr>
+								<th class="sorting_disabled">&nbsp;</th>
+								<th class="sorting_asc">栏目名称</th>
+								<th class="sorting">栏目类型</th>
+								<th class="sorting">备注</th>
+								<th class="sorting_disabled w200">操作</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	util.initPage(
+					"/Admin/channelData/channelList",
+					{
+						sort : {
+							"id" : "asc"
+						},
+						search : {
+							column : {
+								"channel_pid" : [ "=", "#channelPidSearch" ]
+							}
+						},
+						modal : {
+							"channelUpdate" : {
+								bind : {
+									"#channelAdd" : {
+										title : "字典添加"
+									}
+								},
+								pageUrl : "/Admin/channelPage/channelEdit",
+								title : "字典修改",
+								button : {
+									"submit" : {
+										name : "确定",
+										className : "btn-primary",
+										click : function(dataMap) {
+											if ($('#channelForm')
+													.validationEngine(
+															'validate')) {
+												var channel = util
+														.getModal(dataMap);
+												channel["channel.channel_pid"] = $(
+														"#channelPidSearch")
+														.val();
+												channel["channel.channel_name"] = channel["channel.channel_name"]
+														.replace(",", "，");
+												util
+														.call(
+																"/Admin/channelData/channelSave",
+																channel,
+																function(
+																		returnMsg) {
+																	util
+																			.refreshPage(dataMap);
+																	util
+																			.closeModal(dataMap);
+																	util
+																			.alert(returnMsg["content"]);
+																});
+											}
+										}
+									}
+								}
+							},
+							"channelDelete" : {
+								button : {
+									"submit" : {
+										name : "确定",
+										className : "btn-primary",
+										click : function(dataMap) {
+											util
+													.call(
+															"/Admin/channelData/channelDelete",
+															{
+																"id" : dataMap["id"]
+																		+ ""
+															},
+															function(returnMsg) {
+																util
+																		.refreshPage(dataMap);
+																util
+																		.closeModal(dataMap);
+																util
+																		.alert(returnMsg["content"]);
+															});
+										}
+									}
+								}
+							}
+						}
+					},
+					function(data) {
+						var tableHTML = [], obj = {}, channel = data.list["channel"], channelList = data.list["channelList"], search = data["search"], channelUpdate = data["channelUpdate"], channelDelete = data["channelDelete"];
+
+						var channel_id_path = channel["channel_id_path"], channel_name_path = channel["channel_name_path"], menuList = [];
+						menuList
+								.push(
+										'<li class="crumb-link"><a href="javascript:void(0);" onclick="$(\'#channelPidSearch\').val(0);util.execute(\'',
+										search, '\');">全部</a> </li>');
+						if (channel_id_path && channel_name_path) {
+							var pathList = channel_id_path.split(","), pathnameList = channel_name_path
+									.split(",");
+							for (var i = 1; i < pathList.length - 1; i++) {
+								menuList
+										.push(
+												'<li class="crumb-link"><a href="javascript:void(0);" onclick="$(\'#channelPidSearch\').val(',
+												pathList[i],
+												');util.execute(\'', search,
+												'\');">', pathnameList[i],
+												'</a> </li>');
+							}
+						}
+						$("#channel_menu").html(menuList.join(""));
+
+						for (var i = 0; i < channelList.length; i++) {
+							obj = channelList[i];
+							tableHTML.push('<tr>');
+							tableHTML.push('	<td>', (i + 1), '</td>');
+							tableHTML
+									.push(
+											'	<td><a href="javascript:void(0);" onclick="$(\'#channelPidSearch\').val(',
+											obj.id, ');util.execute(\'',
+											search, '\');">', obj.channel_name,
+											'</a></td>');
+							tableHTML.push('	<td>', obj.channel_type, '</td>');
+							tableHTML
+									.push('	<td>', obj.channel_remark, '</td>');
+							tableHTML
+									.push(
+											'	<td><a href="javascript:void(0);" onclick="util.execute(\'',
+											channelDelete, '\', {id : ',
+											obj.id, ', pageHtml : \'确定要删除【',
+											obj.channel_name,
+											'】吗？\'});">删除</a>');
+							tableHTML
+									.push(
+											'	<a href="javascript:void(0);" onclick="util.execute(\'',
+											channelUpdate, '\', {id : ',
+											obj.id,
+											', title: \'字典修改\'});">修改</a></td>');
+							tableHTML.push('</tr>');
+						}
+						$("#channelTable tbody").html(tableHTML.join(""));
+					});
+</script>
+#end

@@ -1,0 +1,215 @@
+#@layout()
+#define main()
+<div class="row">
+	<div class="col-md-12">
+		<div class="panel panel-visible">
+			<div class="panel-body pn">
+				<div id="datatable2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+					<div class="dt-panelmenu clearfix">
+						<div class="form-horizontal">
+							<div class="form-group" style="padding-left: 20px;">
+							
+								<label class="col-sm control-label">状态：</label>
+								<div class="col-md">
+				         			<select class="form-control" id="wikipediaInfoStateSearch">
+				         				<option value="">全部</option>
+				         				<option value="1">未审核</option>
+				         				<option value="2">审核通过</option>
+				         				<option value="3">审核不通过</option>
+									</select>
+								</div>
+							
+								<label class="col-sm control-label">创建时间：</label>
+								<div class="col-md">
+									<input class="col-md-1 form-control" id="startTime" type="text" name="startTime" style="width: 100px;"/>
+									<label class="col-sm control-label">-</label>
+									<input class="col-md-1 form-control" id="endTime" type="text" name="endTime" style="width: 100px;"/>
+								</div>
+								
+								
+								<div class="col-md">
+									<input class="col-md-1 form-control" type="text" placeholder="请输入百科主题" style="width: 140px;" id="wikipediaInfoTitleSearch"/>
+								</div>
+								
+								<input class="btn btn-primary " type="button" value="搜索" id="wikipediaInfoSearch"/>
+								<input class="btn btn-primary " type="button" value="重置" id="wikipediaInfoReset"/>
+								<input class="btn btn-primary " type="button" value="百科添加" id="wikipediaInfoAdd"/>
+								
+							</div>
+						</div>
+					</div>
+					<table class="table table-striped table-hover dataTable no-footer" id="wikipediaInfoTable">
+						<thead>
+							<tr>
+								<th>&nbsp;</th>
+								<th class="sorting_asc">百科主题</th>
+								<th class="sorting_disabled">浏览次数</th>
+								<th class="sorting_disabled">创建时间</th>
+								<th class="sorting_disabled">审核状态</th>
+								<th class="sorting_disabled">是否置顶</th>
+								<th class="sorting_disabled">操作</th>
+							</tr>
+						</thead>
+						<tbody> </tbody>
+					</table>
+					<div class="dt-panelfooter clearfix">
+						<div class="dataTables_info" id="datatable2_info" role="status"
+							aria-live="polite">Showing 1 to 5 of 13 entries</div>
+						<div class="dataTables_paginate paging_simple_numbers"
+							id="wikipediaInfo">
+							<ul class="pagination">
+								<li class="paginate_button active" aria-controls="datatable2"
+									tabindex="0"><a href="#">1</a></li>
+								<li class="paginate_button " aria-controls="datatable2" tabindex="0"><a
+									href="#">2</a></li>
+								<li class="paginate_button " aria-controls="datatable2" tabindex="0"><a
+									href="#">3</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	util.initDateRange('#startTime', '#endTime');
+	util.initPage("/Admin/wikipediaInfoData/wikipediaInfoPaginate", {
+		paginate:{
+			paginateId:"#wikipediaInfo",
+			pageNumber:1,
+			pageSize:10
+		},
+		sort : {
+			"wikipedia_isTop" : "desc",
+			"wikipedia_create_time" : "desc"
+		},
+		search : {
+			bind : {
+				searchId : "#wikipediaInfoSearch",
+				resetId : "#wikipediaInfoReset"
+			},
+			column : {
+ 				"wikipedia_state" : ["=" , "#wikipediaInfoStateSearch", ""],
+				"wikipedia_name" : ["like" , "#wikipediaInfoTitleSearch"],
+				"wikipedia_create_time" : ["betweenDate" , "#startTime,#endTime"]
+			}
+		},
+		modal : {
+			"wikipediaInfoUpdate" : {
+				bind : {
+					"#wikipediaInfoAdd" : {
+						title : "公益人物添加"
+					}
+				},
+				pageUrl : "/Admin/wikipediaInfoPage/wikipediaInfoEdit",
+				title : "公益人物修改",
+				width : 1200,
+				button : {
+					"submit" : {
+						name : "确定",
+						className : "btn-primary",
+						click : function(dataMap) {
+// 							if ($('#mangerInfoForm').validationEngine('validate')) {  wikipedia_content
+								var wikipediaInfo = util.getModal(dataMap);
+								if(!$.trim(wikipediaContent.getContent())) {
+						 			util.alert("请输入公益内容");
+						 			return;
+						 		}
+								wikipediaInfo["wikipediaInfo.wikipedia_content"] = wikipediaContent.getContent();
+								wikipediaInfo["wikipediaInfo.wikipedia_create_time"] =$.trim($("#wikipedia_create_time").val());
+								wikipediaInfo["wikipediaInfo.wikipedia_img"] = $.trim($("#wikipediaInfoImg").attr("_src"));
+								util.call("/Admin/wikipediaInfoData/wikipediaInfoSave", wikipediaInfo, function(returnMsg) {									
+									util.alert(returnMsg["returnMsg"]);
+									util.refreshPage(dataMap);
+									util.closeModal(dataMap);
+									
+								});
+// 							}
+						}
+					}
+				}
+			},
+			"wikipediaInfoDelete" : {
+				button : {
+					"submit" : {
+						name : "确定",
+						className : "btn-primary",
+						click : function(dataMap) {
+							util.call("/Admin/wikipediaInfoData/wikipediaInfoDelete", { "id" : dataMap["id"] + "" }, function(returnMsg) {
+								util.refreshPage(dataMap);
+								util.closeModal(dataMap);
+								util.alert(returnMsg["returnMsg"]);
+							});
+						}
+					}
+				}
+			},
+			"wikipediaInfoistop" : {
+				button : {
+					"submit" : {
+						name : "确定",
+						className : "btn-primary",
+						click : function(dataMap) {
+							util.call("/Admin/wikipediaInfoData/wikipediaInfoToTop", { "id" : dataMap["id"] + "" }, function(returnMsg) {
+								util.refreshPage(dataMap);
+								util.closeModal(dataMap);
+								util.alert(returnMsg["returnMsg"]);
+							});
+						}
+					}
+				}
+			},
+			"wikipediaInfoCanceltop" : {
+				button : {
+					"submit" : {
+						name : "确定",
+						className : "btn-primary",
+						click : function(dataMap) {
+							util.call("/Admin/wikipediaInfoData/wikipediaInfoCanceltop", { "id" : dataMap["id"] + "" }, function(returnMsg) {
+								util.refreshPage(dataMap);
+								util.closeModal(dataMap);
+								util.alert(returnMsg["returnMsg"]);
+							});
+						}
+					}
+				}
+			}
+		}
+	},
+	function(data) {
+		var tableHTML = [],
+			obj = {},
+			wikipediaInfoList = data.list,
+			wikipediaInfoUpdate = data["wikipediaInfoUpdate"],
+			wikipediaInfoistop = data["wikipediaInfoistop"],
+			wikipediaInfoCanceltop = data["wikipediaInfoCanceltop"],
+			wikipediaInfoDelete = data["wikipediaInfoDelete"];
+		for (var i = 0; i < wikipediaInfoList.length; i++) {
+			obj = wikipediaInfoList[i];
+			console.log(obj);
+			tableHTML.push('<tr>');
+			tableHTML.push('	<td>', (i + 1), '</td>');
+			tableHTML.push('	<td>', obj.wikipedia_name, '</td>');
+			tableHTML.push('	<td>', obj.wikipedia_age, '</td>');
+			tableHTML.push('	<td>', obj.wikipedia_create_time, '</td>');
+			tableHTML.push('	<td>', obj.wikipedia_state==1?"未审核":obj.wikipedia_state==2?"审核通过":"审核不通过", '</td>');
+			tableHTML.push('	<td>', obj.wikipedia_isTop==1?"已置顶" : "未置顶", '</td>');
+			tableHTML.push('	<td>');
+			tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',wikipediaInfoUpdate,'\', {id : ',obj.id,', title: \'公益人物修改\'});">修改</a>');
+			tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',wikipediaInfoDelete,'\', {id : ',obj.id,', pageHtml: \'确定要删除【',obj.wikipedia_name,'】吗？\'});">删除</a>');
+			if(obj.wikipedia_isTop==0){
+				tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',wikipediaInfoistop,'\', {id : ',obj.id,', pageHtml: \'确定要置顶【',obj.wikipedia_name,'】吗？\'});">置顶</a>');
+			}else{
+				tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',wikipediaInfoCanceltop,'\', {id : ',obj.id,', pageHtml: \'确定要取消【',obj.wikipedia_name,'】置顶吗？\'});">取消置顶</a>');
+			}
+			tableHTML.push('	</td>');
+			tableHTML.push('</tr>');
+		}
+		$("#wikipediaInfoTable tbody").html(tableHTML.join(""));
+	});
+		
+</script>
+#end

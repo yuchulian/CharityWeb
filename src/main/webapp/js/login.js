@@ -1,9 +1,8 @@
 $(function() {
 	util.temp.browserType = util.browserType();
 	util.initUpload();
-	login.taskList();
 	login.loginInfoEdit();
-	login.employInfoEdit();
+	login.mangerInfoEdit();
 	login.initExitWarn();
 	
 	var $body = $("body");
@@ -364,7 +363,7 @@ Login.prototype = {
 					name : "确定",
 					className : "btn-primary",
 					click : function(dataMap) {
-						location.href = "/logOut";
+						location.href = "/Admin/logOut";
 					}
 				}
 			}
@@ -408,42 +407,6 @@ Login.prototype = {
 			}
 		});
 	},
-	taskFormKey : this.taskFormKey || util.modal({
-		title: "任务办理",
-		width: 1500,
-		pageUrl : "/activitiPage/formKeyForm"
-	}),
-	taskList : function() {
-		util.call("/activitiData/taskList", {}, function(returnData) {
-			var ulHTML = [], tableHTML = [], obj = {}, hasTaskTable = $("#taskTable").length;
-			for(var i=0; i<returnData.length; i++) {
-				obj = returnData[i];
-				ulHTML.push('<tr>');
-				ulHTML.push('	<td>',(i+1),'</td>');
-//				ulHTML.push('	<td>',obj.name,'【',util.formatDate(new Date(obj.createTime)),'】</td>');
-				ulHTML.push('	<td>',obj.name,'【',(obj.createTime || "").substring(0, 10),'】</td>');
-				ulHTML.push('	<td><a href="javascript:void(0);" onclick="util.execute(\'',login.taskFormKey,'\', {taskId : ',obj.id,', processDefinitionId : \'', obj.processDefinitionId ,'\'});">任务办理</a></td>');
-				ulHTML.push('</tr>');
-				
-				if(hasTaskTable) {
-					tableHTML.push('<tr>');
-					tableHTML.push('	<td>',(i+1),'</td>');
-					tableHTML.push('	<td>',obj.id,'</td>');
-					tableHTML.push('	<td><a href="javascript:void(0);" onclick="">',obj.name,'</a></td>');
-					tableHTML.push('	<td>',obj.createTime,'</td>');
-					tableHTML.push('	<td>');
-					tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',login.taskFormKey,'\', {taskId : ',obj.id,', processDefinitionId : \'', obj.processDefinitionId ,'\'});">任务办理</a>');
-					tableHTML.push('	</td>');
-					tableHTML.push('</tr>');
-				}
-			}
-			$("#toDoCount").html(returnData.length?returnData.length:"");
-			$("#taskUl").html(ulHTML.join(""));
-			if(hasTaskTable) {
-				$("#taskTable tbody").html(tableHTML.join(""));
-			}
-		});
-	},
 	loginInfoEdit : function() {
 		$("#loginInfoManager").removeAttr("onclick");
 		util.modal({
@@ -451,7 +414,7 @@ Login.prototype = {
 				"#loginInfoManager": { }
 			},
 			title : "账号设置",
-			pageUrl : "/employInfoPage/loginInfoEdit",
+			pageUrl : "/Admin/mangerInfoPage/loginInfoEdit",
 			button : {
 				"submit" : {
 					name : "确定",
@@ -460,7 +423,7 @@ Login.prototype = {
 						if($("#loginInfoForm").validationEngine('validate')){
 							var loginInfo = util.getModal(dataMap);
 							loginInfo["loginInfo.login_img"] = $.trim($("#loginImg").attr("_src") || "");
-							util.call("/employInfoData/loginInfoSave", loginInfo,function(returnMap){
+							util.call("/Admin/mangerInfoData/loginInfoSave", loginInfo,function(returnMap){
 								util.closeModal(dataMap);
 								util.alert(returnMap["returnMsg"]);
 								if(returnMap["returnMsg"] == "保存成功") {
@@ -475,15 +438,15 @@ Login.prototype = {
 			}
 		});
 	},
-	employInfoEdit : function() {
-		$("#employInfoManager").removeAttr("onclick");
+	mangerInfoEdit : function() {
+		$("#mangerInfoManager").removeAttr("onclick");
 		util.modal({
 			bind : {
-				"#employInfoManager" : {
+				"#mangerInfoManager" : {
 					oneself : true
 				}
 			},
-			pageUrl : "/employInfoPage/employInfoEdit",
+			pageUrl : "/Admin/mangerInfoPage/mangerInfoEdit",
 			title : "个人信息",
 			width : 1100,
 			button : {
@@ -491,14 +454,14 @@ Login.prototype = {
 					name : "确定",
 					className : "btn-primary",
 					click : function(dataMap) {
-						var employInfo = util.getModal(dataMap),$this="";
-						$("#employInfo_id td[id]").each(function() {
+						var mangerInfo = util.getModal(dataMap),$this="";
+						$("#mangerInfo_id td[id]").each(function() {
 							$this = $(this);
-							employInfo["employInfo."+$this.attr("id")] = $.trim($this.text());
+							 mangerInfo["mangerInfo."+$this.attr("id")] = $.trim($this.text());
 						});
-						employInfo["employInfo.employ_diploma"] = $.trim($("#employ_diploma").val());
-						employInfo["employInfo.employ_img"] = $.trim($("#employInfoImg").attr("_src"));
-						util.call("/employInfoData/employInfoSave", employInfo, function(returnMsg) {
+						mangerInfo["mangerInfo.manger_diploma"] = $.trim($("#manger_diploma").val());
+						mangerInfo["mangerInfo.manger_img"] = $.trim($("#mangerInfoImg").attr("_src"));
+						util.call("/Admin/mangerInfoData/mangerInfoSave", mangerInfo, function(returnMsg) {
 							util.closeModal(dataMap);
 							util.alert(returnMsg["returnMsg"]);
 						});

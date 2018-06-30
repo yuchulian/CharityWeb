@@ -1,0 +1,142 @@
+#@header()
+#define main()
+<link rel="stylesheet" href="/css/addForum.css">
+	<div class="form_head center">发布帖子</div>
+	<div class="container center">
+	<form id="forumForm">
+		<table class="add_table">
+			<tr>
+			<th>文章标题</th>
+			<td>
+				<div class="title">
+					<input type="text" class="validate[required]" name="forumInfo.forum_title"/>
+				</div>
+			</td>
+			</tr>
+			<tr>
+				<th>文章内容</th>
+				<td class="content">
+					<script type="text/plain"  style="width: 100%;height: 100%;" name="forumInfo.forum_content" id = "forumContent"></script>
+				</td>
+			</tr>
+			<tr>
+				<th>选择板块</th>
+				<td class="area">
+					<div class="big_area fl">
+						<select id="forum_big_type" name="forumInfo.forum_big_type">
+						#if(forumBigType??)
+							#for(bigType : forumBigType)
+							<option value="#(bigType.id)">#(bigType.channel_name)</option>
+							#end
+						#end
+						</select>
+					</div>
+					<div class="small_area fl">
+						<select id="forum_small_type" name="forumInfo.forum_small_type">
+						</select>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<th>帖子分数</th>
+				<td class="score">给分<input name="forumInfo.forum_score" type="number" class="validate[required]" min="1"/>
+					(5-100)  #if(userScore??)当前可用分:#(userScore)  结帖后系统返还本帖50%的可用分！#end
+				</td>
+			</tr>
+			<tr>
+				<th></th>
+				<td style="padding-left: 20px;padding-right: 20px;padding-bottom: 20px;">
+					<div class="btn">
+						<div class="submit fl">
+							<input id="forumFormSubmit" type="button" value="提交"/>
+						</div>
+						<div class="cancel fl">
+							<input id="forumFormCancel" type="button" value="取消"/>
+						</div>
+						<div class="fl" id="forum_message" style="width:300px;height: 30px;margin-left: 10px;font-size: 16px;color: red;">
+							
+						</div>	
+					</div>
+					<div class="warn">
+						<ul>
+							<li>&nbsp;
+								1.这里发言，表示您接受了小风车论坛的用户行为准则。
+							</li>
+							<li>&nbsp;
+								2.请对您的言行负责，并遵守中华人民共和国有关法律法规,尊重网上道德。
+							</li>
+							<li>&nbsp;
+								3.转载文章请注明出自“http://www.smallwindmill.top）”。如是商业用途请联系原作者。
+							</li>
+						</ul>
+					</div>
+				</td>
+			</tr>
+		</table>
+	</form>
+	</div>
+	<script type="text/javascript">
+		UE.delEditor("forumContent");
+ 		var forumContent = UE.getEditor("forumContent");
+		
+		$("#forumForm").validationEngine({
+			showOneMessage: true,
+			promptPosition: "topLeft"		
+		});
+		//进行查询小模块
+		$(function(){
+			var bigType = $.trim($("#forum_big_type option:selected").val());
+			$.post("/getForumSmallType",{"bigType":bigType},function(data){
+				var tableTHML = [],obj = {};
+				for(var i = 0;i<data.length;i++){
+					obj = data[i];
+					tableTHML.push('<option value=',obj.id,'>',obj.channel_name,'</option>');
+				}
+				$("#forum_small_type").html(tableTHML.join(""));
+			});
+		});
+		$("#forum_big_type").change(function(){
+			var bigType = $.trim($("#forum_big_type option:selected").val());
+			$.post("/getForumSmallType",{"bigType":bigType},function(data){
+				var tableTHML = [],obj = {};
+				for(var i = 0;i<data.length;i++){
+					obj = data[i];
+					tableTHML.push('<option value=',obj.id,'>',obj.channel_name,'</option>');
+				}
+				$("#forum_small_type").html(tableTHML.join(""));
+			});
+		});
+		$("#forumFormCancel").click(function(){
+			window.location.href = "/forumIndex";
+		});
+		$("#forumFormSubmit").click(function(){
+			if($("#forumForm").validationEngine('validate')){				
+				//判断主题是不是为空,要是为空,进行返回
+				if(!$.trim(forumContent.getContent())) {
+					$("#forum_message").html("内容不能为空");
+					window.setTimeout(function(){
+						$("#forum_message").html("");
+					},2000);
+		 			return;
+		 		}
+				var forumInfo = util.getModal("#forumForm");
+				console.log(forumInfo);
+				$.post("/addForum",forumInfo,function(returnMsg){
+					if("success"==returnMsg["returnState"]){
+						$("#forum_message").html(returnMsg["returnMsg"]);
+						window.setTimeout(function(){
+							window.location ="/forumIndex";
+						},2000);					
+					}else{
+						$("#forum_message").html(returnMsg["returnMsg"]);
+						window.setTimeout(function(){
+							$("#forum_message").html("");
+						},2000);
+					}
+				});
+			}else {
+				return;	
+			}					
+		});
+	</script>
+#end

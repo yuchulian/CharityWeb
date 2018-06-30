@@ -1,0 +1,42 @@
+#define activity()
+#@header()
+#define main()
+	<link rel="stylesheet" href="/css/activity.css">
+	<!--最新推荐开始-->
+	<div class="container clearfix" >
+		<div class="con_l fl" >
+			<div class="con_l_cen">
+				<ul id="menu">
+					#for(activity : session.activityList)
+					<li class="activity_li">
+						<a href="#(activity.dictionary_type)" >#(activity.dictionary_name)</a>
+					</li>
+					#end
+				</ul>
+			</div>
+		</div>
+		<div class="panel">
+			#@actContent()
+		</div>
+	</div>
+	<!--最新推荐结束-->
+	
+	<!-- 进行对选中选项进行颜色显示 -->
+	<script type="text/javascript">
+		$(function(){
+			selectMenu($("#menu"),location.pathname);
+		});
+		
+		function selectMenu($ul,pathname){
+			var self = {};
+			$ul.find('a').each(function(){
+				self = $(this);
+				var liPathname = self.attr('href');
+				if(pathname==liPathname){
+					self.parent('li').css("background","#4e931c");
+				}
+			});
+		}
+	</script>
+#end
+#end

@@ -1,0 +1,153 @@
+#@layout()
+#define main()
+
+<div class="row">
+	<div class="col-md-12">
+		<div class="panel panel-visible">
+			<div class="panel-body pn">
+				<div id="datatable2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+					<div class="dt-panelmenu clearfix">
+						<div class="form-horizontal">
+							<div class="form-group" style="padding-left: 20px;">
+							
+								<label class="col-sm control-label">状态：</label>
+								<div class="col-md">
+				         			<select class="form-control" id=publicManInfoStateSearch>
+				         				<option value="">全部</option>
+				         				<option value="1">未审核</option>
+				         				<option value="2">审核通过</option>
+				         				<option value="3">审核不通过</option>
+									</select>
+								</div>
+							
+								<label class="col-sm control-label">创建时间：</label>
+								<div class="col-md">
+									<input class="col-md-1 form-control" id="startTime" type="text" name="startTime" style="width: 100px;"/>
+									<label class="col-sm control-label">-</label>
+									<input class="col-md-1 form-control" id="endTime" type="text" name="endTime" style="width: 100px;"/>
+								</div>
+								
+								
+								<div class="col-md">
+									<input class="col-md-1 form-control" type="text" placeholder="请输入公益人物" style="width: 140px;" id="publicManInfoTitleSearch"/>
+								</div>
+								
+								<input class="btn btn-primary " type="button" value="搜索" id="publicManInfoSearch"/>
+								<input class="btn btn-primary " type="button" value="重置" id="publicManInfoReset"/>
+							</div>
+						</div>
+					</div>
+					<table class="table table-striped table-hover dataTable no-footer" id="publicManInfoTable">
+						<thead>
+							<tr>
+								<th>&nbsp;</th>
+								<th class="sorting_asc">公益人物</th>
+								<th class="sorting_disabled">年龄</th>
+								<th class="sorting_disabled">创建时间</th>
+								<th class="sorting_disabled">审核状态</th>
+								<th class="sorting_disabled">是否置顶</th>
+								<th class="sorting_disabled">操作</th>
+							</tr>
+						</thead>
+						<tbody> </tbody>
+					</table>
+					<div class="dt-panelfooter clearfix">
+						<div class="dataTables_info" id="datatable2_info" role="status"
+							aria-live="polite">Showing 1 to 5 of 13 entries</div>
+						<div class="dataTables_paginate paging_simple_numbers"
+							id="publicManInfo">
+							<ul class="pagination">
+								<li class="paginate_button active" aria-controls="datatable2"
+									tabindex="0"><a href="#">1</a></li>
+								<li class="paginate_button " aria-controls="datatable2" tabindex="0"><a
+									href="#">2</a></li>
+								<li class="paginate_button " aria-controls="datatable2" tabindex="0"><a
+									href="#">3</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	util.initDateRange('#startTime', '#endTime');
+	util.initPage("/Admin/publicManInfoData/publicManInfoPaginate", {
+		paginate:{
+			paginateId:"#publicManInfo",
+			pageNumber:1,
+			pageSize:10
+		},
+		sort : {
+			"public_isTop" : "desc",
+			"public_create_time" : "desc"
+		},
+		search : {
+			bind : {
+				searchId : "#publicManInfoSearch",
+				resetId : "#publicManInfoReset"
+			},
+			column : {
+ 				"public_state" : ["=" , "#publicManInfoStateSearch", ""],
+				"public_name" : ["like" , "#publicManInfoTitleSearch"],
+				"public_create_time" : ["betweenDate" , "#startTime,#endTime"]
+			}
+		},
+		modal : {
+			"publicManInfoCheck" : {
+				pageUrl : "/Admin/publicManInfoPage/publicManInfoCheckpage",
+				width:1000,
+				button : {
+					"success" : {
+						name : "通过",
+						className : "btn-primary",
+						click : function(dataMap) {
+							util.call("/Admin/publicManInfoData/publicManInfoCheckSuccess", { "id" : dataMap["id"] + "" }, function(returnMsg) {
+								util.refreshPage(dataMap);
+								util.closeModal(dataMap);
+								util.alert(returnMsg["returnMsg"]);
+							});
+						}
+					},
+					"fail" : {
+						name : "不通过",
+						className : "btn-primary",
+						click : function(dataMap) {
+							util.call("/Admin/publicManInfoData/publicManInfoCheckFail", { "id" : dataMap["id"] + "" }, function(returnMsg) {
+								util.refreshPage(dataMap);
+								util.closeModal(dataMap);
+								util.alert(returnMsg["returnMsg"]);
+							});
+						}
+					}
+				}
+			}
+		}
+	},
+	function(data) {
+		var tableHTML = [],
+			obj = {},
+			publicManInfoList = data.list,
+			publicManInfoCheck = data["publicManInfoCheck"];
+		for (var i = 0; i < publicManInfoList.length; i++) {
+			obj = publicManInfoList[i];
+			tableHTML.push('<tr>');
+			tableHTML.push('	<td>', (i + 1), '</td>');
+			tableHTML.push('	<td>', obj.public_name, '</td>');
+			tableHTML.push('	<td>', obj.public_age, '</td>');
+			tableHTML.push('	<td>', obj.public_create_time, '</td>');
+			tableHTML.push('	<td>', obj.public_state==1?"未审核":obj.public_state==2?"审核通过":"审核不通过", '</td>');
+			tableHTML.push('	<td>', obj.public_isTop==1?"已置顶" : "未置顶", '</td>');
+			tableHTML.push('	<td>');
+			tableHTML.push('		<a href="javascript:void(0);" onclick="util.execute(\'',publicManInfoCheck,'\', {id : ',obj.id,'});">审核</a>');
+			tableHTML.push('	</td>');
+			tableHTML.push('</tr>');
+		}
+		$("#publicManInfoTable tbody").html(tableHTML.join(""));
+	});
+		
+</script>
+#end

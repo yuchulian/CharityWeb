@@ -1,0 +1,50 @@
+/* 存放css初始化的代码 */
+html,body,ul,li,p,h1,h2,h3,form,img {
+	margin:0;
+	padding:0;
+}
+img {
+	border: none;
+}
+ul {
+	list-style: none;
+}
+input {
+	padding-top:0;
+	padding-bottom:0;
+	border: none;
+}
+a {
+	text-decoration: none;
+}
+body {
+	font: normal normal 12px "宋体";
+	color: #4c4c4c;
+}
+.fl	{
+	float: left;
+}
+.fr {
+	float: right;
+}
+.clearfix:after,.clearfix:before {
+	content: ".";
+	display: table;
+}
+.clearfix:after {
+	clear: both;
+}
+.clearfix {
+	*zoom : 1;
+}
+
+
+
+
+
+
+
+
+
+
+
